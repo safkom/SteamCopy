@@ -9,6 +9,9 @@
     <link rel ="stylesheet" type ="text/css"href="css/navbar.css">
     <title>SteamCopy</title>  
 </head>
+<?php
+session_start();
+?>
 
 <body> 
 <nav class="navbar">
