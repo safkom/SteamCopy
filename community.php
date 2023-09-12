@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Miha Šafranko"/>
-	<meta name="author" content="Miha Šafranko" />
-    <link rel="stylesheet" href="css/login.css">
-    <link rel="stylesheet" href="css/navbar.css">
-    <title>Registracija</title>
+    <meta name="description" content="Miha Šafranko">
+    <meta name="author" content="Miha Šafranko">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel ="stylesheet" type ="text/css"href="css/navbar.css">
+    <title>SteamCopy</title>  
 </head>
-<body>
+
+<body> 
 <nav class="navbar">
         <div class="navbar-left">
             <b style = "color:white; font-family:'Courier New', Courier, monospace">SteamCopy</b>
@@ -19,60 +20,66 @@
             <button class="center-button" onclick="location.href='community.php'">Community</button>
         </div>
         <div class="navbar-right">
+            <?php
+            if (userLoggedIn()) {
+                echo "<button class='user-button' onclick=\"location.href='profile.php'\">" . $_SESSION['username'] . "</button>";
+                echo "<button class='user-button' onclick=\"location.href='odjava.php'\">Logout</button>";
+            } else {
+                echo "<button class='user-button' onclick=\"location.href='login.php'\">Login</button>";
+                echo "<button class='user-button' onclick=\"location.href='registracija.php'\">Register</button>";
+            }
+            
+            ?>
         </div>
     </nav>
-  <?php
-  session_start();
-  ?>
-  <br>
-  <div class = "container">
-    <h1>Registracija</h1>
- <form action="register.php" method="post">
-  <label for="ime">Ime:</label>
-  <input type="text" id="ime" name="ime" required><br><br>
-  <label for="priimek">Priimek:</label>
-  <input type="text" id="priimek" name="priimek" required><br><br>
-  <label for="username">Username:</label>
-  <input type="text" id="username" name="username" required><br><br>
-  <label for="email">Mail:</label>
-  <input type="text" id="email" name="email" required><br><br>
-  <label for="geslo">Geslo:</label>
-  <input type="password" id="geslo" name="geslo" required><br><br>
-</datalist>
-  <input type="submit" value="Pošlji">
-</form>
-<p>Ste že uporabnik? <a href = "login.php">Pojdite na prijavo</a>
-  </div>
-  <div id="loginWindow">
-    <?php
+
+
+
+
+<?php
+
+function userloggedIn(){
+    if(isset($_SESSION['username'])){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
     if (isset($_COOKIE['prijava'])) {
+       echo "<div id='loginWindow'>";
         echo "✅ ";
         echo $_COOKIE['prijava'];
         // setcookie("prijava", "", time() - 3600);
+        echo "</div>";
     }
     ?>
-</div>
-<div id="errorWindow">
+
+
     <?php
+    
     if (isset($_COOKIE['prijava'])) {
+        echo "<div id='errorWindow'>";
         echo "⛔ ";
         echo $_COOKIE['prijava'];
         // setcookie("prijava", "", time() - 3600);
+        echo "</div>";
     }
     ?>
-</div>
-<div id="warningWindow">
+
+
     <?php
     if (isset($_COOKIE['prijava'])) {
+        echo "<div id='warningWindow'>";
         echo "⚠️ ";
         echo $_COOKIE['prijava'];
         // setcookie("prijava", "", time() - 3600);
+        echo "</div>";
     }
     ?>
-</div>
-
-  <script>
-  document.getElementById("errorWindow").style.display = "none";
+<script>
+document.getElementById("errorWindow").style.display = "none";
 document.getElementById("warningWindow").style.display = "none";
 document.getElementById("loginWindow").style.display = "none";
 
@@ -115,5 +122,10 @@ function getCookie(name) {
     document.cookie = 'warning=; Max-Age=0';
     document.cookie = 'good=; Max-Age=0';
 </script>
+<script src="js/jquery.min.js"></script>
+  <script src="js/popper.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+
 </body>
 </html>

@@ -1,0 +1,142 @@
+body{
+    background: #0F518A ;
+  }
+  /* Global Styles */
+body {
+font-family: Arial, sans-serif;
+background: #0F518A ;
+margin: 0;
+padding: 0;
+}
+
+.container {
+max-width: 400px;
+margin: 50px auto;
+padding: 20px;
+background-color: #fff;
+border-radius: 10px; /* Adding rounded corners */
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increasing the box shadow */
+}
+
+
+
+h1 {
+text-align: center;
+color: #333;
+}
+
+form {
+margin-top: 20px;
+}
+
+label {
+display: block;
+margin-bottom: 5px;
+color: #555;
+}
+
+.container input[type="text"],
+.container input[type="password"] {
+width: 100%;
+padding: 10px;
+font: inherit;
+box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
+border-color: gray;
+outline: 0;
+}
+
+.container input[type="submit"] {
+width: 100%;
+padding: 10px;
+background-color: lightblue;
+color: #fff;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+.container input[type="submit"]:hover {
+background-color: lightblue;
+}
+
+a {
+color: lightblue;
+text-decoration: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+.container {
+max-width: 100%;
+margin: 20px;
+box-shadow: none;
+}
+}
+#errorWindow {
+position: fixed;
+bottom: 10px;
+right: 10px;
+width: 200px;
+min-height: 30px;
+background-color: lightcoral;
+display: none;
+padding: 10px;
+border-radius: 5px;
+}
+#warningWindow {
+position: fixed;
+bottom: 10px;
+right: 10px;
+width: 200px;
+min-height: 30px;
+background-color: lightblue;
+display: none;
+padding: 10px;
+border-radius: 5px;
+}
+  .container input[type="text"],
+.container input[type="password"] {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.container input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.container input[type="submit"]:hover {
+  background-color: #007bff;
+}
+  
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 600px) {
+    .container {
+      max-width: 100%;
+      margin: 20px;
+      box-shadow: none;
+    }
+  }
+
+  #loginWindow {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 200px;
+    min-height: 30px;
+    background-color: lightgreen;
+    display: none;
+    padding: 10px;
+    border-radius: 5px;
+}
+  

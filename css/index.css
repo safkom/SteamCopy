@@ -1,0 +1,108 @@
+body{
+    background-color: #0F518A; 
+}
+#container {
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px; /* Adding rounded corners */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increasing the box shadow */
+}
+
+.dropdown {
+position: relative;
+display: inline-block;
+}
+
+.menu-btn {
+position: fixed;
+top: 20px;
+right: 20px;
+background-color: blue;
+color: white;
+padding: 10px;
+font-size: 16px;
+border: none;
+cursor: pointer;
+border-radius: 4px;
+}
+
+.menu-content {
+display: none;
+position: fixed;
+top: 60px;
+right: 20px;
+background-color: #f9f9f9;
+min-width: 120px;
+box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+z-index: 1;
+}
+
+.menu-content a {
+color: black;
+padding: 12px 16px;
+text-decoration: none;
+display: block;
+}
+#gumbi {
+display: flex;
+justify-content: space-between;
+}
+.gumbstyle{
+background: #3498db;
+background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+background-image: -o-linear-gradient(top, #3498db, #2980b9);
+background-image: linear-gradient(to bottom, #3498db, #2980b9);
+-webkit-border-radius: 28;
+-moz-border-radius: 28;
+border-radius: 28px;
+font-family: Arial;
+color: #ffffff;
+font-size: 20px;
+padding: 10px 20px 10px 20px;
+text-decoration: none;
+}
+.gumbstyle:hover {
+background: #3cb0fd;
+background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+text-decoration: none;
+}
+#loginWindow {
+position: fixed;
+bottom: 10px;
+right: 10px;
+width: 200px;
+min-height: 30px;
+background-color: lightgreen;
+display: none;
+padding: 10px;
+border-radius: 5px;
+}
+#errorWindow {
+position: fixed;
+bottom: 10px;
+right: 10px;
+width: 200px;
+min-height: 30px;
+background-color: lightcoral;
+display: none;
+padding: 10px;
+border-radius: 5px;
+}
+#warningWindow {
+position: fixed;
+bottom: 10px;
+right: 10px;
+width: 200px;
+min-height: 30px;
+background-color: lightblue;
+display: none;
+padding: 10px;
+border-radius: 5px;
+}

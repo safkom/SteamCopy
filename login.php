@@ -7,7 +7,7 @@
 	<meta name="author" content="Miha Šafranko" />
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/navbar.css">
-    <title>Registracija</title>
+    <title>Login</title>
 </head>
 <body>
 <nav class="navbar">
@@ -26,14 +26,8 @@
   ?>
   <br>
   <div class = "container">
-    <h1>Registracija</h1>
- <form action="register.php" method="post">
-  <label for="ime">Ime:</label>
-  <input type="text" id="ime" name="ime" required><br><br>
-  <label for="priimek">Priimek:</label>
-  <input type="text" id="priimek" name="priimek" required><br><br>
-  <label for="username">Username:</label>
-  <input type="text" id="username" name="username" required><br><br>
+    <h1>Prijava</h1>
+ <form action="preveri.php" method="post">
   <label for="email">Mail:</label>
   <input type="text" id="email" name="email" required><br><br>
   <label for="geslo">Geslo:</label>
@@ -41,7 +35,7 @@
 </datalist>
   <input type="submit" value="Pošlji">
 </form>
-<p>Ste že uporabnik? <a href = "login.php">Pojdite na prijavo</a>
+<p>Še nisi uporabnik? <a href = "registracija.php">Pojdi na registracijo</a>
   </div>
   <div id="loginWindow">
     <?php

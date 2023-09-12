@@ -2,34 +2,33 @@
 require_once 'connect.php';
 session_start();
 
-$ime = $_GET['ime'];
-$priimek = $_GET['priimek'];
-$mail = $_GET['email'];
-$geslo1 = $_GET['geslo'];
+// Validate and sanitize user input
+$ime = $_POST['ime'];
+$priimek = $_POST['priimek'];
+$username = $_POST['username'];
+$mail = $_POST['email'];
+$geslo1 = $_POST['geslo'];
 $geslo = password_hash($geslo1, PASSWORD_DEFAULT);
-$naslov = $_GET['naslov'];
-$kraj = $_GET['kraj'];
 
 // Prepare the SELECT statement
-$sql = "SELECT * FROM uporabniki WHERE email = ?";
+$sql = "SELECT * FROM uporabniki WHERE mail = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $mail);
-$stmt->execute();
-$result = $stmt->get_result();
+$stmt->execute([$mail]); // Pass parameters as an array
 
-if ($result->num_rows == 0) {
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if (count($result) == 0) {
     // Prepare the INSERT statement
-    $sql = "INSERT INTO uporabniki (ime, priimek, email, geslo, naslov, kraj_id)
-    VALUES (?, ?, ?, ?, ?, (SELECT id from kraji WHERE kraj = ?))";
+    $sql = "INSERT INTO uporabniki (ime, priimek, mail, geslo, username)
+    VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssss", $ime, $priimek, $mail, $geslo, $naslov, $kraj);
-    if ($stmt->execute()) {
+    if ($stmt->execute([$ime, $priimek, $mail, $geslo, $username])) { // Pass parameters as an array
         setcookie('prijava', "Registracija uspešna. Prijavite se z vnešenimi podatki.");
         setcookie('good', 1);
         header('Location: index.php');
         exit();
     } else {
-        setcookie('prijava', "Error: " . $stmt->error);
+        setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));
         setcookie('error', 1);
         header('Location: registracija.php');
         exit();
@@ -41,6 +40,5 @@ if ($result->num_rows == 0) {
     exit();
 }
 
-$stmt->close();
-$conn->close();
+$conn = null; // Close the connection
 ?>

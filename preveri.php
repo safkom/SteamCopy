@@ -1,42 +1,46 @@
 <?php
 require_once 'connect.php';
 session_start();
-$email = $_GET['email'];
-$password = $_GET['geslo'];
+$email = $_POST['email'];
+$password = $_POST['geslo'];
 
-$sql = "SELECT * FROM uporabniki WHERE email = ?;";
+$sql = "SELECT * FROM uporabniki WHERE mail = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$result = $stmt->get_result();
+$stmt->execute([$email]); // Pass parameters as an array
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $hash = $row['geslo'];
+if ($result !== false) {
+    $hash = $result['geslo'];
     if (password_verify($password, $hash)) {
-        if ($row['admin'] == 1) {
-            $_SESSION["id"] = $row['id'];
+        // Add the user's username to the session
+        $_SESSION["username"] = $result['username'];
+
+        if ($result['admin'] == 1) {
+            $_SESSION["id"] = $result['id'];
             $_SESSION["admin"] = 1;
             setcookie('prijava', "Prijava uspešna.");
             setcookie('good', 1);
-            header('Location: admin.php');
+            header('Location: index.php');
+            exit();
         } else {
-            $_SESSION["id"] = $row['id'];
+            $_SESSION["id"] = $result['id'];
             setcookie('prijava', "Prijava uspešna.");
             setcookie('good', 1);
-            header('Location: main.php');
+            header('Location: index.php');
+            exit();
         }
     } else {
         setcookie('prijava', "Napačno geslo.");
         setcookie('error', 1);
-        header('Location: index.php');
+        header('Location: login.php');
+        exit();
     }
 } else {
     setcookie('prijava', "Uporabnik z tem mailom ne obstaja.");
     setcookie('error', 1);
-    header('Location: index.php');
+    header('Location: login.php');
+    exit();
 }
 
-$stmt->close();
-$conn->close();
+$conn = null; // Close the connection
 ?>
