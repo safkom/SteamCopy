@@ -7,7 +7,7 @@
     <meta name="author" content="Miha Šafranko">
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel ="stylesheet" type ="text/css"href="css/navbar.css">
-    <title>SteamCopy</title>  
+    <title>SteamCopy</title>
 </head>
 <?php
 session_start();
@@ -60,7 +60,7 @@ if (!isset($_SESSION['username'])) {
   <label for="username">Username:</label>
   <input type="text" id="username" name="username" required value = "<?php echo $_SESSION['username'] ?>"><br><br>
   <label for="opis">Opis:</label>
-  <input type="text" id="opis" name="opis" required value = "<?php echo $opis ?>"><br><br>
+  <input type="text" id="opis" name="opis" value = "<?php echo $opis ?>"><br><br>
   
     <p>Trenutna slika:</p>
     <img src="<?php echo $url ?>" alt="profile picture of <?php echo $_SESSION['username'] ?>" width="100" height="100"><br><br>
