@@ -139,4 +139,13 @@ border-radius: 5px;
     padding: 10px;
     border-radius: 5px;
 }
+#user-button {
+  width: 100%;
+  padding: 10px;
+  background-color: lightgray;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
   

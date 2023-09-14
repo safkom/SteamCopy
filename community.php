@@ -41,6 +41,7 @@ function userLoggedIn()
         <div class="navbar-right">
             <?php
             if (userLoggedIn()) {
+                echo "<button class='user-button' onclick=\"location.href='friends.php'\">Friends</button>";
                 echo "<button class='user-button' onclick=\"location.href='profile.php'\">" . $_SESSION['username'] . "</button>";
                 echo "<button class='user-button' onclick=\"location.href='odjava.php'\">Logout</button>";
             } else {

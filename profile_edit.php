@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Miha Šafranko">
-    <meta name="author" content="Miha Šafranko">
-    <link rel="stylesheet" type="text/css" href="css/index.css">
-    <link rel ="stylesheet" type ="text/css"href="css/navbar.css">
-    <title>SteamCopy</title>
+    <meta name="description" content="Miha Šafranko"/>
+	<meta name="author" content="Miha Šafranko" />
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <title>Edit</title>
 </head>
 <?php
 session_start();
@@ -30,6 +30,7 @@ if (!isset($_SESSION['username'])) {
         <div class="navbar-right">
             <?php
             if (userLoggedIn()) {
+               echo "<button class='user-button' onclick=\"location.href='friends.php'\">Friends</button>";
                 echo "<button class='user-button' onclick=\"location.href='profile.php'\">" . $_SESSION['username'] . "</button>";
                 echo "<button class='user-button' onclick=\"location.href='odjava.php'\">Logout</button>";
             } else {
@@ -54,29 +55,24 @@ if (!isset($_SESSION['username'])) {
         </div>
     </nav>
     <br>
-    <div id="container">
+    <div class="container">
     <h1>Uredi profil</h1>
- <form action="uredi.php" method="post" enctype="multipart/form-data">
-  <label for="username">Username:</label>
-  <input type="text" id="username" name="username" required value = "<?php echo $_SESSION['username'] ?>"><br><br>
-  <label for="opis">Opis:</label>
-  <input type="text" id="opis" name="opis" value = "<?php echo $opis ?>"><br><br>
+    <form action="uredi.php" method="post" enctype="multipart/form-data">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required value = "<?php echo $_SESSION['username'] ?>"><br><br>
+    <label for="opis">Opis:</label>
+    <input type="text" id="opis" name="opis" value = "<?php echo $opis ?>"><br><br>
   
     <p>Trenutna slika:</p>
     <img src="<?php echo $url ?>" alt="profile picture of <?php echo $_SESSION['username'] ?>" width="100" height="100"><br><br>
     <label for="slika">Slika:</label>
     <input type="file" name="slika" id="slika"> <br><br>
-</datalist>
-  <input type="submit" value="Shrani">
-</form>
-<br>
-<button class='user-button' onclick="location.href='profile.php'">Nazaj</button>
+    <input type="submit" value="Shrani">
+    </form>
+    <br>
+    <button id='user-button' onclick="location.href='profile.php'">Nazaj</button>
     
-    </div>
-
-
-
-
+  </div>
 
 <?php
 

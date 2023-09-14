@@ -11,7 +11,7 @@ $profil = $_GET['profile_id'];
     VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
     if ($stmt->execute([$uporabnik, $profil])) { // Pass parameters as an array
-        setcookie('prijava', "Prošnja za prijateljstvo poslana!.");
+        setcookie('prijava', "Prošnja za prijateljstvo poslana!");
         setcookie('good', 1);
         header('Location: profiles.php?id='.$profil.'');
         exit();
