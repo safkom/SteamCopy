@@ -7,7 +7,7 @@
 	<meta name="author" content="Miha Šafranko" />
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/navbar.css">
-    <title>Login</title>
+    <title>Game Upload</title>
 </head>
 <body>
 <nav class="navbar">
@@ -20,26 +20,56 @@
             <button class="center-button" onclick="location.href='community.php'">Community</button>
         </div>
         <div class="navbar-right">
+            <?php
+            session_start();
+            if (!isset($_SESSION['id'])) {
+                header('Location: index.php');
+                exit();
+            }
+            if (userLoggedIn()) {
+                echo "<button class='user-button' onclick=\"location.href='friends.php'\">Friends</button>";
+                echo "<button class='selected-button' onclick=\"location.href='profile.php'\">" . $_SESSION['username'] . "</button>";
+                echo "<button class='user-button' onclick=\"location.href='odjava.php'\">Logout</button>";
+            } else {
+                echo "<button class='user-button' onclick=\"location.href='login.php'\">Login</button>";
+                echo "<button class='user-button' onclick=\"location.href='registracija.php'\">Register</button>";
+            }
+            
+            ?>
         </div>
     </nav>
   <?php
-  session_start();
   ?>
   <br>
   <div class = "container">
-    <h1>Prijava</h1>
- <form action="preveri.php" method="post">
-  <label for="email">Mail:</label>
-  <input type="text" id="email" name="email" required><br><br>
-  <label for="geslo">Geslo:</label>
-  <input type="password" id="geslo" name="geslo" required><br><br>
-</datalist>
+    <h1>Game Upload</h1>
+ <form action="upload.php" method="post" enctype="multipart/form-data">
+  <label for="ime">Ime igre:</label>
+  <input type="text" id="ime" name="ime" required><br><br>
+  <label for="ime">Žanr igre:</label>
+  <input type="text" id="zanr" name="zanr" required><br><br>
+  <label for="opis">Opis igre:</label>
+  <textarea id="opis" name="opis" rows="4" cols="50" required></textarea>
+  <label for="zip">Datoteke igre:</label>
+  <input type="file" id="zip" name="zip" required><br><br>
+  <label for="email">Slike igre:</label>
+  <input type="file" id="slika" name="slika[]" required multiple><br><br>
   <input type="submit" value="Pošlji">
 </form>
-<p>Še nisi uporabnik? <a href = "registracija.php">Pojdi na registracijo</a>
+<br>
+    <button id='user-button' onclick="location.href='index.php'">Nazaj</button>
   </div>
   <div id="loginWindow">
     <?php
+
+function userloggedIn(){
+    if(isset($_SESSION['username'])){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
     if (isset($_COOKIE['prijava'])) {
         echo "✅ ";
         echo $_COOKIE['prijava'];

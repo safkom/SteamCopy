@@ -25,7 +25,7 @@ if (count($result) == 0) {
     if ($stmt->execute([$ime, $priimek, $mail, $geslo, $username])) { // Pass parameters as an array
         setcookie('prijava', "Registracija uspešna. Prijavite se z vnešenimi podatki.");
         setcookie('good', 1);
-        header('Location: index.php');
+        header('Location: login.php');
         exit();
     } else {
         setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));

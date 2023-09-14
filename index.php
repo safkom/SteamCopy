@@ -19,7 +19,8 @@ session_start();
             <b style = "color:white; font-family:'Courier New', Courier, monospace">SteamCopy</b>
         </div>
         <div class="navbar-center">
-            <button class="center-button" onclick="location.href='index.php'">Store</button>
+            <button class="selected-button" onclick="location.href='index.php'">Store</button>
+            <button class='center-button' onclick="location.href='library.php'">Library</button>
             <button class="center-button" onclick="location.href='community.php'">Community</button>
         </div>
         <div class="navbar-right">
@@ -35,7 +36,103 @@ session_start();
             ?>
         </div>
     </nav>
+    <br>
+    <div id="container">
+    <h1 style="text-align: center;">Store</h1>
+    <?php
+      if(isset($_SESSION['id'])){
+        echo "<button class='store-button' onclick=\"location.href='addgame.php'\">Dodaj igro</button>";
+      }
+    ?>
+    <p>Išči igre:</p>
+        <form action="index.php" method="post" enctype="multipart/form-data">
+            <input type="text" name="iskanje" placeholder="Vnesi ime igre">
+            <input type="submit" name="isci" value="Išči">
+            <input type="submit" name="isci" value="Ponastavi">
+        </form>
+        <br>
+        <br>
+        <br>
+        <br>
+        <?php
+        require_once "connect.php";
 
+        if (!isset($_POST['isci'])) {
+            $sql = "SELECT * FROM igre";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+              $game_id = $row['id'];
+              $ime = $row['ime'];
+              $opis = $row['opis'];
+              $zanr = $row['zanr'];
+              $user_id = $row['uporabnik_id'];
+              $file = $row['file_url'];
+              echo "<div class='user'>";
+              echo "<div class='user-info'>";
+              echo "<p><b>$ime</b></p><br>";
+              echo "<p>$opis</p><br>";
+              echo "<p>$zanr</p><br>";
+              $sql = "SELECT * FROM slike WHERE igra_id = ?";
+              $stmt = $conn->prepare($sql);
+              $stmt->execute([$row['id']]);
+              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                echo "<img src='".$row['url']."' alt='slika igre' width='500' >  ";
+              }
+              echo "<br>";
+              $sql = "SELECT * FROM uporabniki WHERE id = ?";
+              $stmt = $conn->prepare($sql);
+              $stmt->execute([$user_id]);
+              $row = $stmt->fetch(PDO::FETCH_ASSOC);
+              $username = $row['username'];
+              echo "<p><b>Ustvarjalec: </b></p>";
+              echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">".$username."</button><br><br>";
+              echo "<button class='download-button' onclick=\"location.href='buygame.php?id=".$game_id."'\">Kupi igro</button>";
+              echo "</div>";
+              echo "</div>";
+            }
+        }
+        if (isset($_POST['isci'])) { //check if form was submitted
+            $search_term = "%" . $_POST['iskanje'] . "%"; // Add wildcards for SQL LIKE
+            $sql = "SELECT * FROM igre WHERE ime LIKE :search_term";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(":search_term", $search_term, PDO::PARAM_STR);
+            $stmt->execute();
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+              $game_id = $row['id'];
+              $ime = $row['ime'];
+              $opis = $row['opis'];
+              $zanr = $row['zanr'];
+              $user_id = $row['uporabnik_id'];
+              $file = $row['file_url'];
+              echo "<div class='user'>";
+              echo "<div class='user-info'>";
+              echo "<p><b>$ime</b></p><br>";
+              echo "<p>$opis</p><br>";
+              echo "<p>$zanr</p><br>";
+              $sql = "SELECT * FROM slike WHERE igra_id = ?";
+              $stmt = $conn->prepare($sql);
+              $stmt->execute([$row['id']]);
+              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                echo "<img src='".$row['url']."' alt='slika igre' width='500' >  ";
+              }
+              echo "<br>";
+              $sql = "SELECT * FROM uporabniki WHERE id = ?";
+              $stmt = $conn->prepare($sql);
+              $stmt->execute([$user_id]);
+              $row = $stmt->fetch(PDO::FETCH_ASSOC);
+              $username = $row['username'];
+              echo "<p><b>Ustvarjalec: </b></p>";
+              echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">".$username."</button><br><br>";
+              echo "<button class='download-button' onclick=\"location.href='deletegameuser.php?id=".$game_id."'\">Kupi igro</button>";
+              echo "</div>";
+              echo "</div>";
+            }
+        }
+
+        ?>
+    
+    </div>
 
 
 

@@ -1,6 +1,10 @@
 <?php
 require_once 'connect.php';
 session_start();
+if (!isset($_SESSION['id'])) {
+    header('Location: index.php');
+    exit();
+}
 
 // Validate and sanitize user input
 $uporabnik = $_SESSION['id'];

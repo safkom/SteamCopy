@@ -12,7 +12,7 @@
 </head>
 <?php
 session_start();
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['id'])) {
     header('Location: index.php');
     exit();
 }
@@ -25,6 +25,7 @@ if (!isset($_SESSION['username'])) {
         </div>
         <div class="navbar-center">
             <button class="center-button" onclick="location.href='index.php'">Store</button>
+            <button class='center-button' onclick="location.href='library.php'">Library</button>
             <button class="center-button" onclick="location.href='community.php'">Community</button>
         </div>
         <div class="navbar-right">
@@ -81,75 +82,88 @@ if (!isset($_SESSION['username'])) {
     
 </div>
 <div id="container">
-    <h1>Prošnje</h1>
+    <h1>Prejete Prošnje</h1>
     <?php 
     $sql = "SELECT * FROM friends WHERE user_id = ? AND prosnja_sprejeta = 0";
     $stmt = $conn->prepare($sql);
     $stmt->execute([$_SESSION['id']]);
+    // Display rows from the first query
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    // Retrieve data for each row
+    $user_id = $row['requester_id'];
+    $sql1 = "SELECT * FROM uporabniki WHERE id = ?";
+    $stmt1 = $conn->prepare($sql1);
+    $stmt1->execute([$user_id]);
+    $innerRow = $stmt1->fetch(PDO::FETCH_ASSOC);
 
-        $sql = "SELECT * FROM uporabniki WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$row['requester_id']]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $id = $innerRow['id'];
+    $username = $innerRow['username'];
+    $opis = $innerRow['opis'];
+    $slika_id = $innerRow['slika_id'];
+    
+    // Retrieve image URL
+    $sql2 = "SELECT * FROM slike WHERE id = ?";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->execute([$slika_id]);
+    $row1 = $stmt2->fetch(PDO::FETCH_ASSOC);
+    $url = $row1['url'];
 
+    // Display the user information
+    echo "<div class='user'>";
+    echo "<img src='$url' alt='Avatar' width='100' height='100' class='avatar'>";
+    echo "<div class='user-info'>";
+    echo "<p><b>$username</b></p>";
+    echo "<p>$opis</p>";
+    echo "<button class='profile-button' onclick=\"location.href='acceptrequest.php?profile_id=".$user_id."'\">Sprejmi prošnjo</button>";
+    echo "<button class='profile-button' onclick=\"location.href='cancelrequest.php?profile_id=".$user_id."'\">Zbriši prošnjo</button>";
+    echo "</div>";
+    echo "</div>";
+}
 
-        $id = $row['id'];
-        $username = $row['username'];
-        $opis = $row['opis'];
-        $slika_id = $row['slika_id'];
-        $user_id = $row['id'];
-        $sql1 = "SELECT * FROM slike WHERE id = :slika_id";
-        $stmt1 = $conn->prepare($sql1);
-        $stmt1->bindParam(":slika_id", $slika_id, PDO::PARAM_INT);
-        $stmt1->execute();
-        $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
-        $url = $row1['url'];
-        echo "<div class='user'>";
-        echo "<img src='$url' alt='Avatar' width='100' height='100' class='avatar'>";
-        echo "<div class='user-info'>";
-        echo "<p><b>$username</b></p>";
-        echo "<p>$opis</p>";
-        echo "<button class='profile-button' onclick=\"location.href='acceptrequest.php?profile_id=".$user_id."'\">Sprejmi prošnjo</button><br>
-        <br>";
-        echo "<button class='profile-button' onclick=\"location.href='cancelrequest.php?profile_id=".$user_id."'\">Zavrni prošnjo</button>";
-        echo "</div>";
-        echo "</div>";
-    }
+// Display rows from the second query
+?>
+
+</div>
+
+<div id="container">
+<h1>Poslane Prošnje</h1>
+    <?php 
     $sql = "SELECT * FROM friends WHERE requester_id = ? AND prosnja_sprejeta = 0";
     $stmt = $conn->prepare($sql);
     $stmt->execute([$_SESSION['id']]);
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    // Retrieve data for each row
+    $user_id = $row['user_id'];
+    $sql1 = "SELECT * FROM uporabniki WHERE id = ?";
+    $stmt1 = $conn->prepare($sql1);
+    $stmt1->execute([$user_id]);
+    $innerRow = $stmt1->fetch(PDO::FETCH_ASSOC);
 
-        $sql = "SELECT * FROM uporabniki WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$row['user_id']]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $id = $innerRow['id'];
+    $username = $innerRow['username'];
+    $opis = $innerRow['opis'];
+    $slika_id = $innerRow['slika_id'];
+    
+    // Retrieve image URL
+    $sql2 = "SELECT * FROM slike WHERE id = ?";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->execute([$slika_id]);
+    $row1 = $stmt2->fetch(PDO::FETCH_ASSOC);
+    $url = $row1['url'];
 
+    // Display the user information
+    echo "<div class='user'>";
+    echo "<img src='$url' alt='Avatar' width='100' height='100' class='avatar'>";
+    echo "<div class='user-info'>";
+    echo "<p><b>$username</b></p>";
+    echo "<p>$opis</p>";
+    echo "<button class='profile-button' onclick=\"location.href='cancelrequest.php?profile_id=".$user_id."'\">Prekliči prošnjo</button>";
+    echo "</div>";
+    echo "</div>";
+}
 
-        $id = $row['id'];
-        $username = $row['username'];
-        $opis = $row['opis'];
-        $slika_id = $row['slika_id'];
-        $user_id = $row['id'];
-        $sql1 = "SELECT * FROM slike WHERE id = :slika_id";
-        $stmt1 = $conn->prepare($sql1);
-        $stmt1->bindParam(":slika_id", $slika_id, PDO::PARAM_INT);
-        $stmt1->execute();
-        $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
-        $url = $row1['url'];
-        echo "<div class='user'>";
-        echo "<img src='$url' alt='Avatar' width='100' height='100' class='avatar'>";
-        echo "<div class='user-info'>";
-        echo "<p><b>$username</b></p>";
-        echo "<p>$opis</p>";
-        echo "<button class='profile-button' onclick=\"location.href='cancelrequest.php?profile_id=".$user_id."'\">Prekliči prošnjo</button>";
-        echo "</div>";
-        echo "</div>";
-    }
-    ?>
-</div>
-
+// Display rows from the second query
+?>
 
 
 

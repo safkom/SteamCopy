@@ -12,7 +12,7 @@
 <?php
 session_start();
 require_once 'connect.php';
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['id'])) {
     header('Location: index.php');
     exit();
 }
@@ -25,6 +25,7 @@ if (!isset($_SESSION['username'])) {
         </div>
         <div class="navbar-center">
             <button class="center-button" onclick="location.href='index.php'">Store</button>
+            <button class='center-button' onclick="location.href='library.php'">Library</button>
             <button class="center-button" onclick="location.href='community.php'">Community</button>
         </div>
         <div class="navbar-right">

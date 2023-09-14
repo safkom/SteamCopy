@@ -25,14 +25,13 @@ if (!isset($_SESSION['id'])) {
         </div>
         <div class="navbar-center">
             <button class="center-button" onclick="location.href='index.php'">Store</button>
-            <button class="center-button" onclick="location.href='library.php'">Library</button>
+            <button class='selected-button' onclick="location.href='library.php'">Library</button>
             <button class="center-button" onclick="location.href='community.php'">Community</button>
         </div>
         <div class="navbar-right">
             <?php
             if (userLoggedIn()) {
-                echo "<button class='user-button' onclick=\"location.href='friends.php'\">Friends</button>";
-                echo "<button class='selected-button' onclick=\"location.href='profile.php'\">" . $_SESSION['username'] . "</button>";
+                echo "<button class='user-button' onclick=\"location.href='profile.php'\">" . $_SESSION['username'] . "</button>";
                 echo "<button class='user-button' onclick=\"location.href='odjava.php'\">Logout</button>";
             } else {
                 echo "<button class='user-button' onclick=\"location.href='login.php'\">Login</button>";
@@ -44,45 +43,70 @@ if (!isset($_SESSION['id'])) {
     </nav>
     <br>
     <div id="container">
+        <h1>Kupljene igre</h1>
     <?php
     require_once 'connect.php';
+    $sql = "SELECT * FROM nakupi WHERE uporabnik_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$_SESSION['id']]);
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-    // Prepare the first SQL statement to retrieve slika_id
-    $sql1 = "SELECT slika_id FROM uporabniki WHERE id = ?";
-    $stmt1 = $conn->prepare($sql1);
-    $stmt1->execute([$_SESSION['id']]);
-    $result1 = $stmt1->fetch(PDO::FETCH_ASSOC);
-    $slika_id = $result1['slika_id'];
+        $sql = "SELECT * FROM igre WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$row['igra_id']]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $sql2 = "SELECT url FROM slike WHERE id = ?";
-    $stmt2 = $conn->prepare($sql2);
-    $stmt2->execute([$slika_id]);
-    $result2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-    $slika = $result2['url'];
-    echo "<img src='" . $slika . "' alt='profile picture of " . $_SESSION['username'] . "' width='100' height='100'>";
-    
-    echo "<br><br>";
-    $sql3 = "SELECT opis FROM uporabniki WHERE id = ?";
-    $stmt3 = $conn->prepare($sql3);
-    $stmt3->execute([$_SESSION['id']]);
-    $result3 = $stmt3->fetch(PDO::FETCH_ASSOC);
-    $opis = $result3['opis'];
 
-    echo $_SESSION['username'];
-    echo "<br><br>";
-    if($opis != null){
-        echo $opis;
+        $game_id = $row['id'];
+        $ime = $row['ime'];
+        $opis = $row['opis'];
+        $zanr = $row['zanr'];
+        $user_id = $row['uporabnik_id'];
+        $file = $row['file_url'];
+        echo "<div class='user'>";
+        echo "<div class='user-info'>";
+        echo "<p><b>$ime</b></p><br>";
+        echo "<p>$opis</p><br>";
+        echo "<p>$zanr</p><br>";
+        $sql = "SELECT * FROM uporabniki WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$user_id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $username = $row['username'];
+        echo "<p><b>Ustvarjalec: </b></p>";
+        echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">".$username."</button><br><br>";
+        echo "<button class='download-button' type='submit' onclick=\"window.open('".$file."')\">Prenesi igro</button> ";
+        echo "<button class='delete-button' onclick=\"location.href='deletegameuser.php?id=".$game_id."'\">Odstrani iz kupljenih iger</button>";
+        echo "</div>";
+        echo "</div>";
     }
     ?>
-<button class='user-button' onclick="location.href='profile_edit.php'">Edit profile</button>
     
 </div>
-
-
-
-
-
-
+<div id="container">
+    <h1>Objavljene igre</h1>
+    <?php 
+    $sql = "SELECT * FROM igre WHERE uporabnik_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$_SESSION['id']]);
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $game_id = $row['id'];
+        $ime = $row['ime'];
+        $opis = $row['opis'];
+        $zanr = $row['zanr'];
+        $file = $row['file_url'];
+        echo "<div class='user'>";
+        echo "<div class='user-info'>";
+        echo "<p><b>$ime</b></p><br>";
+        echo "<p>$opis</p><br>";
+        echo "<p>$zanr</p><br>";
+        echo "<button class='download-button' type='submit' onclick=\"window.open('".$file."')\">Prenesi igro</button> ";
+        echo "<button class='delete-button' onclick=\"location.href='deletegame.php?id=".$game_id."'\">Odstrani iz trgovine</button>";
+        echo "</div>";
+        echo "</div>";
+    }
+?>
+</div>
 <?php
 
 function userloggedIn(){

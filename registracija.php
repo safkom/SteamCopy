@@ -16,6 +16,7 @@
         </div>
         <div class="navbar-center">
             <button class="center-button" onclick="location.href='index.php'">Store</button>
+            <button class='center-button' onclick="location.href='library.php'">Library</button>
             <button class="center-button" onclick="location.href='community.php'">Community</button>
         </div>
         <div class="navbar-right">

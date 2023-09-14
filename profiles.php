@@ -25,7 +25,8 @@ if(!isset($_GET['id'])){
         </div>
         <div class="navbar-center">
             <button class="center-button" onclick="location.href='index.php'">Store</button>
-            <button class="center-button" onclick="location.href='community.php'">Community</button>
+            <button class='center-button' onclick="location.href='library.php'">Library</button>
+            <button class="selected-button" onclick="location.href='community.php'">Community</button>
         </div>
         <div class="navbar-right">
             <?php
@@ -73,9 +74,9 @@ if(!isset($_GET['id'])){
     }
 
     if(userLoggedIn() && $profile_id != $_SESSION['id']){
-        $sql1 = "SELECT * FROM friends WHERE (requester_id = ? AND user_id = ?) OR (user_id = ? AND requester_id = ?)";
+        $sql1 = "SELECT * FROM friends WHERE requester_id = ? AND user_id = ?";
         $stmt1 = $conn->prepare($sql1);
-        $stmt1->execute([$_SESSION['id'], $profile_id, $_SESSION['id'], $profile_id]);
+        $stmt1->execute([$_SESSION['id'], $profile_id]);
 
         // Check if there are any rows returned
         if ($stmt1->rowCount() > 0) {
@@ -88,15 +89,45 @@ if(!isset($_GET['id'])){
 
     // Display the appropriate button based on the 'prosnja_sprejeta' value
     if ($prosnja_sprejeta === 1) {
-        echo "<button class='profile-button' onclick=\"location.href='cancelfriend.php?profile_id=".$profile_id."'\">Prekliči prijateljstvo</button>";
+        echo "<button class='profile-button' onclick=\"location.href='cancelfriend.php?profile_id=".$profile_id."'\">Odstrani prijatelja</button>";
     } elseif ($prosnja_sprejeta === 0) {
         echo "<button class='profile-button' onclick=\"location.href='cancelfriend.php?profile_id=".$profile_id."'\">Prekliči zahtevo</button>";
     }
-}
+}  
+    }
 
-        else {
+    if(userLoggedIn() && $profile_id != $_SESSION['id']){
+        $sql1 = "SELECT * FROM friends WHERE requester_id = ? AND user_id = ?";
+        $stmt1 = $conn->prepare($sql1);
+        $stmt1->execute([$profile_id, $_SESSION['id']]);
+
+        // Check if there are any rows returned
+        if ($stmt1->rowCount() > 0) {
+    $result1 = $stmt1->fetch(PDO::FETCH_ASSOC);
+
+    // Check the value of the 'prosnja_sprejeta' column and cast it to an integer
+    $prosnja_sprejeta = (int)$result1['prosnja_sprejeta'];
+
+    // Define the $profile_id variable (replace 'YOUR_PROFILE_ID' with the actual value)
+
+    // Display the appropriate button based on the 'prosnja_sprejeta' value
+    if ($prosnja_sprejeta === 1) {
+        echo "<button class='profile-button' onclick=\"location.href='cancelfriend.php?profile_id=".$profile_id."'\">Odstrani prijatelja</button>";
+    } elseif ($prosnja_sprejeta === 0) {
+        echo "<button class='profile-button' onclick=\"location.href='cancelfriend.php?profile_id=".$profile_id."'\">Zavrni zahtevo</button>";
+    }
+} 
+    }
+
+    if(userLoggedIn() && $profile_id != $_SESSION['id']){
+        $sql1 = "SELECT * FROM friends WHERE (requester_id = ? AND user_id = ?) OR (user_id = ? AND requester_id = ?)";
+        $stmt1 = $conn->prepare($sql1);
+        $stmt1->execute([$_SESSION['id'], $profile_id, $_SESSION['id'], $profile_id]);
+
+        // Check if there are any rows returned
+        if ($stmt1->rowCount() == 0) {
             echo "<button class='profile-button' onclick=\"location.href='addfriend.php?profile_id=".$profile_id."'\">Dodaj prijatelja</button>";
-        }  
+        }
     }
     ?>
 </div>
