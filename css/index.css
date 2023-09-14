@@ -106,3 +106,32 @@ display: none;
 padding: 10px;
 border-radius: 5px;
 }
+
+/* Apply styles to the user profile div */
+.user {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+  }
+  
+  /* Style the avatar image */
+  .avatar {
+    border-radius: 50%;
+  }
+  
+  /* Style the user's name */
+  .user-info p:first-child {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+  
+  /* Style the user's description */
+  .user-info p:last-child {
+    font-size: 14px;
+    color: #777;
+  }
+  

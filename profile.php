@@ -7,6 +7,7 @@
     <meta name="author" content="Miha Šafranko">
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel ="stylesheet" type ="text/css"href="css/navbar.css">
+    <link rel ="stylesheet" type ="text/css"href="css/profile.css">
     <title>SteamCopy</title>  
 </head>
 <?php
