@@ -54,7 +54,6 @@ function userLoggedIn()
         </div>
     </nav>
     <br>
-    <br>
     <div id="container">
         <h1>Community</h1>
         <p>Išči uporabnike:</p>
