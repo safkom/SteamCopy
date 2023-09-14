@@ -68,14 +68,13 @@ if(!isset($_GET['id'])){
     echo $username;
     echo "<br><br>";
     if($opis != null){
-        echo $opis;
+        echo "<p>".$opis."</p>";
     }
 
     
 
 
-
-    if($profile_id != $_SESSION['id']){
+    if(userLoggedIn() && $profile_id != $_SESSION['id']){
         $sql1 = "SELECT * FROM friends WHERE (requester_id = ? AND user_id = ?) OR (user_id = ? AND requester_id = ?)";
         $stmt1 = $conn->prepare($sql1);
         $stmt1->execute([$_SESSION['id'], $profile_id, $_SESSION['id'], $profile_id]);
@@ -97,9 +96,7 @@ if(!isset($_GET['id'])){
         }
         else {
             echo "<button class='profile-button' onclick=\"location.href='addfriend.php?profile_id=".$profile_id."'\">Dodaj prijatelja</button>";
-        }
-
-        
+        }  
     }
     ?>
 </div>
