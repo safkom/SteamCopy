@@ -7,11 +7,11 @@
     <meta name="author" content="Miha Šafranko">
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel ="stylesheet" type ="text/css"href="css/navbar.css">
-    <title>SteamCopy</title>
+    <link rel ="stylesheet" type ="text/css"href="css/profile.css">
+    <title>SteamCopy</title>  
 </head>
 <?php
 session_start();
-require_once 'connect.php';
 if (!isset($_SESSION['username'])) {
     header('Location: index.php');
     exit();
@@ -36,43 +36,83 @@ if (!isset($_SESSION['username'])) {
                 echo "<button class='user-button' onclick=\"location.href='login.php'\">Login</button>";
                 echo "<button class='user-button' onclick=\"location.href='registracija.php'\">Register</button>";
             }
-            $sql = "SELECT * FROM uporabniki WHERE id = :id";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(":id", $_SESSION['id'], PDO::PARAM_INT);
-            $stmt->execute();
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $opis = $row['opis'];
-            $slika_id = $row['slika_id'];
-
-            $sql1 = "SELECT * FROM slike WHERE id = :slika_id";
-            $stmt1 = $conn->prepare($sql1);
-            $stmt1->bindParam(":slika_id", $slika_id, PDO::PARAM_INT);
-            $stmt1->execute();
-            $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
-            $url = $row1['url'];
+            
             ?>
         </div>
     </nav>
     <br>
     <div id="container">
-    <h1>Uredi profil</h1>
- <form action="uredi.php" method="post" enctype="multipart/form-data">
-  <label for="username">Username:</label>
-  <input type="text" id="username" name="username" required value = "<?php echo $_SESSION['username'] ?>"><br><br>
-  <label for="opis">Opis:</label>
-  <input type="text" id="opis" name="opis" value = "<?php echo $opis ?>"><br><br>
-  
-    <p>Trenutna slika:</p>
-    <img src="<?php echo $url ?>" alt="profile picture of <?php echo $_SESSION['username'] ?>" width="100" height="100"><br><br>
-    <label for="slika">Slika:</label>
-    <input type="file" name="slika" id="slika"> <br><br>
-</datalist>
-  <input type="submit" value="Shrani">
-</form>
-<br>
-<button class='user-button' onclick="location.href='profile.php'">Nazaj</button>
+        <h1>Friend List</h1>
+    <?php
+    require_once 'connect.php';
+
+    // Prepare the first SQL statement to retrieve slika_id
+    $sql1 = "SELECT slika_id FROM uporabniki WHERE id = ?";
+    $stmt1 = $conn->prepare($sql1);
+    $stmt1->execute([$_SESSION['id']]);
+    $result1 = $stmt1->fetch(PDO::FETCH_ASSOC);
+    $slika_id = $result1['slika_id'];
+
+    $sql2 = "SELECT url FROM slike WHERE id = ?";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->execute([$slika_id]);
+    $result2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+    $slika = $result2['url'];
+    echo "<img src='" . $slika . "' alt='profile picture of " . $_SESSION['username'] . "' width='100' height='100'>";
     
-    </div>
+    echo "<br><br>";
+    $sql3 = "SELECT opis FROM uporabniki WHERE id = ?";
+    $stmt3 = $conn->prepare($sql3);
+    $stmt3->execute([$_SESSION['id']]);
+    $result3 = $stmt3->fetch(PDO::FETCH_ASSOC);
+    $opis = $result3['opis'];
+
+    echo $_SESSION['username'];
+    echo "<br><br>";
+    if($opis != null){
+        echo $opis;
+    }
+    ?>
+<button class='user-button' onclick="location.href='profile_edit.php'">Edit profile</button>
+    
+</div>
+<div id="container">
+    <h1>Prošnje</h1>
+    <?php 
+    $sql = "SELECT * FROM friends WHERE user_id = ? AND prosnja_sprejeta = 0";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$_SESSION['id']]);
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+        $sql = "SELECT * FROM uporabniki WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$row['requester_id']]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+        $id = $row['id'];
+        $username = $row['username'];
+        $opis = $row['opis'];
+        $slika_id = $row['slika_id'];
+        $user_id = $row['id'];
+        $sql1 = "SELECT * FROM slike WHERE id = :slika_id";
+        $stmt1 = $conn->prepare($sql1);
+        $stmt1->bindParam(":slika_id", $slika_id, PDO::PARAM_INT);
+        $stmt1->execute();
+        $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
+        $url = $row1['url'];
+        echo "<div class='user'>";
+        echo "<img src='$url' alt='Avatar' width='100' height='100' class='avatar'>";
+        echo "<div class='user-info'>";
+        echo "<p><b>$username</b></p>";
+        echo "<p>$opis</p>";
+        echo "<button class='profile-button' onclick=\"location.href='acceptrequest.php?id=".$user_id."'\">Sprejmi prošnjo</button>";
+        echo "</div>";
+        echo "</div>";
+    }
+    ?>
+</div>
+
 
 
 

@@ -80,6 +80,7 @@ function userLoggedIn()
                 $username = $row['username'];
                 $opis = $row['opis'];
                 $slika_id = $row['slika_id'];
+                $user_id = $row['id'];
                 $sql1 = "SELECT * FROM slike WHERE id = :slika_id";
                 $stmt1 = $conn->prepare($sql1);
                 $stmt1->bindParam(":slika_id", $slika_id, PDO::PARAM_INT);
@@ -91,6 +92,7 @@ function userLoggedIn()
                 echo "<div class='user-info'>";
                 echo "<p><b>$username</b></p>";
                 echo "<p>$opis</p>";
+                echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">Poglej</button>";
                 echo "</div>";
                 echo "</div>";
             }
@@ -106,6 +108,7 @@ function userLoggedIn()
                 $username = $row['username'];
                 $opis = $row['opis'];
                 $slika_id = $row['slika_id'];
+                $user_id = $row['id'];
                 $sql1 = "SELECT * FROM slike WHERE id = :slika_id";
                 $stmt1 = $conn->prepare($sql1);
                 $stmt1->bindParam(":slika_id", $slika_id, PDO::PARAM_INT);
@@ -117,6 +120,7 @@ function userLoggedIn()
                 echo "<div class='user-info'>";
                 echo "<p><b>$username</b></p>";
                 echo "<p>$opis</p>";
+                echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">Poglej</button>";
                 echo "</div>";
                 echo "</div>";
             }

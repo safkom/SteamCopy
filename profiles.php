@@ -7,13 +7,13 @@
     <meta name="author" content="Miha Šafranko">
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel ="stylesheet" type ="text/css"href="css/navbar.css">
-    <title>SteamCopy</title>
+    <link rel ="stylesheet" type ="text/css"href="css/profile.css">
+    <title>SteamCopy</title>  
 </head>
 <?php
 session_start();
-require_once 'connect.php';
-if (!isset($_SESSION['username'])) {
-    header('Location: index.php');
+if(!isset($_GET['id'])){
+    header('Location: community.php');
     exit();
 }
 ?>
@@ -36,43 +36,74 @@ if (!isset($_SESSION['username'])) {
                 echo "<button class='user-button' onclick=\"location.href='login.php'\">Login</button>";
                 echo "<button class='user-button' onclick=\"location.href='registracija.php'\">Register</button>";
             }
-            $sql = "SELECT * FROM uporabniki WHERE id = :id";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(":id", $_SESSION['id'], PDO::PARAM_INT);
-            $stmt->execute();
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $opis = $row['opis'];
-            $slika_id = $row['slika_id'];
-
-            $sql1 = "SELECT * FROM slike WHERE id = :slika_id";
-            $stmt1 = $conn->prepare($sql1);
-            $stmt1->bindParam(":slika_id", $slika_id, PDO::PARAM_INT);
-            $stmt1->execute();
-            $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
-            $url = $row1['url'];
+            
             ?>
         </div>
     </nav>
     <br>
     <div id="container">
-    <h1>Uredi profil</h1>
- <form action="uredi.php" method="post" enctype="multipart/form-data">
-  <label for="username">Username:</label>
-  <input type="text" id="username" name="username" required value = "<?php echo $_SESSION['username'] ?>"><br><br>
-  <label for="opis">Opis:</label>
-  <input type="text" id="opis" name="opis" value = "<?php echo $opis ?>"><br><br>
-  
-    <p>Trenutna slika:</p>
-    <img src="<?php echo $url ?>" alt="profile picture of <?php echo $_SESSION['username'] ?>" width="100" height="100"><br><br>
-    <label for="slika">Slika:</label>
-    <input type="file" name="slika" id="slika"> <br><br>
-</datalist>
-  <input type="submit" value="Shrani">
-</form>
-<br>
-<button class='user-button' onclick="location.href='profile.php'">Nazaj</button>
+    <?php
+    require_once 'connect.php';
+
+    $profile_id = $_GET['id'];
+
+    // Prepare the first SQL statement to retrieve slika_id
+    $sql1 = "SELECT * FROM uporabniki WHERE id = ?";
+    $stmt1 = $conn->prepare($sql1);
+    $stmt1->execute([$profile_id]);
+    $result1 = $stmt1->fetch(PDO::FETCH_ASSOC);
+    $slika_id = $result1['slika_id'];
+    $username = $result1['username'];
+    $opis = $result1['opis'];
+
+    $sql2 = "SELECT url FROM slike WHERE id = ?";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->execute([$slika_id]);
+    $result2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+    $slika = $result2['url'];
+    echo "<img src='" . $slika . "' alt='profile picture of " .$username . "' width='100' height='100'>";
     
-    </div>
+    echo "<br><br>";
+
+    echo $username;
+    echo "<br><br>";
+    if($opis != null){
+        echo $opis;
+    }
+
+    
+
+
+
+    if($profile_id != $_SESSION['id']){
+        $sql1 = "SELECT * FROM friends WHERE (requester_id = ? AND user_id = ?) OR (user_id = ? AND requester_id = ?)";
+        $stmt1 = $conn->prepare($sql1);
+        $stmt1->execute([$_SESSION['id'], $profile_id, $_SESSION['id'], $profile_id]);
+
+        // Check if there are any rows returned
+        if ($stmt1->rowCount() > 0) {
+            $result1 = $stmt1->fetch(PDO::FETCH_ASSOC);
+
+            // Check the value of the 'prosnja_sprejeta' column
+            $prosnja_sprejeta = $result1['prosnja_sprejeta'];
+
+            // Display the appropriate button based on the 'prosnja_sprejeta' value
+            if ($prosnja_sprejeta === 1) {
+                echo "<button class = 'profile-button' onclick=\"location.href='cancelfriend.php?profile_id=".$profile_id."'\">Prekliči prijateljstvo</button>";
+            }
+           elseif ($prosnja_sprejeta === 0) {
+            echo "<button class='profile-button' onclick=\"location.href='cancelfriend.php?profile_id=".$profile_id."'\">Prekliči zahtevo</button>";
+           }
+        }
+        else {
+            echo "<button class='profile-button' onclick=\"location.href='addfriend.php?profile_id=".$profile_id."'\">Dodaj prijatelja</button>";
+        }
+
+        
+    }
+    ?>
+</div>
+
 
 
 
