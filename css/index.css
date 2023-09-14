@@ -117,10 +117,6 @@ border-radius: 5px;
     border-radius: 5px;
   }
   
-  /* Style the avatar image */
-  .avatar {
-    border-radius: 50%;
-  }
   
   /* Style the user's name */
   .user-info p:first-child {
