@@ -83,7 +83,7 @@ function userLoggedIn()
                 $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
                 $url = $row1['url'];
                 echo "<div class='user'>";
-                echo "<img src='$url' alt='Avatar' class='avatar'>";
+                echo "<img src='$url' alt='Avatar' width='100' height='100' class='avatar'>";
                 echo "<div class='user-info'>";
                 echo "<p><b>$username</b></p>";
                 echo "<p>$opis</p>";
@@ -109,7 +109,7 @@ function userLoggedIn()
                 $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
                 $url = $row1['url'];
                 echo "<div class='user'>";
-                echo "<img src='$url' alt='Avatar' class='avatar'>";
+                echo "<img src='$url' width='100' height='100' alt='Avatar' class='avatar'>";
                 echo "<div class='user-info'>";
                 echo "<p><b>$username</b></p>";
                 echo "<p>$opis</p>";
