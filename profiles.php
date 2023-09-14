@@ -71,9 +71,6 @@ if(!isset($_GET['id'])){
         echo "<p>".$opis."</p>";
     }
 
-    
-
-
     if(userLoggedIn() && $profile_id != $_SESSION['id']){
         $sql1 = "SELECT * FROM friends WHERE (requester_id = ? AND user_id = ?) OR (user_id = ? AND requester_id = ?)";
         $stmt1 = $conn->prepare($sql1);
@@ -81,19 +78,21 @@ if(!isset($_GET['id'])){
 
         // Check if there are any rows returned
         if ($stmt1->rowCount() > 0) {
-            $result1 = $stmt1->fetch(PDO::FETCH_ASSOC);
+    $result1 = $stmt1->fetch(PDO::FETCH_ASSOC);
 
-            // Check the value of the 'prosnja_sprejeta' column
-            $prosnja_sprejeta = $result1['prosnja_sprejeta'];
+    // Check the value of the 'prosnja_sprejeta' column and cast it to an integer
+    $prosnja_sprejeta = (int)$result1['prosnja_sprejeta'];
 
-            // Display the appropriate button based on the 'prosnja_sprejeta' value
-            if ($prosnja_sprejeta === 1) {
-                echo "<button class = 'profile-button' onclick=\"location.href='cancelfriend.php?profile_id=".$profile_id."'\">Prekliči prijateljstvo</button>";
-            }
-           elseif ($prosnja_sprejeta === 0) {
-            echo "<button class='profile-button' onclick=\"location.href='cancelfriend.php?profile_id=".$profile_id."'\">Prekliči zahtevo</button>";
-           }
-        }
+    // Define the $profile_id variable (replace 'YOUR_PROFILE_ID' with the actual value)
+
+    // Display the appropriate button based on the 'prosnja_sprejeta' value
+    if ($prosnja_sprejeta === 1) {
+        echo "<button class='profile-button' onclick=\"location.href='cancelfriend.php?profile_id=".$profile_id."'\">Prekliči prijateljstvo</button>";
+    } elseif ($prosnja_sprejeta === 0) {
+        echo "<button class='profile-button' onclick=\"location.href='cancelfriend.php?profile_id=".$profile_id."'\">Prekliči zahtevo</button>";
+    }
+}
+
         else {
             echo "<button class='profile-button' onclick=\"location.href='addfriend.php?profile_id=".$profile_id."'\">Dodaj prijatelja</button>";
         }  
