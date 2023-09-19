@@ -85,6 +85,18 @@ if (!isset($_SESSION['id'])) {
   </div>
 
 <?php
+function isUserAdmin(){
+  $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([$_SESSION['id']]);
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  if ($result == false) {
+      return false;
+  }
+  else{
+    return true;
+  }
+}
 
 function userloggedIn(){
     if(isset($_SESSION['username'])){

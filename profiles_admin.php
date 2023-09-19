@@ -159,6 +159,19 @@ function userloggedIn(){
     }
 }
 
+function isUserAdmin(){
+    $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$_SESSION['id']]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($result == false) {
+        return false;
+    }
+    else{
+      return true;
+    }
+  }
+
     if (isset($_COOKIE['prijava'])) {
        echo "<div id='loginWindow'>";
         echo "✅ ";
