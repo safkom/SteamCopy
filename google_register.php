@@ -37,7 +37,7 @@
   <label for="username">Username:</label>
   <input type="text" id="username" name="username"  value = "<?php echo $_SESSION['username'] ?>"required><br><br>
   <label for="email">Mail:</label>
-  <input type="text" id="email" name="email" required value = "<?php echo $_SESSION['mail'] ?>"><br><br>
+  <input type="text" id="email" name="email" required value = "<?php echo $_SESSION['email'] ?>"><br><br>
   <label for="geslo">Geslo:</label>
   <input type="password" id="geslo" name="geslo" required><br><br>
 </datalist>
