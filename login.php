@@ -23,7 +23,19 @@
         </div>
     </nav>
   <?php
+  include_once 'libraries/vendor/autoload.php';
   session_start();
+  $google_client = new Google_Client();
+
+$google_client->setClientId('512131787454-n3nrrf6flttgsle6l2903od7mp1v58so.apps.googleusercontent.com');
+
+$google_client->setClientSecret('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');
+
+$google_client->SetRedirectUri('http://safko.eu/steamcopy/googlelogin.php');
+
+$google_client->addScope('email');
+
+$google_client->addScope('profile');
   ?>
   <br>
   <div class = "container">
@@ -37,6 +49,8 @@
   <input type="submit" value="Pošlji">
 </form>
 <p>Še nisi uporabnik? <a href = "registracija.php">Pojdi na registracijo</a>
+
+<p>Lahko se tudi prijaviš z Google računom: <a href = "<?php echo $google_client->createAuthUrl()?>">Prijavi se z Google računom</a>
   </div>
   <div id="loginWindow">
     <?php
