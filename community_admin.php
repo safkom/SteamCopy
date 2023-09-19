@@ -162,7 +162,7 @@ function userLoggedIn()
     </div>
 
     <?php
-
+require_once 'connect.php';
 function isUserAdmin(){
     $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
     $stmt = $conn->prepare($sql);

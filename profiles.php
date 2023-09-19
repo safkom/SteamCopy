@@ -147,7 +147,7 @@ if(!isset($_GET['id'])){
 
 
 <?php
-
+require_once 'connect.php';
 function userloggedIn(){
     if(isset($_SESSION['username'])){
         return true;

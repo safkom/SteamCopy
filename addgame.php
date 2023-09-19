@@ -16,6 +16,7 @@
         </div>
         <div class="navbar-center">
           <?php
+          require_once 'connect.php';
           if(isUserAdmin()){
             echo "<button class='center-button' onclick=\"location.href='index.php'\">Store</button>";
             echo "<button class='center-button' onclick=\"location.href='admin_library.php'\">Library</button>";

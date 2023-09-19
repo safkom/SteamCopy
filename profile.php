@@ -12,6 +12,7 @@
 </head>
 <?php
 session_start();
+require_once 'connect.php';
 if (!isset($_SESSION['id'])) {
     header('Location: index.php');
     exit();
@@ -86,11 +87,6 @@ if (!isset($_SESSION['id'])) {
 <button class='user-button' onclick="location.href='profile_edit.php'">Edit profile</button>
     
 </div>
-
-
-
-
-
 
 <?php
 function isUserAdmin(){
