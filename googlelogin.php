@@ -33,18 +33,22 @@ if(isset($_GET["code"])){
         $mail = $data['email'];
     }
 }
-$sql = "SELECT * FROM uporabniki WHERE email = '" . $_SESSION['email'] . "'";
-$result = mysqli_query($conn, $sql);
-if (mysqli_num_rows($result) == 0) {
+$sql = "SELECT * FROM uporabniki WHERE email = :mail";
+$stmt = $conn->prepare($sql);
+$stmt->bindParam(':mail', $mail, PDO::PARAM_STR);
+$stmt->execute();
+
+if ($stmt->rowCount() == 0) {
     $_SESSION['ime'] = $name;
     $_SESSION['username'] = $username;
     $_SESSION['email'] = $mail;
     header("Location: google_register.php");
-}
-else {
-    $sql = "SELECT * FROM uporabniki WHERE email = '" . $_SESSION['email'] . "'";
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_assoc($result);
+} else {
+    $sql = "SELECT * FROM uporabniki WHERE email = :mail";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':mail', $mail, PDO::PARAM_STR);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $_SESSION['id'] = $row['id'];
     header("Location: index.php");
 }
