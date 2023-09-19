@@ -3,6 +3,7 @@
 session_start();
 
 include_once 'libraries/vendor/autoload.php';
+require_once 'connect.php';
 
 $google_client = new Google_Client();
 
