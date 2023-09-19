@@ -15,10 +15,18 @@ if ($result !== false) {
         // Add the user's username to the session
         $_SESSION["username"] = $result['username'];
 
+        if($result['banned'] == 1){
+            setcookie('prijava', "Vaš račun je bil blokiran.");
+            setcookie('error', 1);
+            header('Location: index.php');
+            exit();
+        }
+
         if ($result['admin'] == 1) {
             $_SESSION["id"] = $result['id'];
             $_SESSION["admin"] = 1;
             setcookie('prijava', "Prijava uspešna.");
+            $_SESSION["googleregister"] = 0;
             setcookie('good', 1);
             header('Location: index.php');
             exit();
@@ -26,6 +34,7 @@ if ($result !== false) {
             $_SESSION["id"] = $result['id'];
             setcookie('prijava', "Prijava uspešna.");
             setcookie('good', 1);
+            $_SESSION["googleregister"] = 0;
             header('Location: index.php');
             exit();
         }

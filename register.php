@@ -18,25 +18,49 @@ $stmt->execute([$mail]); // Pass parameters as an array
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (count($result) == 0) {
-    // Prepare the INSERT statement
-    $sql = "INSERT INTO uporabniki (ime, priimek, mail, geslo, username)
-    VALUES (?, ?, ?, ?, ?)";
+    $sql = "SELECT * FROM uporabniki WHERE username = ?";
     $stmt = $conn->prepare($sql);
-    if ($stmt->execute([$ime, $priimek, $mail, $geslo, $username])) { // Pass parameters as an array
-        setcookie('prijava', "Registracija uspešna. Prijavite se z vnešenimi podatki.");
-        setcookie('good', 1);
-        header('Location: login.php');
-        exit();
+    $stmt->execute([$username]); // Pass parameters as an array
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (count($result) == 0) {
+        // Prepare the INSERT statement
+        $sql = "INSERT INTO uporabniki (ime, priimek, mail, geslo, username)
+        VALUES (?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        if ($stmt->execute([$ime, $priimek, $mail, $geslo, $username])) { // Pass parameters as an array
+            setcookie('prijava', "Registracija uspešna. Prijavite se z vnešenimi podatki.");
+            setcookie('good', 1);
+            header('Location: login.php');
+            exit();
+        } else {
+            setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));
+            setcookie('error', 1);
+            if(isset($_SESSION['googleregister'])){
+                header('Location: google_register.php');
+            } else {
+                header('Location: registracija.php');
+            }
+            exit();
+        }
     } else {
-        setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));
-        setcookie('error', 1);
-        header('Location: registracija.php');
+        setcookie('prijava', "Uporabnik s tem usernameom že obstaja.");
+        setcookie('warning', 1);
+        if(isset($_SESSION['googleregister'])){
+            header('Location: google_register.php');
+        } else {
+            header('Location: registracija.php');
+        }
         exit();
     }
 } else {
     setcookie('prijava', "Uporabnik z tem mailom že obstaja.");
     setcookie('warning', 1);
-    header('Location: registracija.php');
+    if(isset($_SESSION['googleregister'])){
+        header('Location: google_register.php');
+    } else {
+        header('Location: registracija.php');
+    }
     exit();
 }
 

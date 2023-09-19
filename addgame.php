@@ -15,9 +15,17 @@
             <b style = "color:white; font-family:'Courier New', Courier, monospace">SteamCopy</b>
         </div>
         <div class="navbar-center">
-            <button class="center-button" onclick="location.href='index.php'">Store</button>
-            <button class='center-button' onclick="location.href='library.php'">Library</button>
-            <button class="center-button" onclick="location.href='community.php'">Community</button>
+          <?php
+          if(isUserAdmin()){
+          }
+          else{
+            echo "<button class='center-button' onclick=\"location.href='index.php'\">Store</button>";
+            echo "<button class='center-button' onclick=\"location.href='admin_library.php'\">Library</button>";
+            echo "<button class='center-button' onclick=\"location.href='community_admin.php'\">Community</button>";
+          }
+            
+
+            ?>
         </div>
         <div class="navbar-right">
             <?php
@@ -69,6 +77,19 @@ function userloggedIn(){
     else{
         return false;
     }
+}
+
+function isUserAdmin(){
+  $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([$_SESSION['id']]);
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  if ($result == false) {
+      return false;
+  }
+  else{
+    return true;
+  }
 }
     if (isset($_COOKIE['prijava'])) {
         echo "✅ ";

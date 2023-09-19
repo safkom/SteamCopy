@@ -24,6 +24,7 @@
     </nav>
   <?php
   session_start();
+  $_SESSION['googleregister'] = 1;
   ?>
   <br>
   <div class = "container">
