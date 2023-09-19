@@ -31,7 +31,7 @@ $google_client->setClientId('512131787454-n3nrrf6flttgsle6l2903od7mp1v58so.apps.
 
 $google_client->setClientSecret('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');
 
-$google_client->SetRedirectUri('http://safko.eu/steamcopy/googlelogin.php');
+$google_client->SetRedirectUri('http://safko.eu/steamcopy/login.php');
 
 $google_client->addScope('email');
 
