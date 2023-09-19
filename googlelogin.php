@@ -39,6 +39,7 @@ if (isset($_GET["code"])) {
         } else {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $_SESSION['id'] = $row['id'];
+            $_SESSION['username'] = $row['username'];
             header("Location: index.php");
         }
     }
