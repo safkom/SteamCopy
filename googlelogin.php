@@ -34,7 +34,7 @@ if(isset($_GET["code"])){
         $mail = $data['email'];
     }
 }
-$sql = "SELECT * FROM uporabniki WHERE email = :mail";
+$sql = "SELECT * FROM uporabniki WHERE mail = :mail";
 $stmt = $conn->prepare($sql);
 $stmt->bindParam(':mail', $mail, PDO::PARAM_STR);
 $stmt->execute();
