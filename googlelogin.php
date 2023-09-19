@@ -21,8 +21,8 @@ if (isset($_GET["code"])) {
 
         $data = $google_service->userinfo->get();
 
-        $username = $data->givenName; // Use object properties to access data
-        $name = $data->familyName;
+        $ime = $data->givenName; // Use object properties to access data
+        $priimek = $data->familyName;
         $mail = $data->email;
 
         
@@ -32,14 +32,16 @@ if (isset($_GET["code"])) {
         $stmt->execute();
 
         if ($stmt->rowCount() == 0) {
-            $_SESSION['ime'] = $name;
-            $_SESSION['username'] = $username;
+            $_SESSION['ime'] = $ime;
+            $_SESSION['priimek'] = $priimek;
             $_SESSION['email'] = $mail;
             header("Location: google_register.php");
         } else {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $_SESSION['id'] = $row['id'];
             $_SESSION['username'] = $row['username'];
+            setcookie('prijava', "Prijava uspešna.");
+            setcookie('good', 1);
             header("Location: index.php");
         }
     }

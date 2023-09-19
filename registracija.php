@@ -43,6 +43,8 @@
   <input type="submit" value="Pošlji">
 </form>
 <p>Ste že uporabnik? <a href = "login.php">Pojdite na prijavo</a>
+
+<p>Lahko se tudi registriraš z Google računom: <a href = "<?php echo $google_client->createAuthUrl()?>">Registriraj se z Google računom</a>
   </div>
   <div id="loginWindow">
     <?php

@@ -33,9 +33,9 @@
   <label for="ime">Ime:</label>
   <input type="text" id="ime" name="ime" value = "<?php echo $_SESSION['ime'] ?>" required><br><br>
   <label for="priimek">Priimek:</label>
-  <input type="text" id="priimek" name="priimek" required><br><br>
+  <input type="text" id="priimek" name="priimek" required  value = "<?php echo $_SESSION['priimek'] ?>"><br><br>
   <label for="username">Username:</label>
-  <input type="text" id="username" name="username"  value = "<?php echo $_SESSION['username'] ?>"required><br><br>
+  <input type="text" id="username" name="username"  required><br><br>
   <label for="email">Mail:</label>
   <input type="text" id="email" name="email" required value = "<?php echo $_SESSION['email'] ?>"><br><br>
   <label for="geslo">Geslo:</label>
