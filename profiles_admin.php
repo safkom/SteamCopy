@@ -24,9 +24,18 @@ if(!isset($_GET['id'])){
             <b style = "color:white; font-family:'Courier New', Courier, monospace">SteamCopy</b>
         </div>
         <div class="navbar-center">
-            <button class="center-button" onclick="location.href='index.php'">Store</button>
-            <button class='center-button' onclick="location.href='library.php'">Library</button>
-            <button class="selected-button" onclick="location.href='community.php'">Community</button>
+            <?php
+          if(isUserAdmin()){
+            echo "<button class='center-button' onclick=\"location.href='index.php'\">Store</button>";
+            echo "<button class='center-button' onclick=\"location.href='admin_library.php'\">Library</button>";
+            echo "<button class='center-button' onclick=\"location.href='community_admin.php'\">Community</button>";
+          }
+          else{
+            echo "<button class='center-button' onclick=\"location.href='index.php'\">Store</button>";
+            echo "<button class='center-button' onclick=\"location.href='library.php'\">Library</button>";
+            echo "<button class='center-button' onclick=\"location.href='community.php'\">Community</button>";
+          }
+            ?>
         </div>
         <div class="navbar-right">
             <?php
