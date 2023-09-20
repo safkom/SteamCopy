@@ -59,9 +59,9 @@ $isAdmin = isUserAdmin($conn);
         <h1>Friend List</h1>
     <?php
     require_once 'connect.php';
-    $sql = "SELECT * FROM friends WHERE user_id = ? AND prosnja_sprejeta = 1";
+    $sql = "SELECT * FROM friends WHERE user_id = ? OR requester_id = ? AND prosnja_sprejeta = 1";
     $stmt = $conn->prepare($sql);
-    $stmt->execute([$_SESSION['id']]);
+    $stmt->execute([$_SESSION['id'], $_SESSION['id']]);
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
         $sql = "SELECT * FROM uporabniki WHERE id = ?";
