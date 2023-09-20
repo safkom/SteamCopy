@@ -146,8 +146,8 @@ session_start();
 
 
 <?php
-require_once 'connect.php';
 function isUserAdmin(){
+  require_once 'connect.php';
   $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
   $stmt = $conn->prepare($sql);
   $stmt->execute([$_SESSION['id']]);
