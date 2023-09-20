@@ -156,16 +156,15 @@ function userloggedIn(){
         return false;
     }
 }
-function isUserAdmin(){
-  require_once 'connect.php';
+function isUserAdmin($conn) {
   $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
   $stmt = $conn->prepare($sql);
   $stmt->execute([$_SESSION['id']]);
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  
   if ($result == false) {
-      return false;
-  }
-  else{
+    return false;
+  } else {
     return true;
   }
 }

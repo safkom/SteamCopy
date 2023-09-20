@@ -17,7 +17,8 @@
         <div class="navbar-center">
           <?php
           require_once 'connect.php';
-          if(isUserAdmin()){
+          $isAdmin = isUserAdmin($conn);
+          if($isAdmin){
             echo "<button class='center-button' onclick=\"location.href='index.php'\">Store</button>";
             echo "<button class='center-button' onclick=\"location.href='admin_library.php'\">Library</button>";
             echo "<button class='center-button' onclick=\"location.href='community_admin.php'\">Community</button>";
@@ -81,16 +82,15 @@ function userloggedIn(){
     }
 }
 
-function isUserAdmin(){
-  require_once 'connect.php';
+function isUserAdmin($conn) {
   $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
   $stmt = $conn->prepare($sql);
   $stmt->execute([$_SESSION['id']]);
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  
   if ($result == false) {
-      return false;
-  }
-  else{
+    return false;
+  } else {
     return true;
   }
 }
