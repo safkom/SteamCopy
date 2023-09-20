@@ -45,16 +45,16 @@ if (isset($_GET["code"])) {
             $_SESSION['priimek'] = $priimek;
             $_SESSION['email'] = $mail;
             header("Location: google_register.php");
-        } else {
+        } 
+        else {
             if($result['google_id'] == NULL){
                 $_SESSION['google_id'] = $id;
                 $_SESSION['mail'] = $mail;
                 header("Location: google_addmail.php");
             }
             else{
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                $_SESSION['id'] = $row['id'];
-                $_SESSION['username'] = $row['username'];
+                $_SESSION["id"] = $result['id'];
+                $_SESSION["username"] = $result['username'];
                 setcookie('prijava', "Prijava uspešna.");
                 setcookie('good', 1);
                 header("Location: index.php");
