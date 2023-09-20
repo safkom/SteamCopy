@@ -125,7 +125,7 @@ function userLoggedIn()
                 echo "<div class='user-info'>";
                 echo "<p><b>$username</b></p>";
                 echo "<p>$opis</p>";
-                echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">Poglej</button>" ;
+                echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">Poglej</button> ";
                 if($row['banned'] == 0){
                     echo "<button class='delete-button' onclick=\"location.href='banuser.php?id=".$user_id."'\">Blokiraj uporabnika</button>";
                 }
@@ -159,7 +159,7 @@ function userLoggedIn()
                 echo "<div class='user-info'>";
                 echo "<p><b>$username</b></p>";
                 echo "<p>$opis</p>";
-                echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">Poglej</button>";
+                echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">Poglej</button> ";
                 if($row['banned'] == 0){
                     echo "<button class='delete-button' onclick=\"location.href='banuser.php?id=".$user_id."'\">Blokiraj uporabnika</button>";
                 }

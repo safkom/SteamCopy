@@ -6,7 +6,7 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 $isAdmin = isUserAdmin($conn);
-if ($isAdmin) {
+if (!$isAdmin) {
     setcookie('prijava', "Tu nimaš dostopa.");
     setcookie('error', 1);
     header('Location: index.php');
@@ -23,12 +23,12 @@ if ($result == false) {
 }
 
 // Validate and sanitize user input
-$profil = $_GET['profile_id'];
+$profil = $_GET['id'];
 
     // Prepare the INSERT statement
     $sql = "UPDATE uporabniki SET banned = 0 WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    if ($stmt->execute([$uporabnik, $profil])) { // Pass parameters as an array
+    if ($stmt->execute([$profil])) { // Pass parameters as an array
         setcookie('prijava', "Uporabnik unbanned!");
         setcookie('good', 1);
         header('Location: community_admin.php');

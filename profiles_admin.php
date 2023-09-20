@@ -18,7 +18,7 @@ if(!isset($_GET['id'])){
     header('Location: community.php');
     exit();
 }
-if($isAdmin){
+if(!$isAdmin){
   setcookie('prijava', "Tu nimaš dostopa.");
   setcookie('error', 1);
   header('Location: index.php');

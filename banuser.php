@@ -23,12 +23,12 @@ if ($result == false) {
 }
 
 // Validate and sanitize user input
-$profil = $_GET['profile_id'];
+$profil = $_GET['id'];
 
     // Prepare the INSERT statement
     $sql = "UPDATE uporabniki SET banned = 1 WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    if ($stmt->execute([$uporabnik, $profil])) { // Pass parameters as an array
+    if ($stmt->execute([$profil])) { // Pass parameters as an array
         setcookie('prijava', "Uporabnik je banned!");
         setcookie('good', 1);
         header('Location: community_admin.php');

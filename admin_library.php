@@ -11,6 +11,7 @@
     <title>SteamCopy</title>  
 </head>
 <?php
+require_once 'connect.php';
 session_start();
 if (!isset($_SESSION['id'])) {
     setcookie('prijava', "Tu nimaš dostopa.");
@@ -19,20 +20,11 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 $isAdmin = isUserAdmin($conn);
-if ($isAdmin) {
-  setcookie('prijava', "Tu nimaš dostopa.");
+if (!$isAdmin) {
+  setcookie('prijava', "Tu nimaš dostopa.". $isAdmin);
   setcookie('error', 1);
   header('Location: index.php');
   exit();
-}
-$isAdmin = isUserAdmin($conn);
-$sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
-$stmt = $conn->prepare($sql);
-$stmt->execute([$_SESSION['id']]);
-$result = $stmt->fetch(PDO::FETCH_ASSOC);
-if ($result == false) {
-    header('Location: index.php');
-    exit();
 }
 ?>
 
