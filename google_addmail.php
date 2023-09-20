@@ -7,7 +7,7 @@
 	<meta name="author" content="Miha Šafranko" />
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/navbar.css">
-    <title>Login</title>
+    <title>Registracija</title>
 </head>
 <body>
 <nav class="navbar">
@@ -23,7 +23,6 @@
         </div>
     </nav>
   <?php
-  include_once 'libraries/vendor/autoload.php';
   session_start();
   if(isset($_SESSION['id'])){
     setcookie('prijava', "Opla! Si že prijavljen, ne rabiš biti tukaj.");
@@ -31,31 +30,20 @@
     header('Location: index.php');
     exit();
   }
-  $google_client = new Google_Client();
-
-$google_client->setClientId('512131787454-n3nrrf6flttgsle6l2903od7mp1v58so.apps.googleusercontent.com');
-
-$google_client->setClientSecret('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');
-
-$google_client->SetRedirectUri('https://safko.eu/steamcopy/googlelogin.php');
-
-$google_client->addScope('email');
-
-$google_client->addScope('profile');
+  $_SESSION['googleregister'] = 1;
   ?>
   <br>
   <div class = "container">
-    <h1>Prijava</h1>
- <form action="preveri.php" method="post">
-  <label for="email">Mail:</label>
+    <h1>Google povezava</h1>
+    <p>Poveži svoj trenutni račun, z svojim google računom za lažjo prijavo:</p>
+ <form action="googlelink.php" method="post">
+ <label for="email">Mail:</label>
   <input type="text" id="email" name="email" required><br><br>
   <label for="geslo">Geslo:</label>
   <input type="password" id="geslo" name="geslo" required><br><br>
   <input type="submit" value="Pošlji">
 </form>
-<p>Še nisi uporabnik? <a href = "registracija.php">Pojdi na registracijo</a>
-
-<p>Lahko se tudi prijaviš z Google računom: <a href = "<?php echo $google_client->createAuthUrl()?>">Prijavi se z Google računom</a>
+<p>Nočeš povezati računa?<a href = "login.php">Pojdi na prijavo</a>
   </div>
   <div id="loginWindow">
     <?php

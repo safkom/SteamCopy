@@ -30,12 +30,15 @@ if (isset($_GET["code"])) {
         $ime = $data->givenName; // Use object properties to access data
         $priimek = $data->familyName;
         $mail = $data->email;
+        //get id from google account
+        $id = $data->id;
 
         
         $sql = "SELECT * FROM uporabniki WHERE mail = :mail";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':mail', $mail, PDO::PARAM_STR);
         $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($stmt->rowCount() == 0) {
             $_SESSION['ime'] = $ime;
@@ -43,12 +46,18 @@ if (isset($_GET["code"])) {
             $_SESSION['email'] = $mail;
             header("Location: google_register.php");
         } else {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $_SESSION['id'] = $row['id'];
-            $_SESSION['username'] = $row['username'];
-            setcookie('prijava', "Prijava uspešna.");
-            setcookie('good', 1);
-            header("Location: index.php");
+            if($result['google_id'] == NULL){
+                $_SESSION['google_id'] = $id;
+                header("Location: google_register.php");
+            }
+            else{
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $_SESSION['id'] = $row['id'];
+                $_SESSION['username'] = $row['username'];
+                setcookie('prijava', "Prijava uspešna.");
+                setcookie('good', 1);
+                header("Location: index.php");
+            }
         }
     }
 } else {
