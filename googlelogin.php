@@ -48,6 +48,7 @@ if (isset($_GET["code"])) {
         } else {
             if($result['google_id'] == NULL){
                 $_SESSION['google_id'] = $id;
+                $_SESSION['mail'] = $mail;
                 header("Location: google_addmail.php");
             }
             else{

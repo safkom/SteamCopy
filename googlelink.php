@@ -43,13 +43,13 @@ if ($result !== false) {
     } else {
         setcookie('prijava', "Napačno geslo.");
         setcookie('error', 1);
-        header('Location: login.php');
+        header('Location: google_addmail.php');
         exit();
     }
 } else {
     setcookie('prijava', "Uporabnik z tem mailom ne obstaja.");
     setcookie('error', 1);
-    header('Location: login.php');
+    header('Location: google_addmail.php');
     exit();
 }
 
