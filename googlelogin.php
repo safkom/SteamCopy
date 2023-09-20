@@ -48,7 +48,7 @@ if (isset($_GET["code"])) {
         } else {
             if($result['google_id'] == NULL){
                 $_SESSION['google_id'] = $id;
-                header("Location: google_register.php");
+                header("Location: google_addmail.php");
             }
             else{
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
