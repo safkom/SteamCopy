@@ -24,6 +24,12 @@
     </nav>
   <?php
   session_start();
+  if(isset($_SESSION['id'])){
+    setcookie('prijava', "Opla! Si že prijavljen, ne rabiš biti tukaj.");
+    setcookie('warning', 1);
+    header('Location: index.php');
+    exit();
+  }
   $_SESSION['googleregister'] = 1;
   ?>
   <br>

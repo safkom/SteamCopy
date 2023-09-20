@@ -13,9 +13,12 @@
 <?php
 session_start();
 if (!isset($_SESSION['id'])) {
+    setcookie('prijava', "Za to stran se rabiš prijaviti.");
+    setcookie('warning', 1);
     header('Location: index.php');
     exit();
 }
+require_once 'connect.php';
 $isAdmin = isUserAdmin($conn);
 ?>
 
@@ -28,12 +31,12 @@ $isAdmin = isUserAdmin($conn);
         <?php
           if($isAdmin){
             echo "<button class='center-button' onclick=\"location.href='index.php'\">Store</button>";
-            echo "<button class='center-button' onclick=\"location.href='admin_library.php'\">Library</button>";
+            echo "<button class='selected-button' onclick=\"location.href='admin_library.php'\">Library</button>";
             echo "<button class='center-button' onclick=\"location.href='community_admin.php'\">Community</button>";
           }
           else{
             echo "<button class='center-button' onclick=\"location.href='index.php'\">Store</button>";
-            echo "<button class='center-button' onclick=\"location.href='library.php'\">Library</button>";
+            echo "<button class='selected-button' onclick=\"location.href='library.php'\">Library</button>";
             echo "<button class='center-button' onclick=\"location.href='community.php'\">Community</button>";
           }
             ?>

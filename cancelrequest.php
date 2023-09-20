@@ -2,6 +2,8 @@
 require_once 'connect.php';
 session_start();
 if (!isset($_SESSION['id'])) {
+    setcookie('prijava', "Za uporabo te strani, se rabiš prijaviti.");
+    setcookie('error', 1);
     header('Location: index.php');
     exit();
 }

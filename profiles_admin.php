@@ -12,11 +12,18 @@
 </head>
 <?php
 session_start();
+require_once 'connect.php';
+$isAdmin = isUserAdmin($conn);
 if(!isset($_GET['id'])){
     header('Location: community.php');
     exit();
 }
-$isAdmin = isUserAdmin($conn);
+if($isAdmin){
+  setcookie('prijava', "Tu nimaš dostopa.");
+  setcookie('error', 1);
+  header('Location: index.php');
+  exit();
+}
 ?>
 
 <body> 

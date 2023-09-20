@@ -13,8 +13,17 @@
 <?php
 session_start();
 if (!isset($_SESSION['id'])) {
+    setcookie('prijava', "Tu nimaš dostopa.");
+    setcookie('error', 1);
     header('Location: index.php');
     exit();
+}
+$isAdmin = isUserAdmin($conn);
+if ($isAdmin) {
+  setcookie('prijava', "Tu nimaš dostopa.");
+  setcookie('error', 1);
+  header('Location: index.php');
+  exit();
 }
 $isAdmin = isUserAdmin($conn);
 $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";

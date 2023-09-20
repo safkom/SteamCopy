@@ -16,6 +16,7 @@
         </div>
         <div class="navbar-center">
           <?php
+          session_start();
           require_once 'connect.php';
           $isAdmin = isUserAdmin($conn);
           if($isAdmin){
@@ -32,11 +33,12 @@
         </div>
         <div class="navbar-right">
             <?php
-            session_start();
             if (!isset($_SESSION['id'])) {
-                header('Location: index.php');
-                exit();
-            }
+              setcookie('prijava', "Za to stran se rabiš prijaviti.");
+              setcookie('warning', 1);
+              header('Location: index.php');
+              exit();
+          }
             if (userLoggedIn()) {
                 echo "<button class='user-button' onclick=\"location.href='friends.php'\">Friends</button>";
                 echo "<button class='selected-button' onclick=\"location.href='profile.php'\">" . $_SESSION['username'] . "</button>";

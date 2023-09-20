@@ -25,6 +25,12 @@
   <?php
   include_once 'libraries/vendor/autoload.php';
   session_start();
+  if(isset($_SESSION['id'])){
+    setcookie('prijava', "Opla! Si že prijavljen, ne rabiš biti tukaj.");
+    setcookie('warning', 1);
+    header('Location: index.php');
+    exit();
+  }
   $google_client = new Google_Client();
 
 $google_client->setClientId('512131787454-n3nrrf6flttgsle6l2903od7mp1v58so.apps.googleusercontent.com');

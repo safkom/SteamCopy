@@ -21,6 +21,18 @@ require_once 'connect.php';
 $isAdmin = isUserAdmin($conn);
 
 
+if (!isset($_SESSION['id'])) {
+    header('Location: index.php');
+    exit();
+}
+
+if(!$isAdmin){
+    setcookie('prijava', "Tu nimaš dostopa.");
+    setcookie('error', 1);
+    header('Location: index.php');
+    exit();
+}
+
 $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
 $stmt = $conn->prepare($sql);
 $stmt->execute([$_SESSION['id']]);

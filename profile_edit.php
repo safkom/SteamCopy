@@ -25,7 +25,8 @@ if (!isset($_SESSION['id'])) {
         </div>
         <div class="navbar-center">
         <?php
-          if(isUserAdmin()){
+        $isAdmin = isUserAdmin($conn);
+          if($isAdmin){
             echo "<button class='center-button' onclick=\"location.href='index.php'\">Store</button>";
             echo "<button class='center-button' onclick=\"location.href='admin_library.php'\">Library</button>";
             echo "<button class='center-button' onclick=\"location.href='community_admin.php'\">Community</button>";

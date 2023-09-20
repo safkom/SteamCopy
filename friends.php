@@ -13,9 +13,13 @@
 <?php
 session_start();
 if (!isset($_SESSION['id'])) {
+    setcookie('prijava', "Za dostop do te strani, se prijavi.");
+    setcookie('warning', 1);
     header('Location: index.php');
     exit();
 }
+require_once 'connect.php';
+$isAdmin = isUserAdmin($conn);
 ?>
 
 <body> 
@@ -25,7 +29,7 @@ if (!isset($_SESSION['id'])) {
         </div>
         <div class="navbar-center">
         <?php
-          if(isUserAdmin()){
+          if($isAdmin){
             echo "<button class='center-button' onclick=\"location.href='index.php'\">Store</button>";
             echo "<button class='center-button' onclick=\"location.href='admin_library.php'\">Library</button>";
             echo "<button class='center-button' onclick=\"location.href='community_admin.php'\">Community</button>";

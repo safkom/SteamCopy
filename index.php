@@ -23,12 +23,12 @@ $isAdmin = isUserAdmin($conn);
         <div class="navbar-center">
         <?php
           if($isAdmin){
-            echo "<button class='center-button' onclick=\"location.href='index.php'\">Store</button>";
+            echo "<button class='selected-button' onclick=\"location.href='index.php'\">Store</button>";
             echo "<button class='center-button' onclick=\"location.href='admin_library.php'\">Library</button>";
             echo "<button class='center-button' onclick=\"location.href='community_admin.php'\">Community</button>";
           }
           else{
-            echo "<button class='center-button' onclick=\"location.href='index.php'\">Store</button>";
+            echo "<button class='selected-button' onclick=\"location.href='index.php'\">Store</button>";
             echo "<button class='center-button' onclick=\"location.href='library.php'\">Library</button>";
             echo "<button class='center-button' onclick=\"location.href='community.php'\">Community</button>";
           }

@@ -5,6 +5,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 if (!isset($_SESSION['id'])) {
+    setcookie('prijava', "Tu nimaš dostopa.");
+    setcookie('error', 1);
     header('Location: index.php');
     exit();
 }

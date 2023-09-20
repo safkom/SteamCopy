@@ -1,7 +1,14 @@
 <?php
 require_once 'connect.php';
 session_start();
+$isAdmin = isUserAdmin($conn);
 if (!isset($_SESSION['id'])) {
+    header('Location: index.php');
+    exit();
+}
+if(!$isAdmin) {
+    setcookie('prijava', "Tu nimaš dostopa.");
+    setcookie('error', 1);
     header('Location: index.php');
     exit();
 }
@@ -33,6 +40,19 @@ $profil = $_GET['profile_id'];
         exit();
     }
     
-   
+    function isUserAdmin($conn) {
+        $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$_SESSION['id']]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($result == false) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    
+
 $conn = null; // Close the connection
 ?>
