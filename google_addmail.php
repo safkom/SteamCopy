@@ -43,7 +43,7 @@
   <input type="password" id="geslo" name="geslo" required><br><br>
   <input type="submit" value="Pošlji">
 </form>
-<p>Nočeš povezati računa?<a href = "login.php">Pojdi na prijavo</a>
+<p>Nočeš povezati računa?<a href = "login.php"> Pojdi na prijavo</a>
   </div>
   <div id="loginWindow">
     <?php
