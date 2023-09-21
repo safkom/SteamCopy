@@ -59,9 +59,9 @@ $isAdmin = isUserAdmin($conn);
         <h1>Friend List</h1>
     <?php
     require_once 'connect.php';
-    $sql = "SELECT * FROM friends WHERE user_id = ? OR requester_id = ? AND prosnja_sprejeta = 1";
+    $sql = "SELECT * FROM friends WHERE user_id = ? AND prosnja_sprejeta = 1";
     $stmt = $conn->prepare($sql);
-    $stmt->execute([$_SESSION['id'], $_SESSION['id']]);
+    $stmt->execute([$_SESSION['id']]);
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
         $sql = "SELECT * FROM uporabniki WHERE id = ?";
@@ -90,7 +90,40 @@ $isAdmin = isUserAdmin($conn);
         echo "<button class='profile-button' onclick=\"location.href='deletefriend.php?id=".$user_id."'\">Odstrani prijatelja</button>";
         echo "</div>";
         echo "</div>";
+
+    $sql = "SELECT * FROM friends WHERE requester_id = ? AND prosnja_sprejeta = 1";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$_SESSION['id']]);
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+        $sql = "SELECT * FROM uporabniki WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$row['user_id']]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+        $id = $row['id'];
+        $username = $row['username'];
+        $opis = $row['opis'];
+        $slika_id = $row['slika_id'];
+        $user_id = $row['id'];
+        $sql1 = "SELECT * FROM slike WHERE id = :slika_id";
+        $stmt1 = $conn->prepare($sql1);
+        $stmt1->bindParam(":slika_id", $slika_id, PDO::PARAM_INT);
+        $stmt1->execute();
+        $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
+        $url = $row1['url'];
+        echo "<div class='user'>";
+        echo "<img src='$url' alt='Avatar' width='100' height='100' class='avatar'>";
+        echo "<div class='user-info'>";
+        echo "<p><b>$username</b></p>";
+        echo "<p>$opis</p>";
+        echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">Oglej profil</button>";
+        echo "<button class='profile-button' onclick=\"location.href='deletefriend.php?id=".$user_id."'\">Odstrani prijatelja</button>";
+        echo "</div>";
+        echo "</div>";
     }
+  }
     ?>
     
 </div>
