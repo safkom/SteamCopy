@@ -70,7 +70,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $friendInfo = getUserInfo($conn, $friend_id);
 
     // Display friend's information
-    displayUserInfo($friendInfo);
+    displayUserInfo($conn, $friendInfo);
 }
 
 // Then, select friends where the user is the requester
@@ -83,7 +83,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $friendInfo = getUserInfo($conn, $friend_id);
 
     // Display friend's information
-    displayUserInfo($friendInfo);
+    displayUserInfo($conn, $friendInfo);
 }
 
 function getUserInfo($conn, $user_id) {
@@ -93,7 +93,7 @@ function getUserInfo($conn, $user_id) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-function displayUserInfo($user) {
+function displayUserInfo($conn, $user) {
     $id = $user['id'];
     $username = $user['username'];
     $opis = $user['opis'];
@@ -118,6 +118,7 @@ function displayUserInfo($user) {
     echo "</div>";
 }
 ?>
+
 
     
 </div>
