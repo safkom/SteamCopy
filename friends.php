@@ -60,16 +60,17 @@ $isAdmin = isUserAdmin($conn);
         <?php
 require_once 'connect.php';
 
+//check if you have any friends
+$sql = "SELECT * FROM friends WHERE (user_id = ? OR requester_id = ?)AND prosnja_sprejeta = 1";
+$stmt = $conn->prepare($sql);
+$stmt->execute([$_SESSION['id'], $_SESSION['id']]);
+$num_rows = $stmt->rowCount();
+if($num_rows != 0){
 // First, select friends where the user is the recipient
 $sql = "SELECT * FROM friends WHERE user_id = ? AND prosnja_sprejeta = 1";
 $stmt = $conn->prepare($sql);
 $stmt->execute([$_SESSION['id']]);
-// če je 0 rows napiši da nimaš prijateljev
-if($stmt->rowCount() == 0){
-    echo "<p>Nimaš prijateljev :/</p>";
-}
-else{
-  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     // Retrieve friend's information
     $friend_id = $row['requester_id'];
     $friendInfo = getUserInfo($conn, $friend_id);
@@ -82,13 +83,17 @@ else{
 $sql = "SELECT * FROM friends WHERE requester_id = ? AND prosnja_sprejeta = 1";
 $stmt = $conn->prepare($sql);
 $stmt->execute([$_SESSION['id']]);
-  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     // Retrieve friend's information
     $friend_id = $row['user_id'];
     $friendInfo = getUserInfo($conn, $friend_id);
 
     // Display friend's information
     displayUserInfo($conn, $friendInfo);
+}
+}
+else{
+    echo "<p>Nimaš prijateljev.</p>";
 }
 
 function getUserInfo($conn, $user_id) {
@@ -117,67 +122,72 @@ function displayUserInfo($conn, $user) {
     echo "<div class='user-info'>";
     echo "<p><b>$username</b></p>";
     echo "<p>$opis</p>";
-    echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">Oglej profil</button>";
+    echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">Oglej profil</button>  ";
     echo "<button class='profile-button' onclick=\"location.href='deletefriend.php?id=".$user_id."'\">Odstrani prijatelja</button>";
     echo "</div>";
     echo "</div>";
 }
-}
 ?>
 
+
+    
 </div>
-<div id="container">
-    <h1>Prejete Prošnje</h1>
-    <?php 
+
+  <?php
+    // if num rows = 0, then dont show div
     $sql = "SELECT * FROM friends WHERE user_id = ? AND prosnja_sprejeta = 0";
     $stmt = $conn->prepare($sql);
     $stmt->execute([$_SESSION['id']]);
-    if($stmt->rowCount() != 0){
-    // Display rows from the first query
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    // Retrieve data for each row
-    $user_id = $row['requester_id'];
-    $sql1 = "SELECT * FROM uporabniki WHERE id = ?";
-    $stmt1 = $conn->prepare($sql1);
-    $stmt1->execute([$user_id]);
-    $innerRow = $stmt1->fetch(PDO::FETCH_ASSOC);
-
-    $id = $innerRow['id'];
-    $username = $innerRow['username'];
-    $opis = $innerRow['opis'];
-    $slika_id = $innerRow['slika_id'];
+    $num_rows = $stmt->rowCount();
+    if($num_rows > 0){
+      echo "<div id='container'>";
+      echo "<h1>Prejete Prošnje</h1>";
+      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        // Retrieve data for each row
+        $user_id = $row['requester_id'];
+        $sql1 = "SELECT * FROM uporabniki WHERE id = ?";
+        $stmt1 = $conn->prepare($sql1);
+        $stmt1->execute([$user_id]);
+        $innerRow = $stmt1->fetch(PDO::FETCH_ASSOC);
     
-    // Retrieve image URL
-    $sql2 = "SELECT * FROM slike WHERE id = ?";
-    $stmt2 = $conn->prepare($sql2);
-    $stmt2->execute([$slika_id]);
-    $row1 = $stmt2->fetch(PDO::FETCH_ASSOC);
-    $url = $row1['url'];
-
-    // Display the user information
-    echo "<div class='user'>";
-    echo "<img src='$url' alt='Avatar' width='100' height='100' class='avatar'>";
-    echo "<div class='user-info'>";
-    echo "<p><b>$username</b></p>";
-    echo "<p>$opis</p>";
-    echo "<button class='profile-button' onclick=\"location.href='acceptrequest.php?profile_id=".$user_id."'\">Sprejmi prošnjo</button>";
-    echo "<button class='profile-button' onclick=\"location.href='cancelrequest.php?profile_id=".$user_id."'\">Zbriši prošnjo</button>";
-    echo "</div>";
-    echo "</div>";
-}
-}
-// Display rows from the second query
+        $id = $innerRow['id'];
+        $username = $innerRow['username'];
+        $opis = $innerRow['opis'];
+        $slika_id = $innerRow['slika_id'];
+        
+        // Retrieve image URL
+        $sql2 = "SELECT * FROM slike WHERE id = ?";
+        $stmt2 = $conn->prepare($sql2);
+        $stmt2->execute([$slika_id]);
+        $row1 = $stmt2->fetch(PDO::FETCH_ASSOC);
+        $url = $row1['url'];
+    
+        // Display the user information
+        echo "<div class='user'>";
+        echo "<img src='$url' alt='Avatar' width='100' height='100' class='avatar'>";
+        echo "<div class='user-info'>";
+        echo "<p><b>$username</b></p>";
+        echo "<p>$opis</p>";
+        echo "<button class='profile-button' onclick=\"location.href='acceptrequest.php?profile_id=".$user_id."'\">Sprejmi prošnjo</button>  ";
+        echo "<button class='profile-button' onclick=\"location.href='cancelrequest.php?profile_id=".$user_id."'\">Zbriši prošnjo</button>";
+        echo "</div>";
+        echo "</div>";
+    }
+  }
 ?>
 
 </div>
 
-<div id="container">
-<h1>Poslane Prošnje</h1>
-    <?php 
+
+<?php 
     $sql = "SELECT * FROM friends WHERE requester_id = ? AND prosnja_sprejeta = 0";
     $stmt = $conn->prepare($sql);
     $stmt->execute([$_SESSION['id']]);
-    if($stmt->rowCount() != 0){
+    $num_rows = $stmt->rowCount();
+    if($num_rows > 0){
+      echo "<div id='container'>";
+      echo "<h1>Prejete Prošnje</h1>";
+
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     // Retrieve data for each row
     $user_id = $row['user_id'];
@@ -207,9 +217,7 @@ function displayUserInfo($conn, $user) {
     echo "<button class='profile-button' onclick=\"location.href='cancelrequest.php?profile_id=".$user_id."'\">Prekliči prošnjo</button>";
     echo "</div>";
     echo "</div>";
-}
-}
-
+    }}
 // Display rows from the second query
 ?>
 
