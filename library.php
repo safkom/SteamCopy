@@ -62,8 +62,11 @@ $isAdmin = isUserAdmin($conn);
     $sql = "SELECT * FROM nakupi WHERE uporabnik_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->execute([$_SESSION['id']]);
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
+    if($stmt->rowCount() == 0){
+      echo "<p>Nimaš kupljenih iger.</p>";
+    }
+    else{
+      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $sql = "SELECT * FROM igre WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$row['igra_id']]);
@@ -88,11 +91,13 @@ $isAdmin = isUserAdmin($conn);
         $username = $row['username'];
         echo "<p><b>Ustvarjalec: </b></p>";
         echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">".$username."</button><br><br>";
+        echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=".$game_id."'\">Poglej</button><br><br>";
         echo "<button class='download-button' type='submit' onclick=\"window.open('".$file."')\">Prenesi igro</button> ";
         echo "<button class='delete-button' onclick=\"location.href='deletegameuser.php?id=".$game_id."'\">Odstrani iz kupljenih iger</button>";
         echo "</div>";
         echo "</div>";
     }
+  }
     ?>
     
 </div>
@@ -102,7 +107,12 @@ $isAdmin = isUserAdmin($conn);
     $sql = "SELECT * FROM igre WHERE uporabnik_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->execute([$_SESSION['id']]);
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    //če ni iger izpiši da jih nimaš
+    if($stmt->rowCount() == 0){
+        echo "<p>Nimaš objavljenih iger.</p>";
+    }
+    else{
+      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $game_id = $row['id'];
         $ime = $row['ime'];
         $opis = $row['opis'];
@@ -113,11 +123,13 @@ $isAdmin = isUserAdmin($conn);
         echo "<p><b>$ime</b></p><br>";
         echo "<p>$opis</p><br>";
         echo "<p>$zanr</p><br>";
+        echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=".$game_id."'\">Poglej</button><br><br>";
         echo "<button class='download-button' type='submit' onclick=\"window.open('".$file."')\">Prenesi igro</button> ";
         echo "<button class='delete-button' onclick=\"location.href='deletegame.php?id=".$game_id."'\">Odstrani iz trgovine</button>";
         echo "</div>";
         echo "</div>";
     }
+  }
 ?>
 </div>
 <?php

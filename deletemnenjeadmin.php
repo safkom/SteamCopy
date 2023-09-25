@@ -7,28 +7,30 @@ if (!isset($_SESSION['id'])) {
     header('Location: index.php');
     exit();
 }
+//preveri če je uporabnik admin
+$isAdmin = isUserAdmin($conn);
+if(!$isAdmin){
+  setcookie('prijava', "Za uporabo te strani, nimaš pravic.");
+  setcookie('error', 1);
+  header('Location: index.php');
+  exit();
+}
 
 // Validate and sanitize user input
-$uporabnik = $_SESSION['id'];
-$profil = $_GET['profile_id'];
+$mnenje_id = $_GET['id'];
 
     // Prepare the INSERT statement
-    $sql = "DELETE FROM friends WHERE (requester_id = ? AND user_id = ?) OR (user_id = ? AND requester_id = ?)";
+    $sql = "DELETE FROM mnenja WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    if ($stmt->execute([$uporabnik, $profil, $uporabnik, $profil])) { // Pass parameters as an array
-        setcookie('prijava', "Prošnja izbrisana!");
+    if ($stmt->execute([$mnenje_id])) { // Pass parameters as an array
+        setcookie('prijava', "Mnenje izbrisano!");
         setcookie('good', 1);
-        if(isUserAdmin($conn)){
-            header('Location: profiles_admin.php?id='.$profil.'');
-        }
-        else{
-            header('Location: profiles.php?id='.$profil.'');
-        }
+        header('Location: index.php?id=');
         exit();
     } else {
         setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));
         setcookie('error', 1);
-        header('Location: friends.php');
+        header('Location: index.php');
         exit();
     }
 

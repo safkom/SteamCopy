@@ -12,11 +12,11 @@
 </head>
 <?php
 session_start();
-require_once 'connect.php';
-if (!isset($_SESSION['id'])) {
-    header('Location: index.php');
+if(!isset($_GET['id'])){
+    header('Location: community.php');
     exit();
 }
+require_once 'connect.php';
 $isAdmin = isUserAdmin($conn);
 ?>
 
@@ -43,7 +43,7 @@ $isAdmin = isUserAdmin($conn);
             <?php
             if (userLoggedIn()) {
                 echo "<button class='user-button' onclick=\"location.href='friends.php'\">Friends</button>";
-                echo "<button class='selected-button' onclick=\"location.href='profile.php'\">" . $_SESSION['username'] . "</button>";
+                echo "<button class='user-button' onclick=\"location.href='profile.php'\">" . $_SESSION['username'] . "</button>";
                 echo "<button class='user-button' onclick=\"location.href='odjava.php'\">Logout</button>";
             } else {
                 echo "<button class='user-button' onclick=\"location.href='login.php'\">Login</button>";
@@ -58,90 +58,130 @@ $isAdmin = isUserAdmin($conn);
     <?php
     require_once 'connect.php';
 
+    $game_id = $_GET['id'];
+
     // Prepare the first SQL statement to retrieve slika_id
-    $sql1 = "SELECT slika_id FROM uporabniki WHERE id = ?";
+    $sql1 = "SELECT * FROM igre WHERE id = ?";
     $stmt1 = $conn->prepare($sql1);
-    $stmt1->execute([$_SESSION['id']]);
+    $stmt1->execute([$game_id]);
     $result1 = $stmt1->fetch(PDO::FETCH_ASSOC);
-    $slika_id = $result1['slika_id'];
+    $ime = $result1['ime'];
+    $opis = $result1['opis'];
+    $cena = $result1['cena'];
+    $zanr = $result1['zanr'];
+    $user_id = $result1['uporabnik_id'];
 
-    $sql2 = "SELECT url FROM slike WHERE id = ?";
-    $stmt2 = $conn->prepare($sql2);
-    $stmt2->execute([$slika_id]);
-    $result2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-    $slika = $result2['url'];
-    echo "<img src='" . $slika . "' alt='profile picture of " . $_SESSION['username'] . "' width='100' height='100'>";
-    
+    echo "<h1>".$ime."</h1><br><br>";
+    echo "<p><b>Zanr: </b>".$zanr."</p>";
+    echo "<p><b>Cena: </b>".$cena."€</p>";
     echo "<br><br>";
-    $sql3 = "SELECT opis FROM uporabniki WHERE id = ?";
-    $stmt3 = $conn->prepare($sql3);
-    $stmt3->execute([$_SESSION['id']]);
-    $result3 = $stmt3->fetch(PDO::FETCH_ASSOC);
-    $opis = $result3['opis'];
 
-    echo $_SESSION['username'];
+
+    $sql2 = "SELECT * FROM uporabniki WHERE id = ?";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->execute([$user_id]);
+    $result2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+    $username = $result2['username'];
+
+    $sql2 = "SELECT url FROM slike WHERE igra_id = ?";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->execute([$game_id]);
+    while($result2 = $stmt2->fetch(PDO::FETCH_ASSOC)){
+        $slika = $result2['url'];
+        echo "<img src='" . $slika . "' alt='slika igre' height='50%'>";
+    }
+    echo "<br><br>";
+
+    echo "<p><b>Ustvarjalec: </b></p>";
+    echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">".$username."</button><br><br>";
+    if(userloggedIn()){
+        echo "<button class='download-button' onclick=\"location.href='buygame.php?id=".$game_id."'\">Kupi igro</button>";
+    }
     echo "<br><br>";
     if($opis != null){
-        echo $opis;
+        echo "<p>".$opis."</p>";
     }
-    ?>
-<button class='user-button' onclick="location.href='profile_edit.php'">Edit profile</button>
-<br>
-<?php
-  echo "<br><br>";
-  echo "<h2>Mnenja uporabnikov</h2>";
-  if(userloggedIn()){
-    echo "Dodaj komentar: <br>";
-    echo "<form action='addkomentar.php?id=".$_SESSION['id']."' method='post'>";
+    else{
+        echo "<p>Opis ni na voljo.</p>";
+    }
+
+    echo "<br><br>";
+    //Prikaži komentarje za igro, če jih ni, izpiši, da jih ni
+$sql = "SELECT * FROM mnenja WHERE igra_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->execute([$game_id]);
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+echo "<h2>Mnenja: </h2>";
+
+if(userloggedIn()){
+    echo "Dodaj mnenje: <br>";
+    echo "<form action='addmnenje.php?id=".$game_id."' method='post'>";
     //dodaj dva boxa če je mnenje pozitivno ali negativno
+    echo "<input type='radio' id='pozitivno' name='ocena' value='1' checked>";
+    echo "<label for='pozitivno'>Pozitivno</label><br>";
+    echo "<input type='radio' id='negativno' name='ocena' value='0'>";
+    echo "<label for='negativno'>Negativno</label><br>";
     echo "<textarea name='mnenje' rows='5' cols='40'></textarea><br>";
-    echo "<button class='download-button' type='submit'>Oddaj komentar</button>";
+    echo "<button class='download-button' type='submit'>Dodaj mnenje</button>";
     echo "</form>";
     echo "<br>";
 }
+if (empty($results)) {
 
-  //prikaži komentarje uporabnikov
-  $sql = "SELECT * FROM komentarji WHERE profil_id = ?";
-  $stmt = $conn->prepare($sql);
-  $stmt->execute([$_SESSION['id']]);
-  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  if($result != null){
-      foreach($result as $row){
-          echo "<div class='user'>";
-          $user_id = $row['pisatelj_id'];
-          $mnenje = $row['text'];
-          $sql = "SELECT * FROM uporabniki WHERE id = ?";
-          $stmt = $conn->prepare($sql);
-          $stmt->execute([$user_id]);
-          $result = $stmt->fetch(PDO::FETCH_ASSOC);
-          $username = $result['username'];
-          $slika_id = $result['slika_id'];
-          $sql_slika = "SELECT * FROM slike WHERE id = ?";
-          $stmt_slika = $conn->prepare($sql_slika);
-          $stmt_slika->execute([$slika_id]);
-          $result_slika = $stmt_slika->fetch(PDO::FETCH_ASSOC);
-          $slika = $result_slika['url'];
-          //gumb za zbris mnenja
-          if(userloggedIn()){
-              if($user_id === $_SESSION['id']){
-                  echo "<button class='delete-mnenje-button' onclick=\"location.href='deletemnenje.php?id=".$row['id']."'\">Odstrani mnenje</button>";
-              }
-          }
-          echo "<img src='" . $slika . "' alt='slika uporabnika' height='100px'>
-          <p><b>" . $username . ": </b><br>";
-          echo $mnenje . "</p>";
-          echo "</div>";
-      }
-  }
-  else{
-      echo "<p>Nimaš še mnenj na profilu.</p>";
-  }
+    echo "<p>Ni mnenj.</p>";
+} else {
+    foreach ($results as $row) {
+        echo "<div class='user'>";
+        $mnenje = $row['text'];
+        $user_id = $row['uporabnik_id'];
 
+        // Pridobi uporabniško ime
+        $sql_username = "SELECT * FROM uporabniki WHERE id = ?";
+        $stmt_username = $conn->prepare($sql_username);
+        $stmt_username->execute([$user_id]);
+        $result_username = $stmt_username->fetch(PDO::FETCH_ASSOC);
+        $username = $result_username['username'];
+        $slika_id = $result_username['slika_id'];
+        //Pridobi sliko uporabnika
+        $sql_slika = "SELECT * FROM slike WHERE id = ?";
+        $stmt_slika = $conn->prepare($sql_slika);
+        $stmt_slika->execute([$slika_id]);
+        $result_slika = $stmt_slika->fetch(PDO::FETCH_ASSOC);
+        $slika = $result_slika['url'];
+        //gumb za zbris mnenja
+        if(userloggedIn()){
+            if($user_id === $_SESSION['id']){
+                echo "<button class='delete-mnenje-button' onclick=\"location.href='deletemnenje.php?id=".$row['id']."'\">Odstrani mnenje</button>";
+            }
+            else if(isUserAdmin($conn)){
+                echo "<button class='delete-mnenje-button' onclick=\"location.href='deletemnenjeadmin.php?id=".$row['id']."'\">Odstrani mnenje</button>";
+            }
+        }
+        
+        echo "<img src='" . $slika . "' alt='slika uporabnika' height='100px'>
+        <p><b>" . $username . ": </b><br>";
+        echo $mnenje . "</p>";
+        echo "</div>";
+    }
+}
 ?>
-    
 </div>
 
+
+
+
+
+
 <?php
+require_once 'connect.php';
+function userloggedIn(){
+    if(isset($_SESSION['username'])){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 function isUserAdmin($conn) {
   $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
   $stmt = $conn->prepare($sql);
@@ -153,15 +193,6 @@ function isUserAdmin($conn) {
   } else {
     return true;
   }
-}
-
-function userloggedIn(){
-    if(isset($_SESSION['username'])){
-        return true;
-    }
-    else{
-        return false;
-    }
 }
 
     if (isset($_COOKIE['prijava'])) {

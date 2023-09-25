@@ -19,7 +19,12 @@ $profil = $_GET['profile_id'];
     if ($stmt->execute([$uporabnik, $profil])) { // Pass parameters as an array
         setcookie('prijava', "Prošnja za prijateljstvo poslana!");
         setcookie('good', 1);
-        header('Location: profiles.php?id='.$profil.'');
+        if(isUserAdmin($conn)){
+            header('Location: profiles_admin.php?id='.$profil.'');
+        }
+        else{
+            header('Location: profiles.php?id='.$profil.'');
+        }
         exit();
     } else {
         setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));
@@ -27,5 +32,18 @@ $profil = $_GET['profile_id'];
         header('Location: profiles.php');
         exit();
     }
+
+    function isUserAdmin($conn) {
+        $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$_SESSION['id']]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($result == false) {
+          return false;
+        } else {
+          return true;
+        }
+      } 
 $conn = null; // Close the connection
 ?>

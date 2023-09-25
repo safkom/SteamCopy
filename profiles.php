@@ -140,6 +140,54 @@ $isAdmin = isUserAdmin($conn);
             echo "<button class='profile-button' onclick=\"location.href='addfriend.php?profile_id=".$profile_id."'\">Dodaj prijatelja</button>";
         }
     }
+    echo "<br><br>";
+    echo "<h2>Mnenja uporabnikov</h2>";
+    if(userloggedIn()){
+      echo "Dodaj komentar: <br>";
+      echo "<form action='addkomentar.php?id=".$profile_id."' method='post'>";
+      //dodaj dva boxa če je mnenje pozitivno ali negativno
+      echo "<textarea name='mnenje' rows='5' cols='40'></textarea><br>";
+      echo "<button class='download-button' type='submit'>Oddaj komentar</button>";
+      echo "</form>";
+      echo "<br>";
+  }
+
+    //prikaži komentarje uporabnikov
+    $sql = "SELECT * FROM komentarji WHERE profil_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$profile_id]);
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if($result != null){
+        foreach($result as $row){
+            echo "<div class='user'>";
+            $user_id = $row['pisatelj_id'];
+            $mnenje = $row['text'];
+            $sql = "SELECT * FROM uporabniki WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$user_id]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $username = $result['username'];
+            $slika_id = $result['slika_id'];
+            $sql_slika = "SELECT * FROM slike WHERE id = ?";
+            $stmt_slika = $conn->prepare($sql_slika);
+            $stmt_slika->execute([$slika_id]);
+            $result_slika = $stmt_slika->fetch(PDO::FETCH_ASSOC);
+            $slika = $result_slika['url'];
+            //gumb za zbris mnenja
+            if(userloggedIn()){
+                if($user_id === $_SESSION['id']){
+                    echo "<button class='delete-mnenje-button' onclick=\"location.href='deletemnenje.php?id=".$row['id']."'\">Odstrani mnenje</button>";
+                }
+            }
+            echo "<img src='" . $slika . "' alt='slika uporabnika' height='100px'>
+            <p><b>" . $username . ": </b><br>";
+            echo $mnenje . "</p>";
+            echo "</div>";
+        }
+    }
+    else{
+        echo "<p>Uporabnik še nima mnenj.</p>";
+    }
     ?>
 </div>
 

@@ -86,17 +86,14 @@ $isAdmin = isUserAdmin($conn);
               $stmt = $conn->prepare($sql);
               $stmt->execute([$row['id']]);
               while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                echo "<img src='".$row['url']."' alt='slika igre' width='500' >  ";
+                echo "<img src='".$row['url']."' alt='slika igre' width='50%' >  ";
               }
               echo "<br>";
-              $sql = "SELECT * FROM uporabniki WHERE id = ?";
-              $stmt = $conn->prepare($sql);
-              $stmt->execute([$user_id]);
-              $row = $stmt->fetch(PDO::FETCH_ASSOC);
-              $username = $row['username'];
-              echo "<p><b>Ustvarjalec: </b></p>";
-              echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">".$username."</button><br><br>";
-              echo "<button class='download-button' onclick=\"location.href='buygame.php?id=".$game_id."'\">Kupi igro</button>";
+              echo "<br>";
+              echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=".$game_id."'\">Poglej</button><br><br>";
+              if(userloggedIn()){
+                echo "<button class='download-button' onclick=\"location.href='buygame.php?id=".$game_id."'\">Kupi igro</button>";
+              }
               echo "</div>";
               echo "</div>";
             }
@@ -123,16 +120,15 @@ $isAdmin = isUserAdmin($conn);
               $stmt = $conn->prepare($sql);
               $stmt->execute([$row['id']]);
               while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                echo "<img src='".$row['url']."' alt='slika igre' width='500' >  ";
+                echo "<img src='".$row['url']."' alt='slika igre' width='50%' >  ";
               }
               echo "<br>";
               $sql = "SELECT * FROM uporabniki WHERE id = ?";
               $stmt = $conn->prepare($sql);
               $stmt->execute([$user_id]);
               $row = $stmt->fetch(PDO::FETCH_ASSOC);
-              $username = $row['username'];
-              echo "<p><b>Ustvarjalec: </b></p>";
-              echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">".$username."</button><br><br>";
+              $game_id = $row['id'];
+              echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=".$game_id."'\">Poglej</button><br><br>";
               echo "<button class='download-button' onclick=\"location.href='deletegameuser.php?id=".$game_id."'\">Kupi igro</button>";
               echo "</div>";
               echo "</div>";

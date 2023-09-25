@@ -81,3 +81,12 @@
     border-radius: 5px; /* Rounded corners */
     cursor: pointer; 
 }
+.delete-mnenje-button {
+    background-color: red;
+    color: white;
+    padding: 10px 20px; /* Adjust padding as needed */
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; 
+    float:right;
+}
