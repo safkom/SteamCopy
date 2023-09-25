@@ -86,7 +86,7 @@ $isAdmin = isUserAdmin($conn);
               $stmt = $conn->prepare($sql);
               $stmt->execute([$row['id']]);
               while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                echo "<img src='".$row['url']."' alt='slika igre' width='50%' >  ";
+                echo "<img src='".$row['url']."' alt='slika igre' width='20%' >  ";
               }
               echo "<br>";
               echo "<br>";
@@ -120,7 +120,7 @@ $isAdmin = isUserAdmin($conn);
               $stmt = $conn->prepare($sql);
               $stmt->execute([$row['id']]);
               while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                echo "<img src='".$row['url']."' alt='slika igre' width='50%' >  ";
+                echo "<img src='".$row['url']."' alt='slika igre' width='20%' >  ";
               }
               echo "<br>";
               $sql = "SELECT * FROM uporabniki WHERE id = ?";

@@ -88,7 +88,7 @@ $isAdmin = isUserAdmin($conn);
     $stmt2->execute([$game_id]);
     while($result2 = $stmt2->fetch(PDO::FETCH_ASSOC)){
         $slika = $result2['url'];
-        echo "<img src='" . $slika . "' alt='slika igre' height='50%'>";
+        echo "<img src='" . $slika . "' alt='slika igre' height='20%'>";
     }
     echo "<br><br>";
 
