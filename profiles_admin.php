@@ -193,7 +193,7 @@ if(!$isAdmin){
                   echo "<button class='delete-mnenje-button' onclick=\"location.href='deletekomentaradmin.php?id=".$row['id']."'\">Odstrani mnenje</button>";
               }
             }
-            echo "<img src='" . $slika . "' alt='slika uporabnika' height='100px'>
+            echo "<img src='" . $slika . "' alt='slika uporabnika' height='100px' width = '100px'>
             <p><b>" . $username . ": </b><br>";
             echo $mnenje . "</p>";
             echo "</div>";
