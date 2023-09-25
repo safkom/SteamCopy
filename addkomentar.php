@@ -15,7 +15,7 @@ $text = $_POST['mnenje'];
 
     // Prepare the INSERT statement
     $sql = "INSERT INTO mnenja (text, profil_id, pisatelj_id)
-    VALUES (?, ?, ?, ?)";
+    VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
     if ($stmt->execute([$text, $profile_id, $uporabnik])) { // Pass parameters as an array
         setcookie('prijava', "Komentar oddano!");
