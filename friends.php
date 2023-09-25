@@ -64,7 +64,12 @@ require_once 'connect.php';
 $sql = "SELECT * FROM friends WHERE user_id = ? AND prosnja_sprejeta = 1";
 $stmt = $conn->prepare($sql);
 $stmt->execute([$_SESSION['id']]);
-while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+// če je 0 rows napiši da nimaš prijateljev
+if($stmt->rowCount() == 0){
+    echo "<p>Nimaš prijateljev :/</p>";
+}
+else{
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     // Retrieve friend's information
     $friend_id = $row['requester_id'];
     $friendInfo = getUserInfo($conn, $friend_id);
@@ -77,7 +82,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 $sql = "SELECT * FROM friends WHERE requester_id = ? AND prosnja_sprejeta = 1";
 $stmt = $conn->prepare($sql);
 $stmt->execute([$_SESSION['id']]);
-while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     // Retrieve friend's information
     $friend_id = $row['user_id'];
     $friendInfo = getUserInfo($conn, $friend_id);
@@ -117,10 +122,9 @@ function displayUserInfo($conn, $user) {
     echo "</div>";
     echo "</div>";
 }
+}
 ?>
 
-
-    
 </div>
 <div id="container">
     <h1>Prejete Prošnje</h1>
@@ -128,6 +132,7 @@ function displayUserInfo($conn, $user) {
     $sql = "SELECT * FROM friends WHERE user_id = ? AND prosnja_sprejeta = 0";
     $stmt = $conn->prepare($sql);
     $stmt->execute([$_SESSION['id']]);
+    if($stmt->rowCount() != 0){
     // Display rows from the first query
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     // Retrieve data for each row
@@ -160,7 +165,7 @@ function displayUserInfo($conn, $user) {
     echo "</div>";
     echo "</div>";
 }
-
+}
 // Display rows from the second query
 ?>
 
@@ -172,6 +177,7 @@ function displayUserInfo($conn, $user) {
     $sql = "SELECT * FROM friends WHERE requester_id = ? AND prosnja_sprejeta = 0";
     $stmt = $conn->prepare($sql);
     $stmt->execute([$_SESSION['id']]);
+    if($stmt->rowCount() != 0){
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     // Retrieve data for each row
     $user_id = $row['user_id'];
@@ -201,6 +207,7 @@ function displayUserInfo($conn, $user) {
     echo "<button class='profile-button' onclick=\"location.href='cancelrequest.php?profile_id=".$user_id."'\">Prekliči prošnjo</button>";
     echo "</div>";
     echo "</div>";
+}
 }
 
 // Display rows from the second query
