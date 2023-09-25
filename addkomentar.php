@@ -14,7 +14,7 @@ $profile_id = $_GET['id'];
 $text = $_POST['mnenje'];
 
     // Prepare the INSERT statement
-    $sql = "INSERT INTO mnenja (text, profil_id, pisatelj_id)
+    $sql = "INSERT INTO komentarji (text, profil_id, pisatelj_id)
     VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
     if ($stmt->execute([$text, $profile_id, $uporabnik])) { // Pass parameters as an array
