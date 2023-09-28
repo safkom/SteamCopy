@@ -55,7 +55,7 @@ if (isset($_GET["code"])) {
             else{
                 if($result['banned'] === 1){
                     setcookie('banned', 1);
-                    header("Location: index.php");
+                    header("Location: odjava.php");
                 }
                 else{
                     $_SESSION["id"] = $result['id'];
