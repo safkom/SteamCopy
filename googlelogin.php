@@ -54,8 +54,7 @@ if (isset($_GET["code"])) {
             }
             else{
                 if($result['banned'] === 1){
-                    setcookie('prijava', "Vaš račun je blokiran.");
-                    setcookie('error', 1);
+                    setcookie('banned', 1);
                     header("Location: index.php");
                 }
                 else{
