@@ -28,6 +28,13 @@ function userLoggedIn()
         return false;
     }
 }
+if (isBanned($conn)) {
+    session_destroy();
+    setcookie('prijava', 'Vaš račun je blokiran.');
+    setcookie('error', 1);
+    header("Location: index.php");
+    die();
+  }
 ?>
 
 <body>
@@ -143,6 +150,19 @@ function userLoggedIn()
     <?php
     function isUserAdmin($conn) {
         $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$_SESSION['id']]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($result == false) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+      function isBanned($conn) {
+        if(!isset($_SESSION['id'])) return false; // If user is not logged in, return false (not banned
+        $sql = "SELECT * FROM uporabniki WHERE id = ? AND banned = 1";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$_SESSION['id']]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);

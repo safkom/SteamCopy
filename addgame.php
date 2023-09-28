@@ -19,6 +19,13 @@
           session_start();
           require_once 'connect.php';
           $isAdmin = isUserAdmin($conn);
+          if (isBanned($conn)) {
+            session_destroy();
+            setcookie('prijava', 'Vaš račun je blokiran.');
+            setcookie('error', 1);
+            header("Location: index.php");
+            die();
+          }
           if($isAdmin){
             echo "<button class='center-button' onclick=\"location.href='index.php'\">Store</button>";
             echo "<button class='center-button' onclick=\"location.href='admin_library.php'\">Library</button>";
@@ -86,6 +93,20 @@ function userloggedIn(){
 
 function isUserAdmin($conn) {
   $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([$_SESSION['id']]);
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  
+  if ($result == false) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function isBanned($conn) {
+  if(!isset($_SESSION['id'])) return false; // If user is not logged in, return false (not banned
+  $sql = "SELECT * FROM uporabniki WHERE id = ? AND banned = 1";
   $stmt = $conn->prepare($sql);
   $stmt->execute([$_SESSION['id']]);
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
