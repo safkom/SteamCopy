@@ -16,6 +16,7 @@ $isAdmin = isUserAdmin($conn);
 
 //check if user is banned
 if (isBanned($conn)) {
+  session_destroy();
   setcookie('prijava', 'Vaš račun je blokiran.');
   setcookie('error', 1);
   header("Location: index.php");
