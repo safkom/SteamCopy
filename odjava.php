@@ -6,6 +6,15 @@ if(!isset($_SESSION['id'])){
     header('Location: index.php');
     exit();
   }
+
+if($_COOKIE['banned'] === 1){
+    session_destroy();
+    setcookie('prijava', "Vaš račun je blokiran.")
+    setcookie('error', 1);
+    header('Location: index.php);
+}
+
+
 session_destroy();
 //delete cookie id and prijava
 setcookie('prijava', "Odjava uspešna.");
