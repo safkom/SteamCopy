@@ -13,6 +13,14 @@
 session_start();
 require_once "connect.php";
 $isAdmin = isUserAdmin($conn);
+
+//check if user is banned
+if (isBanned($conn)) {
+  setcookie('prijava', 'Vaš račun je blokiran.');
+  setcookie('error', 1);
+  header("Location: index.php");
+  die();
+}
 ?>
 
 <body> 
@@ -156,6 +164,7 @@ function isUserAdmin($conn) {
 }
 
 function isBanned($conn) {
+  if(!isset($_SESSION['id'])) return false; // If user is not logged in, return false (not banned
   $sql = "SELECT * FROM uporabniki WHERE id = ? AND banned = 1";
   $stmt = $conn->prepare($sql);
   $stmt->execute([$_SESSION['id']]);
