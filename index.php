@@ -14,8 +14,10 @@ session_start();
 require_once "connect.php";
 $isAdmin = isUserAdmin($conn);
 
-if(isBanned($conn)){
-    header('Location: odjava.php');
+if(UserLoggedIn()){
+    if(isBanned($conn)){
+        header('Location: odjava.php');
+    }
 }
 ?>
 
