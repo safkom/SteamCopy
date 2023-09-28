@@ -162,40 +162,48 @@ if (isBanned($conn)) {
 
     //prikaži komentarje uporabnikov
     $sql = "SELECT * FROM komentarji WHERE profil_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute([$profile_id]);
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if($result != null){
-        foreach($result as $row){
-            echo "<div class='user'>";
-            $user_id = $row['pisatelj_id'];
-            $mnenje = $row['text'];
-            $sql = "SELECT * FROM uporabniki WHERE id = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute([$user_id]);
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            $username = $result['username'];
-            $slika_id = $result['slika_id'];
-            $sql_slika = "SELECT * FROM slike WHERE id = ?";
-            $stmt_slika = $conn->prepare($sql_slika);
-            $stmt_slika->execute([$slika_id]);
-            $result_slika = $stmt_slika->fetch(PDO::FETCH_ASSOC);
-            $slika = $result_slika['url'];
-            //gumb za zbris mnenja
-            if(userloggedIn()){
-                if($user_id === $_SESSION['id']){
-                    echo "<button class='delete-mnenje-button' onclick=\"location.href='deletemnenje.php?id=".$row['id']."'\">Odstrani mnenje</button>";
-                }
-            }
-            echo "<img src='" . $slika . "' alt='slika uporabnika' height='100px' width='100px'>
-            <p><b>" . $username . ": </b><br>";
-            echo $mnenje . "</p>";
-            echo "</div>";
+$stmt = $conn->prepare($sql);
+$stmt->execute([$profile_id]);
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if ($result != null) {
+    foreach ($result as $row) {
+        echo "<div class='user'>";
+        $user_id = $row['pisatelj_id'];
+        $mnenje = $row['text'];
+        $komentar_id = $row['id'];
+
+        // Use different variable names ($stmtUser, $resultUser) for the inner query
+        $sqlUser = "SELECT * FROM uporabniki WHERE id = ?";
+        $stmtUser = $conn->prepare($sqlUser);
+        $stmtUser->execute([$user_id]);
+        $resultUser = $stmtUser->fetch(PDO::FETCH_ASSOC);
+        
+        $username = $resultUser['username'];
+        $slika_id = $resultUser['slika_id'];
+
+        // Use different variable names ($stmtSlika, $resultSlika) for the image query
+        $sqlSlika = "SELECT * FROM slike WHERE id = ?";
+        $stmtSlika = $conn->prepare($sqlSlika);
+        $stmtSlika->execute([$slika_id]);
+        $resultSlika = $stmtSlika->fetch(PDO::FETCH_ASSOC);
+        
+        $slika = $resultSlika['url'];
+
+        // Button for deleting comments (if the user is logged in and the comment belongs to the logged-in user)
+        if (userLoggedIn() && $user_id === $_SESSION['id']) {
+            echo "<button class='delete-mnenje-button' onclick=\"location.href='deletekomentar.php?id=" . $komentar_id . "'\">Odstrani mnenje</button>";
         }
+
+        echo "<img src='" . $slika . "' alt='slika uporabnika' height='100px' width='100px'>
+        <p><b>" . $username . ": </b><br>";
+        echo $mnenje . "</p>";
+        echo "</div>";
     }
-    else{
-        echo "<p>Uporabnik še nima mnenj.</p>";
-    }
+} else {
+    echo "<p>Uporabnik še nima mnenj.</p>";
+}
+
     ?>
 </div>
 

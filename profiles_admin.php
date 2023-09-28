@@ -173,43 +173,43 @@ if (isBanned($conn)) {
 
     //prikaži komentarje uporabnikov
     $sql = "SELECT * FROM komentarji WHERE profil_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute([$profile_id]);
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if($result != null){
-        foreach($result as $row){
-            echo "<div class='user'>";
-            $user_id = $row['pisatelj_id'];
-            $mnenje = $row['text'];
-            $sql = "SELECT * FROM uporabniki WHERE id = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute([$user_id]);
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            $username = $result['username'];
-            $slika_id = $result['slika_id'];
-            $sql_slika = "SELECT * FROM slike WHERE id = ?";
-            $stmt_slika = $conn->prepare($sql_slika);
-            $stmt_slika->execute([$slika_id]);
-            $result_slika = $stmt_slika->fetch(PDO::FETCH_ASSOC);
-            $slika = $result_slika['url'];
-            //gumb za zbris mnenja
-            if(userloggedIn()){
-                if($user_id === $_SESSION['id']){
-                    echo "<button class='delete-mnenje-button' onclick=\"location.href='deletemnenjeadmin.php?id=".$row['id']."'\">Odstrani mnenje</button>";
-                }
-                else if(isUserAdmin($conn)){
-                  echo "<button class='delete-mnenje-button' onclick=\"location.href='deletekomentaradmin.php?id=".$row['id']."'\">Odstrani mnenje</button>";
-              }
-            }
-            echo "<img src='" . $slika . "' alt='slika uporabnika' height='100px' width = '100px'>
-            <p><b>" . $username . ": </b><br>";
-            echo $mnenje . "</p>";
-            echo "</div>";
-        }
+$stmt = $conn->prepare($sql);
+$stmt->execute([$profile_id]);
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+if ($result != null) {
+    foreach ($result as $row) {
+        echo "<div class='user'>";
+        $user_id = $row['pisatelj_id'];
+        $mnenje = $row['text'];
+        
+        // Use the correct variable name $result2 instead of $result
+        $sql2 = "SELECT * FROM uporabniki WHERE id = ?";
+        $stmt2 = $conn->prepare($sql2);
+        $stmt2->execute([$user_id]);
+        $result2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+        
+        // Use $result2['username'] instead of $result['username']
+        $username2 = $result2['username'];
+        
+        // Use $result2['slika_id'] instead of $result['slika_id']
+        $slika_id2 = $result2['slika_id'];
+        
+        $sql_slika = "SELECT * FROM slike WHERE id = ?";
+        $stmt_slika = $conn->prepare($sql_slika);
+        $stmt_slika->execute([$slika_id2]); // Use $slika_id2
+        $result_slika = $stmt_slika->fetch(PDO::FETCH_ASSOC);
+        $slika = $result_slika['url'];
+
+        echo "<button class='delete-mnenje-button' onclick=\"location.href='deletekomentaradmin.php?id=" . $row['id'] . "'\">Odstrani mnenje</button>";
+        echo "<img src='" . $slika . "' alt='slika uporabnika' height='100px' width='100px'>
+        <p><b>" . $username2 . ": </b><br>"; // Use $username2
+        echo $mnenje . "</p>";
+        echo "</div>";
     }
-    else{
-        echo "<p>Uporabnik še nima mnenj.</p>";
-    }
+} else {
+    echo "<p>Uporabnik še nima mnenj.</p>";
+}
+
     ?>
 </div>
 
