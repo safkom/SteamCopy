@@ -14,10 +14,12 @@ session_start();
 require_once "connect.php";
 $isAdmin = isUserAdmin($conn);
 
-if(UserLoggedIn()){
+if(isset($_SESSION['username'])){
     if(isBanned($conn)){
-        setcookie('banned', 1);
-        header('Location: odjava.php');
+        setcookie('prijava', "Vaš račun je blokiran.");
+        setcookie('error', 1);
+        header("Location: index.php"); // Redirect to a ban page or another appropriate page
+        exit();
     }
 }
 ?>
