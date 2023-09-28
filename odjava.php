@@ -12,7 +12,8 @@ if (isset($_COOKIE['banned'])) {
     // User is banned, show a message or redirect to a ban page
     setcookie('prijava', "Vaš račun je blokiran.");
     setcookie('error', 1);
-    header('Location: ban_page.php'); // Replace 'ban_page.php' with the actual ban page
+    setcookie('banned', "", time() - 3600);
+    header('Location: index.php'); // Replace 'ban_page.php' with the actual ban page
     exit();
 }
 
