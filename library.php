@@ -12,6 +12,7 @@
 </head>
 <?php
 session_start();
+require_once 'connect.php';
 if (!isset($_SESSION['id'])) {
     setcookie('prijava', "Za to stran se rabiš prijaviti.");
     setcookie('warning', 1);
@@ -25,7 +26,6 @@ if (isBanned($conn)) {
   header("Location: index.php");
   die();
 }
-require_once 'connect.php';
 $isAdmin = isUserAdmin($conn);
 ?>
 
