@@ -53,10 +53,15 @@ if (isset($_GET["code"])) {
                 header("Location: google_addmail.php");
             }
             else{
-                if($result['banned'] === 1){
-                    setcookie('banned', 1);
-                    header("Location: odjava.php");
-                }
+                if ($result['banned'] === 1) {
+                    // Optionally log the user out (destroy session and cookies)
+                    session_destroy();
+                    setcookie('prijava', "Vaš račun je blokiran.");
+                    setcookie('error', 1);
+                    header("Location: index.php"); // Redirect to a ban page or another appropriate page
+                    exit();
+}
+
                 else{
                     $_SESSION["id"] = $result['id'];
                     $_SESSION["username"] = $result['username'];
