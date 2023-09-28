@@ -11,7 +11,7 @@ if (!isset($_SESSION['id'])) {
 // Validate and sanitize user input
 $uporabnik = $_SESSION['id'];
 $igra_id = $_GET['id'];
-$text = $_POST['mnenje'];
+$text = htmlspecialchars($_POST['mnenje'], ENT_QUOTES, 'UTF-8');
 
 // Validate the 'ocena' input to ensure it's either 0 or 1
 $ocena = ($_POST['ocena'] == 1) ? 1 : 0;

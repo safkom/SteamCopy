@@ -11,7 +11,7 @@ if (!isset($_SESSION['id'])) {
 // Validate and sanitize user input
 $uporabnik = $_SESSION['id'];
 $profile_id = $_GET['id'];
-$text = $_POST['mnenje'];
+$text = htmlspecialchars($_POST['mnenje'], ENT_QUOTES, 'UTF-8');
 
 // Use prepared statements to prevent SQL injection
 $sql = "INSERT INTO komentarji (text, profil_id, pisatelj_id) VALUES (:text, :profile_id, :uporabnik)";
