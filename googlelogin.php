@@ -53,7 +53,7 @@ if (isset($_GET["code"])) {
                 header("Location: google_addmail.php");
             }
             else{
-                if ($result['banned'] === 1) {
+                if ($result['banned'] == 1) {
                     // Optionally log the user out (destroy session and cookies)
                     session_destroy();
                     setcookie('prijava', "Vaš račun je blokiran.");
