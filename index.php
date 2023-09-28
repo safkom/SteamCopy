@@ -14,7 +14,7 @@ session_start();
 require_once "connect.php";
 $isAdmin = isUserAdmin($conn);
 
-if(isBanned()){
+if(isBanned($conn)){
     header('Location: odjava.php');
 }
 ?>
@@ -71,73 +71,73 @@ if(isBanned()){
         <br>
         <?php
         if (!isset($_POST['isci'])) {
-            $sql = "SELECT * FROM igre";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-              $game_id = $row['id'];
-              $ime = $row['ime'];
-              $opis = $row['opis'];
-              $zanr = $row['zanr'];
-              $user_id = $row['uporabnik_id'];
-              $file = $row['file_url'];
-              echo "<div class='user'>";
-              echo "<div class='user-info'>";
-              echo "<p><b>$ime</b></p><br>";
-              echo "<p>$opis</p><br>";
-              echo "<p>$zanr</p><br>";
-              $sql = "SELECT * FROM slike WHERE igra_id = ?";
-              $stmt = $conn->prepare($sql);
-              $stmt->execute([$row['id']]);
-              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                echo "<img src='".$row['url']."' alt='slika igre' width='20%' >  ";
-              }
-              echo "<br>";
-              echo "<br>";
-              echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=".$game_id."'\">Poglej</button><br><br>";
-              if(userloggedIn()){
-                echo "<button class='download-button' onclick=\"location.href='buygame.php?id=".$game_id."'\">Kupi igro</button>";
-              }
-              echo "</div>";
-              echo "</div>";
-            }
+    $sql = "SELECT * FROM igre";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $game_id = $row['id'];
+        $ime = $row['ime'];
+        $opis = $row['opis'];
+        $zanr = $row['zanr'];
+        $user_id = $row['uporabnik_id'];
+        $file = $row['file_url'];
+        echo "<div class='user'>";
+        echo "<div class='user-info'>";
+        echo "<p><b>$ime</b></p><br>";
+        echo "<p>$opis</p><br>";
+        echo "<p>$zanr</p><br>";
+        $sql2 = "SELECT * FROM slike WHERE igra_id = ?";
+        $stmt2 = $conn->prepare($sql2);
+        $stmt2->execute([$row['id']]);
+        while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+            echo "<img src='" . $row2['url'] . "' alt='slika igre' width='20%' >  ";
         }
-        if (isset($_POST['isci'])) { //check if form was submitted
-            $search_term = "%" . $_POST['iskanje'] . "%"; // Add wildcards for SQL LIKE
-            $sql = "SELECT * FROM igre WHERE ime LIKE :search_term";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(":search_term", $search_term, PDO::PARAM_STR);
-            $stmt->execute();
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-              $game_id = $row['id'];
-              $ime = $row['ime'];
-              $opis = $row['opis'];
-              $zanr = $row['zanr'];
-              $user_id = $row['uporabnik_id'];
-              $file = $row['file_url'];
-              echo "<div class='user'>";
-              echo "<div class='user-info'>";
-              echo "<p><b>$ime</b></p><br>";
-              echo "<p>$opis</p><br>";
-              echo "<p>$zanr</p><br>";
-              $sql = "SELECT * FROM slike WHERE igra_id = ?";
-              $stmt = $conn->prepare($sql);
-              $stmt->execute([$row['id']]);
-              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                echo "<img src='".$row['url']."' alt='slika igre' width='20%' >  ";
-              }
-              echo "<br>";
-              $sql = "SELECT * FROM uporabniki WHERE id = ?";
-              $stmt = $conn->prepare($sql);
-              $stmt->execute([$user_id]);
-              $row = $stmt->fetch(PDO::FETCH_ASSOC);
-              $game_id = $row['id'];
-              echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=".$game_id."'\">Poglej</button><br><br>";
-              echo "<button class='download-button' onclick=\"location.href='deletegameuser.php?id=".$game_id."'\">Kupi igro</button>";
-              echo "</div>";
-              echo "</div>";
-            }
+        echo "<br>";
+        echo "<br>";
+        echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=" . $game_id . "'\">Poglej</button><br><br>";
+        if (userLoggedIn()) {
+            echo "<button class='download-button' onclick=\"location.href='buygame.php?id=" . $game_id . "'\">Kupi igro</button>";
         }
+        echo "</div>";
+        echo "</div>";
+    }
+}
+if (isset($_POST['isci'])) {
+    $search_term = "%" . $_POST['iskanje'] . "%"; // Add wildcards for SQL LIKE
+    $sql = "SELECT * FROM igre WHERE ime LIKE :search_term";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(":search_term", $search_term, PDO::PARAM_STR);
+    $stmt->execute();
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $game_id = $row['id'];
+        $ime = $row['ime'];
+        $opis = $row['opis'];
+        $zanr = $row['zanr'];
+        $user_id = $row['uporabnik_id'];
+        $file = $row['file_url'];
+        echo "<div class='user'>";
+        echo "<div class='user-info'>";
+        echo "<p><b>$ime</b></p><br>";
+        echo "<p>$opis</p><br>";
+        echo "<p>$zanr</p><br>";
+        $sql2 = "SELECT * FROM slike WHERE igra_id = ?";
+        $stmt2 = $conn->prepare($sql2);
+        $stmt2->execute([$row['id']]);
+        while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+            echo "<img src='" . $row2['url'] . "' alt='slika igre' width='20%' >  ";
+        }
+        echo "<br>";
+        $sql3 = "SELECT * FROM uporabniki WHERE id = ?";
+        $stmt3 = $conn->prepare($sql3);
+        $stmt3->execute([$user_id]);
+        $row3 = $stmt3->fetch(PDO::FETCH_ASSOC);
+        $game_id = $row3['id'];
+        echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=" . $game_id . "'\">Poglej</button><br><br>";
+        echo "<button class='download-button' onclick=\"location.href='deletegameuser.php?id=" . $game_id . "'\">Kupi igro</button>";
+        echo "</div>";
+        echo "</div>";
+    }
+}
 
         ?>
     
