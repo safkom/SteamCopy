@@ -16,6 +16,8 @@ $isAdmin = isUserAdmin($conn);
 
 if(UserLoggedIn()){
     if(isBanned($conn)){
+        setcookie('prijava', 'Vaš račun je blokiran.');
+        setcookie('error', 1);
         header('Location: odjava.php');
     }
 }
