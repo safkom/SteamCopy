@@ -9,9 +9,9 @@ if(!isset($_SESSION['id'])){
 
 if($_COOKIE['banned'] === 1){
     session_destroy();
-    setcookie('prijava', "Vaš račun je blokiran.")
+    setcookie('prijava', "Vaš račun je blokiran.");
     setcookie('error', 1);
-    header('Location: index.php);
+    header('Location: index.php');
 }
 
 
