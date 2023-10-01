@@ -10,7 +10,7 @@ if (!isset($_SESSION['id'])) {
 session_destroy();
 // Delete cookies
 setcookie('prijava', "Odjava uspešna.");
-setcookie('good', "", time() - 3600);
+setcookie('good', "1");
 header('Location: index.php'); // Redirect to the index page after successful logout
 exit();
 ?>
