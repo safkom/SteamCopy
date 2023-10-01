@@ -14,6 +14,7 @@
 session_start();
 require_once 'connect.php';
 $isAdmin = isUserAdmin($conn);
+$_SESSION['lastlocation']="profiles_admin.php?id=".$_GET['id']."";
 if(!isset($_GET['id'])){
     header('Location: community.php');
     exit();

@@ -16,7 +16,7 @@ if ($result !== false) {
         if($result['banned'] == 1){
             setcookie('prijava', "Vaš račun je bil blokiran.");
             setcookie('error', 1);
-            header('Location: index.php');
+            header('Location: '. $_SESSION['lastlocation'] .'');
             exit();
         }
         $_SESSION["username"] = $result['username'];
@@ -26,14 +26,14 @@ if ($result !== false) {
             setcookie('prijava', "Prijava uspešna.");
             $_SESSION["googleregister"] = 0;
             setcookie('good', 1);
-            header('Location: index.php');
+            header('Location: '. $_SESSION['lastlocation'] .'');
             exit();
         } else {
             $_SESSION["id"] = $result['id'];
             setcookie('prijava', "Prijava uspešna.");
             setcookie('good', 1);
             $_SESSION["googleregister"] = 0;
-            header('Location: index.php');
+            header('Location: '. $_SESSION['lastlocation'] .'');
             exit();
         }
     } else {

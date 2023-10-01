@@ -13,6 +13,7 @@
 session_start();
 require_once "connect.php";
 $isAdmin = isUserAdmin($conn);
+$_SESSION['lastlocation']="index.php";
 
 //check if user is banned
 if (isBanned($conn)) {

@@ -19,10 +19,10 @@ $profil = $_GET['profile_id'];
         setcookie('prijava', "Prošnja izbrisana!");
         setcookie('good', 1);
         if(isUserAdmin($conn)){
-            header('Location: profiles_admin.php?id='.$profil.'');
+            header('Location: '. $_SESSION['lastlocation'] .'');
         }
         else{
-            header('Location: profiles.php?id='.$profil.'');
+            header('Location: '. $_SESSION['lastlocation'] .'');
         }
         exit();
     } else {

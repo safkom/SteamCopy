@@ -19,6 +19,7 @@ if (!isset($_SESSION['id'])) {
     header('Location: index.php');
     exit();
 }
+$_SESSION['lastlocation']="admin_library.php";
 $isAdmin = isUserAdmin($conn);
 if (!$isAdmin) {
   setcookie('prijava', "Tu nimaš dostopa.". $isAdmin);

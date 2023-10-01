@@ -14,7 +14,7 @@ function isUserAdmin($conn) {
 if (!isset($_SESSION['id'])) {
     setcookie('prijava', "Za uporabo te strani, se rabiš prijaviti.");
     setcookie('error', 1);
-    header('Location: index.php');
+    header('Location: '. $_SESSION['lastlocation'] .'');
     exit();
 }
 
@@ -23,7 +23,7 @@ $isAdmin = isUserAdmin($conn);
 if (!$isAdmin) {
     setcookie('prijava', "Za uporabo te strani, nimaš pravic.");
     setcookie('error', 1);
-    header('Location: index.php');
+    header('Location: '. $_SESSION['lastlocation'] .'');
     exit();
 }
 
@@ -37,15 +37,18 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     if ($stmt->execute([$komentar_id])) { // Pass parameters as an array
         setcookie('prijava', "Komentar izbrisan!");
         setcookie('good', 1);
+        header('Location: '. $_SESSION['lastlocation'] .'');
     } else {
         setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));
         setcookie('error', 1);
+        header('Location: '. $_SESSION['lastlocation'] .'');
     }
 } else {
     setcookie('prijava', "Invalid comment ID.");
     setcookie('error', 1);
+    header('Location: '. $_SESSION['lastlocation'] .'');
 }
 
-header('Location: index.php');
+header('Location: '. $_SESSION['lastlocation'] .'');
 exit();
 ?>

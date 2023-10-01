@@ -31,12 +31,12 @@ $profil = $_GET['id'];
     if ($stmt->execute([$profil])) { // Pass parameters as an array
         setcookie('prijava', "Uporabnik je banned!");
         setcookie('good', 1);
-        header('Location: community_admin.php');
+        header('Location: '. $_SESSION['lastlocation'] .'');
         exit();
     } else {
         setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));
         setcookie('error', 1);
-        header('Location: community_admin.php');
+        header('Location: '. $_SESSION['lastlocation'] .'');
         exit();
     }
     

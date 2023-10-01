@@ -4,7 +4,7 @@ session_start();
 if (!isset($_SESSION['id'])) {
     setcookie('prijava', "Za uporabo te strani, se rabiš prijaviti.");
     setcookie('error', 1);
-    header('Location: index.php');
+    header('Location: '. $_SESSION['lastlocation'] .'');
     exit();
 }
 //preveri če je uporabnik admin
@@ -12,7 +12,7 @@ $isAdmin = isUserAdmin($conn);
 if(!$isAdmin){
   setcookie('prijava', "Za uporabo te strani, nimaš pravic.");
   setcookie('error', 1);
-  header('Location: index.php');
+  header('Location: '. $_SESSION['lastlocation'] .'');
   exit();
 }
 
@@ -25,12 +25,12 @@ $mnenje_id = $_GET['id'];
     if ($stmt->execute([$mnenje_id])) { // Pass parameters as an array
         setcookie('prijava', "Mnenje izbrisano!");
         setcookie('good', 1);
-        header('Location: index.php?id=');
+        header('Location: '. $_SESSION['lastlocation'] .'');
         exit();
     } else {
         setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));
         setcookie('error', 1);
-        header('Location: index.php');
+        header('Location: '. $_SESSION['lastlocation'] .'');
         exit();
     }
 

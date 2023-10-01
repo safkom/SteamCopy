@@ -16,6 +16,7 @@ if(!isset($_GET['id'])){
     header('Location: community.php');
     exit();
 }
+$_SESSION['lastlocation']="gamepage.php?id=".$_GET['id'];
 require_once 'connect.php';
 $isAdmin = isUserAdmin($conn);
 if (isBanned($conn)) {

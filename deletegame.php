@@ -19,16 +19,16 @@ $igra_id = $_GET['id'];
         setcookie('prijava', "Igra izbrisana!");
         setcookie('good', 1);
         if($isAdmin){
-            header('Location: admin_library.php');
+            header('Location: '. $_SESSION['lastlocation'] .'');
         }
         else{
-            header('Location: library.php');
+            header('Location: '. $_SESSION['lastlocation'] .'');
         }
         exit();
     } else {
         setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));
         setcookie('error', 1);
-        header('Location: library.php');
+        header('Location: '. $_SESSION['lastlocation'] .'');
         exit();
     }
 

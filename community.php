@@ -19,6 +19,7 @@
 session_start();
 require_once 'connect.php';
 $isAdmin = isUserAdmin($conn);
+$_SESSION['lastlocation']="community.php";
 
 function userLoggedIn()
 {

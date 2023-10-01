@@ -18,6 +18,7 @@ if (!isset($_SESSION['id'])) {
     header('Location: index.php');
     exit();
 }
+$_SESSION['lastlocation']="friends.php";
 require_once 'connect.php';
 $isAdmin = isUserAdmin($conn);
 

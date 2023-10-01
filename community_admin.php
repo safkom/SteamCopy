@@ -19,7 +19,7 @@
 session_start();
 require_once 'connect.php';
 $isAdmin = isUserAdmin($conn);
-
+$_SESSION['lastlocation']="community_admin.php";
 
 if (!isset($_SESSION['id'])) {
     header('Location: index.php');

@@ -12,6 +12,7 @@
 </head>
 <?php
 session_start();
+$_SESSION['lastlocation']="library.php";
 require_once 'connect.php';
 if (!isset($_SESSION['id'])) {
     setcookie('prijava', "Za to stran se rabiš prijaviti.");

@@ -28,12 +28,12 @@ $stmt->bindParam(':ocena', $ocena, PDO::PARAM_INT);
 if ($stmt->execute()) {
     setcookie('prijava', "Mnenje oddano!");
     setcookie('good', 1);
-    header('Location: gamepage.php?id=' . $igra_id);
+    header('Location: '. $_SESSION['lastlocation'] .'');
     exit();
 } else {
     setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));
     setcookie('error', 1);
-    header('Location: index.php');
+    header('Location: '. $_SESSION['lastlocation'] .'');
     exit();
 }
 

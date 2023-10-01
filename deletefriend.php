@@ -19,16 +19,16 @@ $profil = $_GET['id'];
         setcookie('prijava', "Prijateljstvo izbrisano!");
         setcookie('good', 1);
         if(isUserAdmin($conn)){
-            header('Location: profiles_admin.php?id='.$profil.'');
+            header('Location: '. $_SESSION['lastlocation'] .'');
         }
         else{
-            header('Location: profiles.php?id='.$profil.'');
+            header('Location: '. $_SESSION['lastlocation'] .'');
         }
         exit();
     } else {
         setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));
         setcookie('error', 1);
-        header('Location: friends.php');
+        header('Location: '. $_SESSION['lastlocation'] .'');
         exit();
     }
 

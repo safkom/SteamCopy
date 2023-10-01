@@ -12,12 +12,12 @@ $stmt = $conn->prepare($sql);
 if ($stmt->execute([$komentar_id, $uporabnik])) { // Pass parameters as an array
     setcookie('prijava', "Komentar izbrisano!");
     setcookie('good', 1);
-    header('Location: index.php');
+    header('Location: '. $_SESSION['lastlocation'] .'');
     exit();
 } else {
     setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));
     setcookie('error', 1);
-    header('Location: index.php');
+    header('Location: '. $_SESSION['lastlocation'] .'');
     exit();
 }
 $conn = null; // Close the connection

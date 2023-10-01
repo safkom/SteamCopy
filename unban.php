@@ -2,14 +2,14 @@
 require_once 'connect.php';
 session_start();
 if (!isset($_SESSION['id'])) {
-    header('Location: index.php');
+    header('Location: '. $_SESSION['lastlocation'] .'');
     exit();
 }
 $isAdmin = isUserAdmin($conn);
 if (!$isAdmin) {
     setcookie('prijava', "Tu nimaš dostopa.");
     setcookie('error', 1);
-    header('Location: index.php');
+    header('Location: '. $_SESSION['lastlocation'] .'');
     exit();
 }
 
@@ -18,7 +18,7 @@ $stmt = $conn->prepare($sql);
 $stmt->execute([$_SESSION['id']]);
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($result == false) {
-    header('Location: index.php');
+    header('Location: '. $_SESSION['lastlocation'] .'');
     exit();
 }
 
@@ -31,12 +31,12 @@ $profil = $_GET['id'];
     if ($stmt->execute([$profil])) { // Pass parameters as an array
         setcookie('prijava', "Uporabnik unbanned!");
         setcookie('good', 1);
-        header('Location: community_admin.php');
+        header('Location: '. $_SESSION['lastlocation'] .'');
         exit();
     } else {
         setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));
         setcookie('error', 1);
-        header('Location: community_admin.php');
+        header('Location: '. $_SESSION['lastlocation'] .'');
         exit();
     }
     

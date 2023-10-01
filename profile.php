@@ -18,6 +18,7 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 $isAdmin = isUserAdmin($conn);
+$_SESSION['lastlocation']="profile.php";
 
 if (isBanned($conn)) {
   session_destroy();
@@ -132,7 +133,7 @@ if (isBanned($conn)) {
           //gumb za zbris mnenja
           if(userloggedIn()){
               if($user_id === $_SESSION['id']){
-                  echo "<button class='delete-mnenje-button' onclick=\"location.href='deletemnenje.php?id=".$row['id']."'\">Odstrani mnenje</button>";
+                  echo "<button class='delete-mnenje-button' onclick=\"location.href='deletekomentar.php?id=".$row['id']."'\">Odstrani mnenje</button>";
               }
           }
           echo "<img src='" . $slika . "' alt='slika uporabnika' height='100px'>
