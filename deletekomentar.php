@@ -10,7 +10,7 @@ $komentar_id = $_GET['id'];
 $sql = "DELETE FROM komentarji WHERE id = ? AND pisatelj_id = ?";
 $stmt = $conn->prepare($sql);
 if ($stmt->execute([$komentar_id, $uporabnik])) { // Pass parameters as an array
-    setcookie('prijava', "Komentar izbrisano!");
+    setcookie('prijava', "Komentar izbrisan!");
     setcookie('good', 1);
     header('Location: '. $_SESSION['lastlocation'] .'');
     exit();
