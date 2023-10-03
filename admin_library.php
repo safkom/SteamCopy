@@ -68,6 +68,7 @@ if (isBanned($conn)) {
             ?>
         </div>
     </nav>
+    <div class='content-below-navbar'>
     <br>
     <div id="container">
         <h1>Vse igre</h1>
@@ -163,6 +164,8 @@ if (isBanned($conn)) {
         echo "<button class='delete-button' onclick=\"location.href='deletegame.php?id=".$game_id."'\">Odstrani iz trgovine</button>";
         echo "</div>";
         echo "</div>";
+        echo "<div class='content-below-navbar'>";
+        echo "</div>";
     }
 ?>
 </div>
@@ -177,6 +180,7 @@ function userloggedIn(){
     }
 }
 function isUserAdmin($conn) {
+  if(isset($_SESSION['id']) == false) return false;
   $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
   $stmt = $conn->prepare($sql);
   $stmt->execute([$_SESSION['id']]);

@@ -20,3 +20,21 @@
     font-size: 14px;
     color: #777;
   }
+
+  @media (max-width: 768px) {
+    /* Adjust the padding and margin for smaller screens */
+    .user {
+      padding: 5px;
+      margin: 5px;
+    }
+    
+    /* Reduce the font size for the user's name on mobile */
+    .user-info p:first-child {
+      font-size: 16px;
+    }
+    
+    /* Reduce the font size for the user's description on mobile */
+    .user-info p:last-child {
+      font-size: 12px;
+    }
+  }

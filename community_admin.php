@@ -92,6 +92,7 @@ function userLoggedIn()
             ?>
         </div>
     </nav>
+    <div class='content-below-navbar'>
     <br>
     <div id="container">
         <h1>Community</h1>
@@ -176,6 +177,8 @@ function userLoggedIn()
                 
                 echo "</div>";
                 echo "</div>";
+                echo "<div class='content-below-navbar'>";
+                echo "</div>";
             }
         }
 
@@ -184,6 +187,7 @@ function userLoggedIn()
 
     <?php
 function isUserAdmin($conn) {
+    if(isset($_SESSION['id']) == false) return false;
     $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
     $stmt = $conn->prepare($sql);
     $stmt->execute([$_SESSION['id']]);

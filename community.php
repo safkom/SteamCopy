@@ -71,6 +71,7 @@ if (isBanned($conn)) {
             ?>
         </div>
     </nav>
+    <div class='content-below-navbar'>
     <br>
     <div id="container">
         <h1>Community</h1>
@@ -150,6 +151,7 @@ if (isBanned($conn)) {
 
     <?php
     function isUserAdmin($conn) {
+      if(isset($_SESSION['id']) == false) return false; // If user is not logged in, return false (not admin']))
         $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$_SESSION['id']]);
@@ -176,6 +178,7 @@ if (isBanned($conn)) {
       }
       include_once "alert.php";
       ?>
+      </div>
 </body>
 
 </html>

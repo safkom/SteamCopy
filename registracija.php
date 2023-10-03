@@ -38,7 +38,7 @@ $google_client->addScope('email');
 
 $google_client->addScope('profile');
   ?>
-  ?>
+  <div class='content-below-navbar'>
   <br>
   <div class = "container">
     <h1>Registracija</h1>

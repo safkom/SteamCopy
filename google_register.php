@@ -32,6 +32,7 @@
   }
   $_SESSION['googleregister'] = 1;
   ?>
+  <div class='content-below-navbar'>
   <br>
   <div class = "container">
     <h1>Registracija</h1>

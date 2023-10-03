@@ -57,6 +57,7 @@ if (isBanned($conn)) {
             ?>
         </div>
     </nav>
+    <div class='content-below-navbar'>
     <br>
     <div id="container">
     <h1 style="text-align: center;">Store</h1>
@@ -146,11 +147,13 @@ if (isset($_POST['isci'])) {
 }
 
 ?>
+</div>
 
 
 <?php
 function isUserAdmin($conn) {
-  $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
+if(isset($_SESSION['id']) == false) return false; // If user is not logged in, return false (not admin']))
+        $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
   $stmt = $conn->prepare($sql);
   $stmt->execute([$_SESSION['id']]);
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
