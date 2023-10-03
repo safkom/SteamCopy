@@ -46,6 +46,12 @@ if (isBanned($conn)) {
     <div class="navbar-right">
         <?php
         if (userLoggedIn()) {
+            $sql = "SELECT * FROM uporabniki WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$_SESSION['id']]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $denar = $row['denar'];
+            echo "<button class='user-button'>Balance: $denar €</button>";
             echo "<button class='user-button' onclick=\"location.href='friends.php'\">Friends</button>";
             echo "<button class='user-button' onclick=\"location.href='profile.php'\">" . $_SESSION['username'] . "</button>";
             echo "<button class='user-button' onclick=\"location.href='odjava.php'\">Logout</button>";
@@ -92,24 +98,34 @@ if (isBanned($conn)) {
         ?>
     </select>
     <br><br>
-
-    <label for="filterOwnership">Filtriraj po lastništvu:</label>
-    <select id="filterOwnership" onchange="filterTable()">
-        <option value="">Vse igre</option>
-        <option value="owned">Imam kupljeno</option>
-        <option value="not-owned">Nimam kupljeno</option>
-    </select>
+    <?php
+    if(isset($_SESSION['id'])){
+    echo "<label for='filterOwnership'>Filtriraj po lastništvu:</label>
+    <select id='filterOwnership' onchange='filterTable()'>
+        <option value=''>Vse igre</option>
+        <option value='owned'>Imam kupljeno</option>
+        <option value='not-owned'>Nimam kupljeno</option>
+    </select>";
+}
+    ?>
   </div>
   <br>
         <br>
         <br>
         <?php
+        if(isset($_SESSION['id'])){
           $sql = "SELECT igre.*, nakupi.uporabnik_id AS nakup_uporabnik_id
                   FROM igre
                   LEFT JOIN nakupi ON igre.id = nakupi.igra_id AND nakupi.uporabnik_id = ?";
-
-    $stmt = $conn->prepare($sql);
-    $stmt->execute([$_SESSION['id']]);
+                  $stmt = $conn->prepare($sql);
+                  $stmt->execute([$_SESSION['id']]);
+        }else{
+            $sql = "SELECT igre.*, nakupi.uporabnik_id AS nakup_uporabnik_id
+                    FROM igre
+                    LEFT JOIN nakupi ON igre.id = nakupi.igra_id";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->execute();
+            }
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $game_id = $row['id'];
         $ime = $row['ime'];
