@@ -68,8 +68,30 @@
   <input type="text" id="ime" name="ime" required><br><br>
   <label for="cena">Cena igre:</label>
   <input type="number" id="cena" name="cena" required step="0.01" min="0"><br><br>
-  <label for="ime">Žanr igre:</label>
-  <input type="text" id="zanr" name="zanr" required><br><br>
+  <label for="zanr">Žanr igre:</label>
+  <select name="zanr" id="zanr">
+    <option value="FPS">FPS</option>
+    <option value="Platformer">Platformer</option>
+    <option value="Strategy">Strategy</option>
+    <option value="Art">ART</option>
+    <option value="RPG">RPG</option>
+<option value="Adventure">Adventure</option>
+<option value="Simulation">Simulation</option>
+<option value="Sports">Sports</option>
+<option value="Puzzle">Puzzle</option>
+<option value="Racing">Racing</option>
+<option value="Fighting">Fighting</option>
+<option value="Horror">Horror</option>
+<option value="Survival">Survival</option>
+<option value="Music">Music</option>
+<option value="Casual">Casual</option>
+<option value="Educational">Educational</option>
+<option value="Party">Party</option>
+<option value="MOBA">MOBA</option>
+<option value="Card">Card</option>
+<option value="Board">Board</option>
+<option value="Shooter">Shooter</option>
+  </select>
   <label for="opis">Opis igre:</label>
   <textarea id="opis" name="opis" rows="4" cols="50" required></textarea>
   <label for="zip">Datoteke igre:</label>
