@@ -1,4 +1,3 @@
-Komentirajo si lahko samo prijatelji
 Uporabnik ma denar, lahko kupi igro samo če ima dovolj denarja
 Uporabnik lahko pusti mnenje samo če je kupil igro
 Iskanje po zvrsti iger

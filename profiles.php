@@ -152,7 +152,7 @@ if (isBanned($conn)) {
     }
     echo "<br><br>";
     echo "<h2>Mnenja uporabnikov</h2>";
-    if(userloggedIn()){
+    if(userIsFriend($profile_id, $conn)){
       echo "Dodaj komentar: <br>";
       echo "<form action='addkomentar.php?id=".$profile_id."' method='post'>";
       //dodaj dva boxa če je mnenje pozitivno ali negativno
@@ -224,6 +224,27 @@ function userloggedIn(){
         return false;
     }
 }
+
+function userIsFriend($user_id, $conn) {
+    if (!isset($_SESSION['id'])) {
+        return false; // User is not logged in
+    }
+
+    // Check if there is a friendship between the logged-in user and the profile user
+    $sql = "SELECT * FROM friends WHERE ((requester_id = ? AND user_id = ?) OR (user_id = ? AND requester_id = ?)) AND prosnja_sprejeta = 1";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$_SESSION['id'], $user_id, $_SESSION['id'], $user_id]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($result == false) {
+        return false;
+    } else {
+        return true;
+    }
+
+}
+
+
 function isUserAdmin($conn) {
 if(isset($_SESSION['id']) == false) return false; // If user is not logged in, return false (not admin']))
         $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
