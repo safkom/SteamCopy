@@ -118,3 +118,12 @@
         margin-top: 120px; /* Adjust this value to match your navbar's height */
     }
 }
+.filter-button {
+    background-color: brown;
+    color: wheat;
+    padding: 10px 20px; /* Adjust padding as needed */
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer;
+    
+}

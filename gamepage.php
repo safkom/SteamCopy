@@ -77,9 +77,16 @@ if (isBanned($conn)) {
     $ime = $result1['ime'];
     $opis = $result1['opis'];
     $cena = $result1['cena'];
-    $zanr = $result1['zanr'];
+    $zanr_id = $result1['zanr_id'];
     $user_id = $result1['uporabnik_id'];
     $url = $result1['file_url'];
+
+    // Prepare the second SQL statement to retrieve zanr
+    $sql2 = "SELECT * FROM zanri WHERE id = ?";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->execute([$zanr_id]);
+    $result2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+    $zanr = $result2['ime'];
 
     echo "<h1>".$ime."</h1><br><br>";
     echo "<p><b>Zanr: </b>".$zanr."</p>";

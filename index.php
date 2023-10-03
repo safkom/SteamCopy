@@ -6,188 +6,287 @@
     <meta name="description" content="Miha Šafranko">
     <meta name="author" content="Miha Šafranko">
     <link rel="stylesheet" type="text/css" href="css/index.css">
-    <link rel ="stylesheet" type ="text/css"href="css/navbar.css">
-    <title>SteamCopy</title>  
+    <link rel="stylesheet" type="text/css" href="css/navbar.css">
+    <title>SteamCopy</title>
 </head>
 <?php
 session_start();
 require_once "connect.php";
 $isAdmin = isUserAdmin($conn);
-$_SESSION['lastlocation']="index.php";
+$_SESSION['lastlocation'] = "index.php";
 
-//check if user is banned
+// Check if user is banned
 if (isBanned($conn)) {
-  session_destroy();
-  setcookie('prijava', 'Vaš račun je blokiran.');
-  setcookie('error', 1);
-  header("Location: index.php");
-  die();
+    session_destroy();
+    setcookie('prijava', 'Vaš račun je blokiran.');
+    setcookie('error', 1);
+    header("Location: index.php");
+    die();
 }
 ?>
 
-<body> 
+<body onload="toggleFilterOptions()">
 <nav class="navbar">
-        <div class="navbar-left">
-            <b style = "color:white; font-family:'Courier New', Courier, monospace">SteamCopy</b>
-        </div>
-        <div class="navbar-center">
+    <div class="navbar-left">
+        <b style="color:white; font-family:'Courier New', Courier, monospace">SteamCopy</b>
+    </div>
+    <div class="navbar-center">
         <?php
-          if($isAdmin){
+        if ($isAdmin) {
             echo "<button class='selected-button' onclick=\"location.href='index.php'\">Store</button>";
             echo "<button class='center-button' onclick=\"location.href='admin_library.php'\">Library</button>";
             echo "<button class='center-button' onclick=\"location.href='community_admin.php'\">Community</button>";
-          }
-          else{
+        } else {
             echo "<button class='selected-button' onclick=\"location.href='index.php'\">Store</button>";
             echo "<button class='center-button' onclick=\"location.href='library.php'\">Library</button>";
             echo "<button class='center-button' onclick=\"location.href='community.php'\">Community</button>";
-          }
-            ?>
-        </div>
-        <div class="navbar-right">
-            <?php
-            if (userLoggedIn()) {
-                echo "<button class='user-button' onclick=\"location.href='friends.php'\">Friends</button>";
-                echo "<button class='user-button' onclick=\"location.href='profile.php'\">" . $_SESSION['username'] . "</button>";
-                echo "<button class='user-button' onclick=\"location.href='odjava.php'\">Logout</button>";
-            } else {
-                echo "<button class='user-button' onclick=\"location.href='login.php'\">Login</button>";
-                echo "<button class='user-button' onclick=\"location.href='registracija.php'\">Register</button>";
-            } 
-            ?>
-        </div>
-    </nav>
-    <div class='content-below-navbar'>
+        }
+        ?>
+    </div>
+    <div class="navbar-right">
+        <?php
+        if (userLoggedIn()) {
+            echo "<button class='user-button' onclick=\"location.href='friends.php'\">Friends</button>";
+            echo "<button class='user-button' onclick=\"location.href='profile.php'\">" . $_SESSION['username'] . "</button>";
+            echo "<button class='user-button' onclick=\"location.href='odjava.php'\">Logout</button>";
+        } else {
+            echo "<button class='user-button' onclick=\"location.href='login.php'\">Login</button>";
+            echo "<button class='user-button' onclick=\"location.href='registracija.php'\">Register</button>";
+        }
+        ?>
+    </div>
+</nav>
+<div class='content-below-navbar'>
     <br>
     <div id="container">
-    <h1 style="text-align: center;">Store</h1>
-    <?php
-      if(isset($_SESSION['id'])){
-        echo "<button class='store-button' onclick=\"location.href='addgame.php'\">Dodaj igro</button>";
-      }
-    ?>
-    <p>Išči igre:</p>
-        <form action="index.php" method="post" enctype="multipart/form-data">
-            <input type="text" name="iskanje" placeholder="Vnesi ime igre">
-            <input type="submit" name="isci" value="Išči">
-            <input type="submit" name="isci" value="Ponastavi">
-        </form>
-        <br>
-        <br>
+        <h1 style="text-align: center;">Store</h1>
+        <?php
+        if (isset($_SESSION['id'])) {
+            echo "<button class='store-button' onclick=\"location.href='addgame.php'\">Dodaj igro</button>";
+        }
+        ?>
+        <button class="filter-button" onclick="toggleFilterOptions()">Filter</button>
+    <br>
+
+  <div id="filterOptionsContainer" class="filter-options">
+    <label for="filterName">Filtriraj po imenu:</label>
+    <input type="text" id="filterName" oninput="filterTable()">
+    <br>
+    <br>
+    <label for="priceRange">Cena:</label>
+    <input type="range" id="priceRange" min="0" max="100" step="1" oninput="filterTable()">
+    <div id="priceValues">Max: <span id="maxPrice">1000</span>€</div>
+    <br><br>
+    <label for="filterGenre">Filtriraj po žanru:</label>
+    <select id="filterGenre" onchange="filterTable()">
+        <?php
+        echo "<option value=''>Vsi žanri</option>";
+        $sql = "SELECT * FROM zanri";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $ime = $row['ime'];
+            echo "<option value='$ime'>$ime</option>";
+        }
+
+        ?>
+    </select>
+    <br><br>
+
+    <label for="filterOwnership">Filtriraj po lastništvu:</label>
+    <select id="filterOwnership" onchange="filterTable()">
+        <option value="">Vse igre</option>
+        <option value="owned">Imam kupljeno</option>
+        <option value="not-owned">Nimam kupljeno</option>
+    </select>
+  </div>
+  <br>
         <br>
         <br>
         <?php
-        if (!isset($_POST['isci'])) {
-    $sql = "SELECT * FROM igre";
+          $sql = "SELECT igre.*, nakupi.uporabnik_id AS nakup_uporabnik_id
+                  FROM igre
+                  LEFT JOIN nakupi ON igre.id = nakupi.igra_id AND nakupi.uporabnik_id = ?";
+
     $stmt = $conn->prepare($sql);
-    $stmt->execute();
+    $stmt->execute([$_SESSION['id']]);
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $game_id = $row['id'];
         $ime = $row['ime'];
         $opis = $row['opis'];
-        $zanr = $row['zanr'];
+        $zanr_id = $row['zanr_id'];
         $user_id = $row['uporabnik_id'];
         $file = $row['file_url'];
+        $cena = $row['cena'];
+        $owned = !empty($row['nakup_uporabnik_id']);
+
+        $sql2 = "SELECT * FROM zanri WHERE id = ?";
+        $stmt2 = $conn->prepare($sql2);
+        $stmt2->execute([$zanr_id]);
+        $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+        $zanr = $row2['ime'];
+
         echo "<div class='user'>";
         echo "<div class='user-info'>";
         echo "<p><b>$ime</b></p><br>";
-        echo "<p>$opis</p><br>";
+        echo "<p>Cena: $cena €</p><br>";
         echo "<p>$zanr</p><br>";
         $sql2 = "SELECT * FROM slike WHERE igra_id = ?";
-        $stmt2 = $conn->prepare($sql2);
-        $stmt2->execute([$row['id']]);
-        while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
-            echo "<img src='" . $row2['url'] . "' alt='slika igre' width='20%' >  ";
-        }
+                $stmt2 = $conn->prepare($sql2);
+                $stmt2->execute([$row['id']]);
+                while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+                    echo "<img src='" . $row2['url'] . "' alt='slika igre' width='20%' >  ";
+                }
         echo "<br>";
-        echo "<br>";
-        echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=" . $game_id . "'\">Poglej</button><br><br>";
-        if (userLoggedIn()) {
+        if ($owned) {
+            echo "<button class='download-button'>Imam igro</button>";
+        } else {
             echo "<button class='download-button' onclick=\"location.href='buygame.php?id=" . $game_id . "'\">Kupi igro</button>";
         }
-        echo "</div>";
-        echo "</div>";
-    }
-}
-if (isset($_POST['isci'])) {
-    $search_term = "%" . $_POST['iskanje'] . "%"; // Add wildcards for SQL LIKE
-    $sql = "SELECT * FROM igre WHERE ime LIKE :search_term";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(":search_term", $search_term, PDO::PARAM_STR);
-    $stmt->execute();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $game_id = $row['id'];
-        $ime = $row['ime'];
-        $opis = $row['opis'];
-        $zanr = $row['zanr'];
-        $user_id = $row['uporabnik_id'];
-        $file = $row['file_url'];
-        echo "<div class='user'>";
-        echo "<div class='user-info'>";
-        echo "<p><b>$ime</b></p><br>";
-        echo "<p>$opis</p><br>";
-        echo "<p>$zanr</p><br>";
-        $sql2 = "SELECT * FROM slike WHERE igra_id = ?";
-        $stmt2 = $conn->prepare($sql2);
-        $stmt2->execute([$row['id']]);
-        while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
-            echo "<img src='" . $row2['url'] . "' alt='slika igre' width='20%' >  ";
-        }
         echo "<br>";
-        $sql3 = "SELECT * FROM uporabniki WHERE id = ?";
-        $stmt3 = $conn->prepare($sql3);
-        $stmt3->execute([$user_id]);
-        $row3 = $stmt3->fetch(PDO::FETCH_ASSOC);
-        $game_id = $row3['id'];
+        echo "<br>";
         echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=" . $game_id . "'\">Poglej</button><br><br>";
-        echo "<button class='download-button' onclick=\"location.href='deletegameuser.php?id=" . $game_id . "'\">Kupi igro</button>";
         echo "</div>";
         echo "</div>";
     }
-}
+        ?>
+    </div>
 
-?>
-</div>
-
-
-<?php
-function isUserAdmin($conn) {
-if(isset($_SESSION['id']) == false) return false; // If user is not logged in, return false (not admin']))
+    <?php
+    function isUserAdmin($conn)
+    {
+        if (isset($_SESSION['id']) == false) return false;
         $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
-  $stmt = $conn->prepare($sql);
-  $stmt->execute([$_SESSION['id']]);
-  $result = $stmt->fetch(PDO::FETCH_ASSOC);
-  
-  if ($result == false) {
-    return false;
-  } else {
-    return true;
-  }
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$_SESSION['id']]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result == false) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function isBanned($conn)
+    {
+        if (!isset($_SESSION['id'])) return false;
+        $sql = "SELECT * FROM uporabniki WHERE id = ? AND banned = 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$_SESSION['id']]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result == false) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function userLoggedIn()
+    {
+        if (isset($_SESSION['username'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    include_once "alert.php";
+    ?>
+
+<script>
+var filterOptionsContainer = document.getElementById("filterOptionsContainer");
+var filterNameInput = document.getElementById("filterName");
+var priceRangeInput = document.getElementById("priceRange");
+var maxPriceOutput = document.getElementById("maxPrice");
+var filterGenreInput = document.getElementById("filterGenre");
+var filterOwnershipInput = document.getElementById("filterOwnership");
+
+function toggleFilterOptions() {
+    if (filterOptionsContainer.style.display === "none") {
+        filterOptionsContainer.style.display = "block";
+        enableFilterInputs();
+    } else {
+        filterOptionsContainer.style.display = "none";
+        disableFilterInputs();
+        filterTable(); // Filter the table when hiding the filter options
+    }
 }
 
-function isBanned($conn) {
-  if(!isset($_SESSION['id'])) return false; // If user is not logged in, return false (not banned
-  $sql = "SELECT * FROM uporabniki WHERE id = ? AND banned = 1";
-  $stmt = $conn->prepare($sql);
-  $stmt->execute([$_SESSION['id']]);
-  $result = $stmt->fetch(PDO::FETCH_ASSOC);
-  
-  if ($result == false) {
-    return false;
-  } else {
-    return true;
-  }
+function enableFilterInputs() {
+    filterNameInput.disabled = false;
+    priceRangeInput.disabled = false;
+    filterGenreInput.disabled = false;
+    filterOwnershipInput.disabled = false;
 }
 
-function userloggedIn(){
-    if(isset($_SESSION['username'])){
-        return true;
-    }
-    else{
-        return false;
+function disableFilterInputs() {
+    filterNameInput.disabled = true;
+    priceRangeInput.disabled = true;
+    filterGenreInput.disabled = true;
+    filterOwnershipInput.disabled = true;
+
+    filterNameInput.value = "";
+    priceRangeInput.value = priceRangeInput.max;
+    maxPriceOutput.textContent = priceRangeInput.max;
+    filterGenreInput.value = "";
+    filterOwnershipInput.value = "";
+}
+
+function filterTable() {
+    var filterNameValue = filterNameInput.value.toLowerCase();
+    var maxPriceValue = parseFloat(priceRangeInput.value);
+    var filterGenreValue = filterGenreInput.value.toLowerCase();
+    var filterOwnershipValue = filterOwnershipInput.value;
+
+    var rows = document.querySelectorAll(".user-info");
+
+    for (var i = 0; i < rows.length; i++) {
+        var name = rows[i].getElementsByTagName("p")[0].textContent.toLowerCase();
+        var price = parseFloat(rows[i].getElementsByTagName("p")[1].textContent.split(":")[1].trim());
+        var genre = rows[i].getElementsByTagName("p")[2].textContent.toLowerCase();
+        var ownership = rows[i].querySelector(".download-button").textContent.toLowerCase();
+
+        var parentDiv = rows[i].parentNode;
+        var showRow = true;
+
+        if (filterNameValue !== '' && !name.includes(filterNameValue)) {
+            showRow = false;
+        }
+
+        if (price > maxPriceValue) {
+            showRow = false;
+        }
+
+        if (filterGenreValue !== '' && genre !== filterGenreValue) {
+            showRow = false;
+        }
+
+        if (filterOwnershipValue === 'owned' && ownership !== 'imam igro') {
+            showRow = false;
+        }
+
+        if (filterOwnershipValue === 'not-owned' && ownership === 'imam igro') {
+            showRow = false;
+        }
+
+        parentDiv.style.display = showRow ? "block" : "none";
     }
 }
-include_once "alert.php";
-?>
+
+document.getElementById("filterName").addEventListener("input", filterTable);
+priceRangeInput.addEventListener("input", function() {
+    maxPriceOutput.textContent = priceRangeInput.value;
+    filterTable();
+});
+filterGenreInput.addEventListener("change", filterTable);
+filterOwnershipInput.addEventListener("change", filterTable);
+
+// Initial filter table
+filterTable();
+</script>
+
+</div>
 </body>
 </html>
