@@ -95,6 +95,7 @@ padding: 10px;
 border-radius: 5px;
 }
   .container input[type="text"],
+  .container input[type="number"],
 .container input[type="password"] {
   width: 100%;
   box-sizing: border-box;

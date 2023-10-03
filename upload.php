@@ -15,14 +15,16 @@ $user_id = $_SESSION['id'];
 $ime = $_POST['ime'];
 $opis = $_POST['opis'];
 $zanr = $_POST['zanr'];
+$cena = $_POST['cena'];
 
 // Insert the game into the 'igre' table
-$insertGameSql = "INSERT INTO igre (ime, opis, uporabnik_id, zanr) VALUES (:ime, :opis, :publisher, :zanr);";
+$insertGameSql = "INSERT INTO igre (ime, opis, uporabnik_id, zanr, cena) VALUES (:ime, :opis, :publisher, :zanr, :cena);";
 $stmt = $conn->prepare($insertGameSql);
 $stmt->bindParam(':ime', $ime, PDO::PARAM_STR);
 $stmt->bindParam(':opis', $opis, PDO::PARAM_STR);
 $stmt->bindParam(':publisher', $user_id, PDO::PARAM_STR);
 $stmt->bindParam(':zanr', $zanr, PDO::PARAM_STR);
+$stmt->bindParam(':cena', $cena);
 
 if ($stmt->execute()) {
     $gameId = $conn->lastInsertId(); // Get the ID of the inserted game
@@ -82,7 +84,7 @@ if ($stmt->execute()) {
                             $stmt3->bindParam(':gameId', $gameId, PDO::PARAM_INT);
 
                             if ($stmt3->execute()) {
-                                setcookie('prijava', "Hvala za objavo!.");
+                                setcookie('prijava', "Hvala za objavo!");
                                 setcookie('good', 1);
                                 header('Location: index.php');
                                 exit();

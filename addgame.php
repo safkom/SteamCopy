@@ -66,6 +66,8 @@
  <form action="upload.php" method="post" enctype="multipart/form-data">
   <label for="ime">Ime igre:</label>
   <input type="text" id="ime" name="ime" required><br><br>
+  <label for="cena">Cena igre:</label>
+  <input type="number" id="cena" name="cena" required step="0.01" min="0"><br><br>
   <label for="ime">Žanr igre:</label>
   <input type="text" id="zanr" name="zanr" required><br><br>
   <label for="opis">Opis igre:</label>

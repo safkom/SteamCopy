@@ -47,6 +47,7 @@ if (isBanned($conn)) {
         <div class="navbar-right">
             <?php
             if (userLoggedIn()) {
+              echo "<button class='user-button'>Stanje: ".Stanje($conn)."€</button>";
                 echo "<button class='user-button' onclick=\"location.href='friends.php'\">Friends</button>";
                 echo "<button class='user-button' onclick=\"location.href='profile.php'\">" . $_SESSION['username'] . "</button>";
                 echo "<button class='user-button' onclick=\"location.href='odjava.php'\">Logout</button>";
@@ -85,12 +86,14 @@ if (isBanned($conn)) {
         $game_id = $row['id'];
         $ime = $row['ime'];
         $opis = $row['opis'];
+        $cena = $row['cena'];
         $zanr = $row['zanr'];
         $user_id = $row['uporabnik_id'];
         $file = $row['file_url'];
         echo "<div class='user'>";
         echo "<div class='user-info'>";
         echo "<p><b>$ime</b></p><br>";
+        echo "<p>Cena: <b>".$cena."€</b></p><br>";
         echo "<p>$opis</p><br>";
         echo "<p>$zanr</p><br>";
         $sql2 = "SELECT * FROM slike WHERE igra_id = ?";
@@ -102,8 +105,8 @@ if (isBanned($conn)) {
         echo "<br>";
         echo "<br>";
         echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=" . $game_id . "'\">Poglej</button><br><br>";
-        if (userLoggedIn()) {
-            echo "<button class='download-button' onclick=\"location.href='buygame.php?id=" . $game_id . "'\">Kupi igro</button>";
+        if(!IgraKupljena($conn, $game_id)){
+          echo "<button class='download-button' onclick=\"location.href='deletegameuser.php?id=" . $game_id . "'\">Kupi igro</button>";
         }
         echo "</div>";
         echo "</div>";
@@ -118,6 +121,7 @@ if (isset($_POST['isci'])) {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $game_id = $row['id'];
         $ime = $row['ime'];
+        $cena = $row['cena'];
         $opis = $row['opis'];
         $zanr = $row['zanr'];
         $user_id = $row['uporabnik_id'];
@@ -125,6 +129,7 @@ if (isset($_POST['isci'])) {
         echo "<div class='user'>";
         echo "<div class='user-info'>";
         echo "<p><b>$ime</b></p><br>";
+        echo "<p><b>$cena</b></p><br>";
         echo "<p>$opis</p><br>";
         echo "<p>$zanr</p><br>";
         $sql2 = "SELECT * FROM slike WHERE igra_id = ?";
@@ -140,7 +145,9 @@ if (isset($_POST['isci'])) {
         $row3 = $stmt3->fetch(PDO::FETCH_ASSOC);
         $game_id = $row3['id'];
         echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=" . $game_id . "'\">Poglej</button><br><br>";
-        echo "<button class='download-button' onclick=\"location.href='deletegameuser.php?id=" . $game_id . "'\">Kupi igro</button>";
+        if(!IgraKupljena($conn, $game_id)){
+          echo "<button class='download-button' onclick=\"location.href='deletegameuser.php?id=" . $game_id . "'\">Kupi igro</button>";
+        }
         echo "</div>";
         echo "</div>";
     }
@@ -175,6 +182,28 @@ function isBanned($conn) {
   if ($result == false) {
     return false;
   } else {
+    return true;
+  }
+}
+
+function Stanje($conn){
+  $sql = "SELECT * FROM uporabniki WHERE id = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([$_SESSION['id']]);
+  $row = $stmt->fetch(PDO::FETCH_ASSOC);
+  return $row['denar'];
+}
+
+function IgraKupljena($conn, $igra_id){
+  if(!isset($_SESSION['id'])) return false;
+  $sql = "SELECT * FROM nakupi WHERE uporabnik_id = ? AND igra_id = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([$_SESSION['id'], $igra_id]);
+  $row = $stmt->fetch(PDO::FETCH_ASSOC);
+  if($row == false){
+    return false;
+  }
+  else{
     return true;
   }
 }

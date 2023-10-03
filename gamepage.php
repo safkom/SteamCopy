@@ -79,10 +79,17 @@ if (isBanned($conn)) {
     $cena = $result1['cena'];
     $zanr = $result1['zanr'];
     $user_id = $result1['uporabnik_id'];
+    $url = $result1['file_url'];
 
     echo "<h1>".$ime."</h1><br><br>";
     echo "<p><b>Zanr: </b>".$zanr."</p>";
     echo "<p><b>Cena: </b>".$cena."€</p>";
+    if($opis != null){
+        echo "<p>".$opis."</p>";
+    }
+    else{
+        echo "<p>Opis ni na voljo.</p>";
+    }
     echo "<br><br>";
 
 
@@ -102,15 +109,11 @@ if (isBanned($conn)) {
 
     echo "<p><b>Ustvarjalec: </b></p>";
     echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">".$username."</button><br><br>";
-    if(userloggedIn()){
-        echo "<button class='download-button' onclick=\"location.href='buygame.php?id=".$game_id."'\">Kupi igro</button>";
-    }
-    echo "<br><br>";
-    if($opis != null){
-        echo "<p>".$opis."</p>";
+    if(IgraKupljena($conn, $game_id)){
+        echo "<button class='download-button' onclick=\"location.href='".$url."'\">Prenesi igro</button>";
     }
     else{
-        echo "<p>Opis ni na voljo.</p>";
+        echo "<button class='download-button' onclick=\"location.href='buygame.php?id=" . $game_id . "'\">Kupi igro</button>";
     }
 
     echo "<br><br>";
@@ -121,7 +124,7 @@ $stmt->execute([$game_id]);
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 echo "<h2>Mnenja: </h2>";
 
-if(userloggedIn()){
+if(IgraKupljena($conn, $game_id)){
     echo "Dodaj mnenje: <br>";
     echo "<form action='addmnenje.php?id=".$game_id."' method='post'>";
     //dodaj dva boxa če je mnenje pozitivno ali negativno
@@ -216,6 +219,19 @@ function isBanned($conn) {
     return true;
   }
 }
+function IgraKupljena($conn, $igra_id){
+    if(!isset($_SESSION['id'])) return false;
+    $sql = "SELECT * FROM nakupi WHERE uporabnik_id = ? AND igra_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$_SESSION['id'], $igra_id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($row == false){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
 include_once "alert.php";
 ?>
 </body>
