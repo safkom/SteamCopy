@@ -81,9 +81,16 @@ if (isBanned($conn)) {
         $game_id = $row['id'];
         $ime = $row['ime'];
         $opis = $row['opis'];
-        $zanr = $row['zanr'];
+        $zanr_id = $row['zanr_id'];
         $user_id = $row['uporabnik_id'];
         $file = $row['file_url'];
+
+        $sql = "SELECT * FROM zanri WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$zanr_id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $zanr = $row['ime'];
+
         echo "<div class='user'>";
         echo "<div class='user-info'>";
         echo "<p><b>$ime</b></p><br>";
@@ -120,9 +127,17 @@ if (isBanned($conn)) {
         $game_id = $row['id'];
         $ime = $row['ime'];
         $opis = $row['opis'];
-        $zanr = $row['zanr'];
+        $zanr_id = $row['zanr_id'];
         $user_id = $row['uporabnik_id'];
         $file = $row['file_url'];
+
+
+        $sql = "SELECT * FROM zanri WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$zanr_id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $zanr = $row['ime'];
+
         echo "<div class='user'>";
         echo "<div class='user-info'>";
         echo "<p><b>$ime</b></p><br>";
@@ -153,8 +168,15 @@ if (isBanned($conn)) {
         $game_id = $row['id'];
         $ime = $row['ime'];
         $opis = $row['opis'];
-        $zanr = $row['zanr'];
+        $zanr_id = $row['zanr_id'];
         $file = $row['file_url'];
+
+        $sql = "SELECT * FROM zanri WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$zanr_id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $zanr = $row['ime'];
+
         echo "<div class='user'>";
         echo "<div class='user-info'>";
         echo "<p><b>$ime</b></p><br>";
