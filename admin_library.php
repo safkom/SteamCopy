@@ -102,7 +102,7 @@ if (isBanned($conn)) {
         $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
         $username = $row2['username'];
         echo "<p><b>Ustvarjalec: </b></p>";
-        echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">".$username."</button><br><br>";
+        echo "<button class='profile-button' onclick=\"location.href='profiles_admin.php?id=".$user_id."'\">".$username."</button><br><br>";
         echo "<button class='download-button' type='submit' onclick=\"window.open('".$file."')\">Prenesi igro</button> ";
         echo "<button class='delete-button' onclick=\"location.href='deletegame.php?id=".$game_id."'\">Zbriši igro iz trgovine</button>";
         echo "</div>";
@@ -149,7 +149,7 @@ if (isBanned($conn)) {
         $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
         $username = $row2['username'];
         echo "<p><b>Ustvarjalec: </b></p>";
-        echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">".$username."</button><br><br>";
+        echo "<button class='profile-button' onclick=\"location.href='profiles_admin.php?id=".$user_id."'\">".$username."</button><br><br>";
         echo "<button class='download-button' type='submit' onclick=\"window.open('".$file."')\">Prenesi igro</button> ";
         echo "<button class='delete-button' onclick=\"location.href='deletegameuser.php?id=".$game_id."'\">Odstrani iz kupljenih iger</button>";
         echo "</div>";
