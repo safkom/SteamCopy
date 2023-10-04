@@ -13,12 +13,14 @@
 <?php
 session_start();
 require_once 'connect.php';
+$_SESSION['lastlocation']="profile.php";
 if (!isset($_SESSION['id'])) {
-    header('Location: index.php');
+    setcookie('prijava', "Za dostop do te strani, se prijavi.");
+    setcookie('warning', 1);
+    header('Location: login.php');
     exit();
 }
 $isAdmin = isUserAdmin($conn);
-$_SESSION['lastlocation']="profile.php";
 
 if (isBanned($conn)) {
   session_destroy();

@@ -13,14 +13,16 @@
 session_start();
 require_once 'connect.php';
 if (!isset($_SESSION['id'])) {
-    header('Location: index.php');
+    setcookie('prijava', "Za dostop do te strani, se prijavi.");
+    setcookie('warning', 1);
+    header('Location: prijava.php');
     exit();
 }
 if (isBanned($conn)) {
   session_destroy();
   setcookie('prijava', 'Vaš račun je blokiran.');
   setcookie('error', 1);
-  header("Location: index.php");
+  header("Location: login.php");
   die();
 }
 ?>

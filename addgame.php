@@ -43,7 +43,7 @@
             if (!isset($_SESSION['id'])) {
               setcookie('prijava', "Za to stran se rabiš prijaviti.");
               setcookie('warning', 1);
-              header('Location: index.php');
+              header('Location: prijava.php');
               exit();
           }
             if (userLoggedIn()) {

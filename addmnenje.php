@@ -4,7 +4,7 @@ session_start();
 if (!isset($_SESSION['id'])) {
     setcookie('prijava', "Tu nimaš dostopa.");
     setcookie('error', 1);
-    header('Location: index.php');
+    header('Location: login.php');
     exit();
 }
 

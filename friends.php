@@ -15,7 +15,7 @@ session_start();
 if (!isset($_SESSION['id'])) {
     setcookie('prijava', "Za dostop do te strani, se prijavi.");
     setcookie('warning', 1);
-    header('Location: index.php');
+    header('Location: login.php');
     exit();
 }
 $_SESSION['lastlocation']="friends.php";

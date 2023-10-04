@@ -154,11 +154,9 @@ if (isBanned($conn)) {
                     echo "<img src='" . $row2['url'] . "' alt='slika igre' width='20%' >  ";
                 }
         echo "<br>";
-        if ($owned) {
-            echo "<button class='download-button'>Imam igro</button>";
-        } else {
-            echo "<button class='download-button' onclick=\"location.href='buygame.php?id=" . $game_id . "'\">Kupi igro</button>";
-        }
+        if (!$owned) {
+            echo "<button class='download-button' onclick=\"location.href='buygame.php?id=" . $game_id . "'\">Kupi igro</button><br><br>";
+        } 
         echo "<br>";
         echo "<br>";
         echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=" . $game_id . "'\">Poglej</button><br><br>";

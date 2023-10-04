@@ -4,7 +4,7 @@ session_start();
 if (!isset($_SESSION['id'])) {
     setcookie('prijava', "Za uporabo te strani, se rabiš prijaviti.");
     setcookie('error', 1);
-    header('Location: index.php');
+    header('Location: login.php');
     exit();
 }
 $igra_id = $_GET['id'];
