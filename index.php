@@ -94,19 +94,25 @@ if (isBanned($conn)) {
             $ime = $row['ime'];
             echo "<option value='$ime'>$ime</option>";
         }
-
         ?>
     </select>
     <br><br>
     <?php
     if(isset($_SESSION['id'])){
-    echo "<label for='filterOwnership'>Filtriraj po lastništvu:</label>
-    <select id='filterOwnership' onchange='filterTable()'>
-        <option value=''>Vse igre</option>
-        <option value='owned'>Imam kupljeno</option>
-        <option value='not-owned'>Nimam kupljeno</option>
-    </select>";
-}
+        echo "<label for='filterOwnership'>Filtriraj po lastništvu:</label>
+        <select id='filterOwnership' onchange='filterTable()'>
+            <option value=''>Vse igre</option>
+            <option value='owned'>Imam kupljeno</option>
+            <option value='not-owned'>Nimam kupljeno</option>
+        </select>";
+    } else {
+        echo "<label for='filterOwnership' style='display:none;'>Filtriraj po lastništvu:</label>
+        <select id='filterOwnership' onchange='filterTable()' style='display:none;'>
+            <option value=''>Vse igre</option>
+            <option value='owned'>Imam kupljeno</option>
+            <option value='not-owned'>Nimam kupljeno</option>
+        </select>";
+    }
     ?>
   </div>
   <br>
@@ -134,7 +140,12 @@ if (isBanned($conn)) {
         $user_id = $row['uporabnik_id'];
         $file = $row['file_url'];
         $cena = $row['cena'];
-        $owned = !empty($row['nakup_uporabnik_id']);
+        if(userLoggedIn()){
+        $owned = ($row['nakup_uporabnik_id'] == $_SESSION['id']);
+        }
+        else{
+            $owned = false;
+        }
 
         $sql2 = "SELECT * FROM zanri WHERE id = ?";
         $stmt2 = $conn->prepare($sql2);
@@ -155,7 +166,7 @@ if (isBanned($conn)) {
                 }
         echo "<br>";
         if ($owned && userLoggedIn()) {
-            echo "<button class='download-button' onclick=\"window.open('".$file."')\"  >Prenesi igro</button>";
+            echo "<button class='download-button' onclick=\"window.open('".$file."')\">Prenesi igro</button>";
         } else {
             echo "<button class='download-button' onclick=\"location.href='buygame.php?id=" . $game_id . "'\">Kupi igro</button>";
         }
@@ -171,27 +182,27 @@ if (isBanned($conn)) {
     <?php
     function isUserAdmin($conn)
     {
-        if (isset($_SESSION['id']) == false) return false;
+        if (!isset($_SESSION['id'])) return false; // Check if 'id' exists in the $_SESSION array
         $sql = "SELECT * FROM uporabniki WHERE id = ? AND admin = 1";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$_SESSION['id']]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    
         if ($result == false) {
             return false;
         } else {
             return true;
         }
     }
-
+    
     function isBanned($conn)
     {
-        if (!isset($_SESSION['id'])) return false;
+        if (!isset($_SESSION['id'])) return false; // Check if 'id' exists in the $_SESSION array
         $sql = "SELECT * FROM uporabniki WHERE id = ? AND banned = 1";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$_SESSION['id']]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    
         if ($result == false) {
             return false;
         } else {
@@ -262,7 +273,11 @@ function filterTable() {
         var name = rows[i].getElementsByTagName("p")[0].textContent.toLowerCase();
         var price = parseFloat(rows[i].getElementsByTagName("p")[1].textContent.split(":")[1].trim());
         var genre = rows[i].getElementsByTagName("p")[2].textContent.toLowerCase();
-        var ownership = rows[i].querySelector(".download-button").textContent.toLowerCase();
+        var ownershipText = rows[i].querySelector(".download-button").textContent.toLowerCase();
+
+        // Check if the user is logged in or not
+        var isUserLoggedIn = <?php echo userLoggedIn() ? 'true' : 'false'; ?>;
+        var ownership = isUserLoggedIn ? ownershipText : "not-logged-in";
 
         var parentDiv = rows[i].parentNode;
         var showRow = true;
@@ -279,11 +294,16 @@ function filterTable() {
             showRow = false;
         }
 
-        if (filterOwnershipValue === 'owned' && ownership !== 'imam igro') {
+        if (filterOwnershipValue === 'owned' && ownership !== 'prenesi igro') {
             showRow = false;
         }
 
-        if (filterOwnershipValue === 'not-owned' && ownership === 'imam igro') {
+        if (filterOwnershipValue === 'not-owned' && ownership === 'prenesi igro') {
+            showRow = false;
+        }
+
+        // Handle the case where the user is not logged in
+        if (!isUserLoggedIn && filterOwnershipValue === 'owned') {
             showRow = false;
         }
 
