@@ -18,6 +18,7 @@
           <?php
           session_start();
           require_once 'connect.php';
+          require_once "alert.php";
           $isAdmin = isUserAdmin($conn);
           if (isBanned($conn)) {
             session_destroy();
@@ -70,27 +71,16 @@
   <input type="number" id="cena" name="cena" required step="0.01" min="0"><br><br>
   <label for="zanr">Žanr igre:</label>
   <select name="zanr" id="zanr">
-    <option value="FPS">FPS</option>
-    <option value="Platformer">Platformer</option>
-    <option value="Strategy">Strategy</option>
-    <option value="Art">ART</option>
-    <option value="RPG">RPG</option>
-<option value="Adventure">Adventure</option>
-<option value="Simulation">Simulation</option>
-<option value="Sports">Sports</option>
-<option value="Puzzle">Puzzle</option>
-<option value="Racing">Racing</option>
-<option value="Fighting">Fighting</option>
-<option value="Horror">Horror</option>
-<option value="Survival">Survival</option>
-<option value="Music">Music</option>
-<option value="Casual">Casual</option>
-<option value="Educational">Educational</option>
-<option value="Party">Party</option>
-<option value="MOBA">MOBA</option>
-<option value="Card">Card</option>
-<option value="Board">Board</option>
-<option value="Shooter">Shooter</option>
+  <?php
+        $sql = "SELECT * FROM zanri";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $ime = $row['ime'];
+            $id = $row['id'];
+            echo "<option value='$id'>$ime</option>";
+        }
+        ?>
   </select>
   <label for="opis">Opis igre:</label>
   <textarea id="opis" name="opis" rows="4" cols="50" required></textarea>
@@ -105,7 +95,6 @@
   </div>
   <div id="loginWindow">
     <?php
-
 function userloggedIn(){
     if(isset($_SESSION['username'])){
         return true;
@@ -141,7 +130,6 @@ function isBanned($conn) {
     return true;
   }
 }
-include_once "alert.php";
 ?>
 </body>
 </html>
