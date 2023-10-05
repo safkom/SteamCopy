@@ -154,8 +154,8 @@ if (isBanned($conn)) {
                     echo "<img src='" . $row2['url'] . "' alt='slika igre' width='20%' >  ";
                 }
         echo "<br>";
-        if ($owned) {
-            echo "<button class='download-button'>Imam igro</button>";
+        if ($owned && userLoggedIn()) {
+            echo "<button class='download-button' onclick=\"window.open('".$file."')\"  >Prenesi igro</button>";
         } else {
             echo "<button class='download-button' onclick=\"location.href='buygame.php?id=" . $game_id . "'\">Kupi igro</button>";
         }

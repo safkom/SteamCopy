@@ -65,58 +65,58 @@ $isAdmin = isUserAdmin($conn);
     <div class='content-below-navbar'>
     <br>
     <div id="container">
-        <h1>Kupljene igre</h1>
+    <h1>Kupljene igre</h1>
     <?php
     require_once 'connect.php';
     $sql = "SELECT * FROM nakupi WHERE uporabnik_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->execute([$_SESSION['id']]);
-    if($stmt->rowCount() == 0){
-      echo "<p>Nimaš kupljenih iger.</p>";
+    if ($stmt->rowCount() == 0) {
+        echo "<p>Nimaš kupljenih iger.</p>";
+    } else {
+        while ($rowNakupi = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $sql = "SELECT * FROM igre WHERE id = ?";
+            $stmtIgre = $conn->prepare($sql);
+            $stmtIgre->execute([$rowNakupi['igra_id']]);
+            $rowIgre = $stmtIgre->fetch(PDO::FETCH_ASSOC);
+
+            $game_id = $rowIgre['id'];
+            $ime = $rowIgre['ime'];
+            $opis = $rowIgre['opis'];
+            $zanr_id = $rowIgre['zanr_id'];
+            $user_id = $rowIgre['uporabnik_id'];
+            $file = $rowIgre['file_url'];
+
+            $sql = "SELECT * FROM zanri WHERE id = ?";
+            $stmtZanri = $conn->prepare($sql);
+            $stmtZanri->execute([$zanr_id]);
+            $rowZanri = $stmtZanri->fetch(PDO::FETCH_ASSOC);
+            $zanr = $rowZanri['ime'];
+
+            echo "<div class='user'>";
+            echo "<div class='user-info'>";
+            echo "<p><b>$ime</b></p><br>";
+            echo "<p>$opis</p><br>";
+            echo "<p>$zanr</p><br>";
+            
+            $sql2 = "SELECT * FROM uporabniki WHERE id = ?";
+            $stmt2 = $conn->prepare($sql2);
+            $stmt2->execute([$user_id]);
+            $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+            $username = $row2['username'];
+
+            echo "<p><b>Ustvarjalec: </b></p>";
+            echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=" . $user_id . "'\">" . $username . "</button><br><br>";
+            echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=" . $game_id . "'\">Poglej</button><br><br>";
+            echo "<button class='download-button' type='submit' onclick=\"window.open('" . $file . "')\">Prenesi igro</button> ";
+            echo "<button class='delete-button' onclick=\"location.href='deletegameuser.php?id=" . $game_id . "'\">Odstrani iz kupljenih iger</button>";
+            echo "</div>";
+            echo "</div>";
+        }
     }
-    else{
-      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $sql = "SELECT * FROM igre WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$row['igra_id']]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
-        $game_id = $row['id'];
-        $ime = $row['ime'];
-        $opis = $row['opis'];
-        $zanr_id = $row['zanr_id'];
-        $user_id = $row['uporabnik_id'];
-        $file = $row['file_url'];
-
-        $sql = "SELECT * FROM zanri WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$zanr_id]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $zanr = $row['ime'];
-
-        echo "<div class='user'>";
-        echo "<div class='user-info'>";
-        echo "<p><b>$ime</b></p><br>";
-        echo "<p>$opis</p><br>";
-        echo "<p>$zanr</p><br>";
-        $sql2 = "SELECT * FROM uporabniki WHERE id = ?";
-        $stmt2 = $conn->prepare($sql2);
-        $stmt2->execute([$user_id]);
-        $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-        $username = $row2['username'];
-        echo "<p><b>Ustvarjalec: </b></p>";
-        echo "<button class='profile-button' onclick=\"location.href='profiles.php?id=".$user_id."'\">".$username."</button><br><br>";
-        echo "<button class='profile-button' onclick=\"location.href='gamepage.php?id=".$game_id."'\">Poglej</button><br><br>";
-        echo "<button class='download-button' type='submit' onclick=\"window.open('".$file."')\">Prenesi igro</button> ";
-        echo "<button class='delete-button' onclick=\"location.href='deletegameuser.php?id=".$game_id."'\">Odstrani iz kupljenih iger</button>";
-        echo "</div>";
-        echo "</div>";
-    }
-  }
     ?>
-    
 </div>
+
 <div id="container">
     <h1>Objavljene igre</h1>
     <?php 
