@@ -1,40 +1,35 @@
- /* Apply styles to the user profile div */
- .user {
-    background-color: #f1f1f1;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-  }
+/* User Profile Styles */
+.user {
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
 
-  /* Style the user's name */
-  .user-info p:first-child {
-    font-weight: bold;
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-  
-  /* Style the user's description */
-  .user-info p:last-child {
-    font-size: 14px;
-    color: #777;
-  }
+.user-info p:first-child {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
 
-  @media (max-width: 768px) {
-    /* Adjust the padding and margin for smaller screens */
-    .user {
+.user-info p:last-child {
+  font-size: 14px;
+  color: #777;
+}
+
+@media (max-width: 768px) {
+  .user {
       padding: 5px;
       margin: 5px;
-    }
-    
-    /* Reduce the font size for the user's name on mobile */
-    .user-info p:first-child {
-      font-size: 16px;
-    }
-    
-    /* Reduce the font size for the user's description on mobile */
-    .user-info p:last-child {
-      font-size: 12px;
-    }
   }
+
+  .user-info p:first-child {
+      font-size: 16px;
+  }
+
+  .user-info p:last-child {
+      font-size: 12px;
+  }
+}

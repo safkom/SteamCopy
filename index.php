@@ -162,7 +162,7 @@ if (isBanned($conn)) {
                 $stmt2 = $conn->prepare($sql2);
                 $stmt2->execute([$row['id']]);
                 while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<img src='" . $row2['url'] . "' alt='slika igre' width='20%' >  ";
+                    echo "<img class='game-image' src='".$row2['url']."' alt='slika igre' >";
                 }
         echo "<br>";
         if ($owned && userLoggedIn()) {

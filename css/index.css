@@ -1,140 +1,128 @@
-body{
-    background-color: #0F518A; 
+/* Global Styles */
+body {
+  background-color: #0F518A;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
+
 #container {
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px; /* Adding rounded corners */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increasing the box shadow */
+  max-width: 100%; /* Adjust max-width for better responsiveness */
+  margin: 50px 10px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
 .dropdown {
-position: relative;
-display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 .menu-btn {
-position: fixed;
-top: 20px;
-right: 20px;
-background-color: blue;
-color: white;
-padding: 10px;
-font-size: 16px;
-border: none;
-cursor: pointer;
-border-radius: 4px;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: blue;
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .menu-content {
-display: none;
-position: fixed;
-top: 60px;
-right: 20px;
-background-color: #f9f9f9;
-min-width: 120px;
-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-z-index: 1;
+  display: none;
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  background-color: #f9f9f9;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 
 .menu-content a {
-color: black;
-padding: 12px 16px;
-text-decoration: none;
-display: block;
-}
-#gumbi {
-display: flex;
-justify-content: space-between;
-}
-.gumbstyle{
-background: #3498db;
-background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
-background-image: -moz-linear-gradient(top, #3498db, #2980b9);
-background-image: -ms-linear-gradient(top, #3498db, #2980b9);
-background-image: -o-linear-gradient(top, #3498db, #2980b9);
-background-image: linear-gradient(to bottom, #3498db, #2980b9);
--webkit-border-radius: 28;
--moz-border-radius: 28;
-border-radius: 28px;
-font-family: Arial;
-color: #ffffff;
-font-size: 20px;
-padding: 10px 20px 10px 20px;
-text-decoration: none;
-}
-.gumbstyle:hover {
-background: #3cb0fd;
-background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
-background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
-background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
-background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
-background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
-text-decoration: none;
-}
-#loginWindow {
-position: fixed;
-bottom: 10px;
-right: 10px;
-width: 200px;
-min-height: 30px;
-background-color: lightgreen;
-display: none;
-padding: 10px;
-border-radius: 5px;
-}
-#errorWindow {
-position: fixed;
-bottom: 10px;
-right: 10px;
-width: 200px;
-min-height: 30px;
-background-color: lightcoral;
-display: none;
-padding: 10px;
-border-radius: 5px;
-}
-#warningWindow {
-position: fixed;
-bottom: 10px;
-right: 10px;
-width: 200px;
-min-height: 30px;
-background-color: lightblue;
-display: none;
-padding: 10px;
-border-radius: 5px;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
 }
 
-/* Apply styles to the user profile div */
-.user {
-    background-color: #f1f1f1;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-  }
-  
-  /* Style the user's name */
-  .user-info p:first-child {
-    font-weight: bold;
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-  
-  /* Style the user's description */
-  .user-info p:last-child {
-    font-size: 14px;
-    color: #777;
-  }
-  
-  .profile-button{
-    background-color: black;
-    color: white;
-    padding: 10px 20px; /* Adjust padding as needed */
-    border: none;
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer;
+#gumbi {
+  display: flex;
+  justify-content: space-between;
 }
+
+.gumbstyle {
+  background: #3498db;
+  border-radius: 28px;
+  font-family: Arial, sans-serif;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.gumbstyle:hover {
+  background: #3cb0fd;
+}
+
+#loginWindow, #errorWindow, #warningWindow {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 200px;
+  min-height: 30px;
+  padding: 10px;
+  border-radius: 5px;
+  display: none;
+}
+
+/* User Profile Styles */
+.user {
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.user-info p:first-child {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.user-info p:last-child {
+  font-size: 14px;
+  color: #777;
+}
+@media (max-width: 768px) {
+  #container {
+      padding: 10px;
+  }
+
+  .menu-content, .menu-btn {
+      top: 50px;
+  }
+}
+/* Set a fixed image size for desktop screens */
+.game-image {
+  width: 50%; /* Maintain aspect ratio */
+}
+
+/* Make game images larger on mobile */
+@media (max-width: 768px) {
+  .game-image {
+      width: 80%; /* Adjust the percentage as needed for mobile devices */
+      max-width: 100%; /* Ensure images don't exceed their container width */
+      height: auto; /* Maintain aspect ratio */
+  }
+}
+
+

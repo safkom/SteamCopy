@@ -67,6 +67,7 @@ if (isBanned($conn)) {
     <div class='content-below-navbar'>
     <br>
     <div id="container">
+      <div id = "container">
     <?php
     require_once 'connect.php';
 
@@ -97,8 +98,11 @@ if (isBanned($conn)) {
         echo $opis;
     }
     ?>
+<br>
+<br>
 <button class='user-button' onclick="location.href='profile_edit.php'">Edit profile</button>
 <br>
+</div>
 <?php
   echo "<br><br>";
   echo "<h2>Mnenja uporabnikov</h2>";

@@ -1,6 +1,7 @@
 <?php
 require_once 'connect.php';
 session_start();
+
 if (!isset($_SESSION['id'])) {
     setcookie('prijava', "Tu nimaš dostopa.");
     setcookie('error', 1);
@@ -10,7 +11,7 @@ if (!isset($_SESSION['id'])) {
 
 // Validate and sanitize user input
 $uporabnik = $_SESSION['id'];
-$profile_id = $_GET['id'];
+$profile_id = isset($_GET['id']) ? intval($_GET['id']) : 0; // Ensure $profile_id is an integer
 $text = htmlspecialchars($_POST['mnenje'], ENT_QUOTES, 'UTF-8');
 
 // Use prepared statements to prevent SQL injection
@@ -23,14 +24,16 @@ $stmt->bindParam(':uporabnik', $uporabnik, PDO::PARAM_INT);
 if ($stmt->execute()) {
     setcookie('prijava', "Komentar oddano!");
     setcookie('good', 1);
-    header('Location: '. $_SESSION['lastlocation'] .'');
-    exit();
 } else {
     setcookie('prijava', "Error: " . implode(", ", $stmt->errorInfo()));
     setcookie('error', 1);
-    header('Location: '. $_SESSION['lastlocation'] .'');
-    exit();
 }
 
-$conn = null; // Close the connection
+// Redirect to the previous page
+if (isset($_SESSION['lastlocation'])) {
+    header('Location: ' . $_SESSION['lastlocation']);
+} else {
+    header('Location: index.php');
+}
+exit();
 ?>

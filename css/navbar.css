@@ -1,22 +1,20 @@
 /* Navbar styles */
 .navbar {
-    background-color: #333; /* Change the background color as needed */
+    background-color: #333;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px; /* Adjust padding as needed */
-    position: fixed; /* Position it at the top */
+    padding: 10px 20px;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000; /* Ensure it's above other content */
+    z-index: 1000;
 }
 
 .content-below-navbar {
-    margin-top: 10px; /* Adjust this value to match your navbar's height */
+    margin-top: 10px;
 }
-
-
 
 /* Style the left section of the navbar */
 .navbar-left {
@@ -32,98 +30,65 @@
 /* Style the right section of the navbar */
 .navbar-right {
     flex: 1;
-    text-align: right; /* Align content to the right */
+    text-align: right;
 }
 
 /* Style the buttons in the right section */
+.center-button, .selected-button, .user-button, .store-button, .download-button, .delete-button, .delete-mnenje-button, .filter-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
 .center-button {
-    background-color: #007bff; /* Change the button's background color */
-    color: #fff; /* Change the button's text color */
-    padding: 10px 20px; /* Adjust padding as needed */
-    border: none;
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer;
-    margin-left: 10px; /* Add some space between buttons */
+    background-color: #007bff;
+    color: #fff;
 }
+
 .selected-button {
-    background-color: black; /* Change the button's background color */
-    color: white; /* Change the button's text color */
-    padding: 10px 20px; /* Adjust padding as needed */
-    border: none;
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer;
-    margin-left: 10px; /* Add some space between buttons */
+    background-color: black;
+    color: white;
 }
+
 .user-button {
-    padding: 10px 20px; /* Adjust padding as needed */
-    border: none;
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer;
-    margin-left: 10px; /* Add some space between buttons */
+    background-color: lightgray;
+    color: black;
 }
+
 .store-button {
     background-color: green;
     color: wheat;
-    padding: 10px 20px; /* Adjust padding as needed */
-    border: none;
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer;
-    margin-left: 95%; /* Add some space between buttons */
-    
+    margin-left: 95%;
 }
+
 .download-button {
     background-color: green;
     color: white;
-    padding: 10px 20px; /* Adjust padding as needed */
-    border: none;
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer;
 }
-.delete-button {
+
+.delete-button, .delete-mnenje-button {
     background-color: red;
     color: white;
-    padding: 10px 20px; /* Adjust padding as needed */
-    border: none;
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; 
 }
-.delete-mnenje-button {
-    background-color: red;
-    color: white;
-    padding: 10px 20px; /* Adjust padding as needed */
-    border: none;
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; 
-    float:right;
-}
-@media screen and (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        align-items: center;
-    }
-    .navbar-left, .navbar-center, .navbar-right {
-        margin: 10px 0;
-        text-align: center;
-    }
-    .navbar-center {
-        margin-top: 20px;
-    }
-    .navbar-right {
-        margin-top: 10px;
-    }
-    .store-button {
-        margin-left: 10px; /* Reset margin for this button */
-    }
-    .content-below-navbar {
-        margin-top: 120px; /* Adjust this value to match your navbar's height */
-    }
-}
+
 .filter-button {
     background-color: brown;
     color: wheat;
-    padding: 10px 20px; /* Adjust padding as needed */
-    border: none;
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer;
-    
+}
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .center-button, .selected-button, .user-button, .store-button, .download-button, .delete-button, .delete-mnenje-button, .filter-button {
+        margin: 10px 0;
+    }
+
+    .content-below-navbar {
+        margin-top: 120px;
+    }
 }
