@@ -34,7 +34,7 @@
 }
 
 /* Style the buttons in the right section */
-.center-button, .selected-button, .user-button, .store-button, .download-button, .delete-button, .delete-mnenje-button, .filter-button {
+.center-button, .selected-button, .user-button, .store-button, .download-button, .delete-button, .delete-mnenje-button, .filter-button, .profile-button {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -43,6 +43,10 @@
 }
 
 .center-button {
+    background-color: #007bff;
+    color: #fff;
+}
+.profile-button {
     background-color: #007bff;
     color: #fff;
 }
