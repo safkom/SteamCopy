@@ -87,7 +87,7 @@
         <label for="opis">Opis igre:</label>
         <textarea id="opis" name="opis" rows="4" cols="50" required></textarea>
         <label for="zip">Datoteke igre:</label>
-        <input type="file" id="zip" name="zip" required><br><br>
+        <input type="file" id="zip" name="zip" required accept = ".zip, .rar"><br><br>
         <label for="email">Slike igre:</label>
         <input type="file" id="slika" name="slika[]" required multiple><br><br>
         <input type="submit" value="Pošlji">
