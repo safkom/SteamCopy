@@ -122,13 +122,13 @@ if (isBanned($conn)) {
         if(isset($_SESSION['id'])){
           $sql = "SELECT igre.*, nakupi.uporabnik_id AS nakup_uporabnik_id
                   FROM igre
-                  LEFT JOIN nakupi ON igre.id = nakupi.igra_id AND nakupi.uporabnik_id = ?";
+                  LEFT JOIN nakupi ON igre.id = nakupi.igra_id AND nakupi.uporabnik_id = ? ORDER BY RAND()";
                   $stmt = $conn->prepare($sql);
                   $stmt->execute([$_SESSION['id']]);
         }else{
             $sql = "SELECT igre.*, nakupi.uporabnik_id AS nakup_uporabnik_id
                     FROM igre
-                    LEFT JOIN nakupi ON igre.id = nakupi.igra_id";
+                    LEFT JOIN nakupi ON igre.id = nakupi.igra_id ORDER BY RAND()";
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
             }
