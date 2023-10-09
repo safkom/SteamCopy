@@ -75,18 +75,9 @@ if (isBanned($conn)) {
     <br>
     <div id="container">
         <h1>Community</h1>
-        <p>Išči uporabnike:</p>
-        <form action="community.php" method="post" enctype="multipart/form-data">
-            <input type="text" name="iskanje" placeholder="Vnesi uporabniško ime">
-            <input type="submit" name="isci" value="Išči">
-            <input type="submit" name="isci" value="Ponastavi">
-        </form>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+        <div id="filterOptionsContainer" class="filter-options">
+        <label for="filterName">Išči uporabnike:</label>
+        <input type="text" id="filterName" oninput="filterTable()">
         <br>
         <p>Uporabniki:</p>
         <?php
@@ -179,6 +170,52 @@ if (isBanned($conn)) {
       include_once "alert.php";
       ?>
       </div>
+      <script>
+        var filterOptionsContainer = document.getElementById("filterOptionsContainer");
+        var filterNameInput = document.getElementById("filterName");
+        
+        function toggleFilterOptions() {
+            if (filterOptionsContainer.style.display === "none") {
+                filterOptionsContainer.style.display = "block";
+                enableFilterInputs();
+            } else {
+                filterOptionsContainer.style.display = "none";
+                disableFilterInputs();
+                filterUsers(); // Filter the users when hiding the filter options
+            }
+        }
+
+        function enableFilterInputs() {
+            filterNameInput.disabled = false;
+        }
+
+        function disableFilterInputs() {
+            filterNameInput.disabled = true;
+            filterNameInput.value = "";
+        }
+
+        function filterUsers() {
+            var filterNameValue = filterNameInput.value.toLowerCase();
+            var userDivs = document.querySelectorAll(".user-info");
+
+            for (var i = 0; i < userDivs.length; i++) {
+                var username = userDivs[i].getElementsByTagName("p")[0].textContent.toLowerCase();
+                var parentDiv = userDivs[i].parentNode;
+                var showUser = true;
+
+                if (filterNameValue !== '' && !username.includes(filterNameValue)) {
+                    showUser = false;
+                }
+
+                parentDiv.style.display = showUser ? "block" : "none";
+            }
+        }
+
+        document.getElementById("filterName").addEventListener("input", filterUsers);
+
+        // Initial filter users
+        filterUsers();
+    </script>
 </body>
 
 </html>
