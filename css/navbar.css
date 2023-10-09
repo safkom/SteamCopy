@@ -81,6 +81,9 @@
     background-color: brown;
     color: wheat;
 }
+.delete-mnenje-button {
+    margin-left: 95%;
+}
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
