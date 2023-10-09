@@ -13,7 +13,10 @@
 }
 
 .content-below-navbar {
-    margin-top: 10px;
+    margin-top: 20px;
+}
+.content-below-navbar-game {
+    margin-top: 100px;
 }
 
 /* Style the left section of the navbar */
@@ -97,5 +100,8 @@
 
     .content-below-navbar {
         margin-top: 120px;
+    }
+    .content-below-navbar-game {
+        margin-top: 400px;
     }
 }

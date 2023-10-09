@@ -64,6 +64,7 @@
 </nav>
 
 <br>
+<div class='content-below-navbar-game'>
 <div class="container">
     <h1>Game Upload</h1>
     <form action="upload.php" method="post" enctype="multipart/form-data">
@@ -94,6 +95,7 @@
     </form>
     <br>
     <button id='user-button' onclick="location.href='index.php'">Nazaj</button>
+</div>
 </div>
 <div id="loginWindow">
     <?php

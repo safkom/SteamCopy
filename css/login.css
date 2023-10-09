@@ -1,145 +1,160 @@
-body{
-    background: #0F518A ;
-  }
-  /* Global Styles */
+/* Global Styles */
 body {
-font-family: Arial, sans-serif;
-background: #0F518A ;
-margin: 0;
-padding: 0;
+  font-family: Arial, sans-serif;
+  background: #0F518A; /* Light gray background */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .container {
-max-width: 400px;
-margin: 50px auto;
-padding: 20px;
-background-color: #fff;
-border-radius: 10px; /* Adding rounded corners */
-box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increasing the box shadow */
+  max-width: 400px;
+  padding: 20px;
+  padding-top: 40px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
-
-
 h1 {
-text-align: center;
-color: #333;
+  color: #333;
 }
 
 form {
-margin-top: 20px;
+  margin-top: 20px;
 }
 
 label {
-display: block;
-margin-bottom: 5px;
-color: #555;
+  display: block;
+  margin-bottom: 10px;
+  color: #555;
+  font-weight: bold;
 }
 
 .container input[type="text"],
 .container input[type="password"] {
-width: 100%;
-padding: 10px;
-font: inherit;
-box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
-border-color: gray;
-outline: 0;
+  width: 90%;
+  padding: 12px;
+  font: inherit;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  transition: border-color 0.2s;
+}
+
+.container input[type="text"]:focus,
+.container input[type="password"]:focus {
+  border-color: #007bff; /* Highlight input fields on focus */
 }
 
 .container input[type="submit"] {
-width: 100%;
-padding: 10px;
-background-color: lightblue;
-color: #fff;
-border: none;
-border-radius: 4px;
-cursor: pointer;
+  width: 90%;
+  padding: 12px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .container input[type="submit"]:hover {
-background-color: lightblue;
+  background-color: #0056b3; /* Darker blue on hover */
 }
 
 a {
-color: lightblue;
-text-decoration: none;
+  color: #007bff;
+  text-decoration: none;
 }
 
 /* Responsive Styles */
 @media (max-width: 600px) {
   .container {
-      max-width: 90%; /* Adjusted the maximum width for better mobile responsiveness */
-      margin: 20px auto; /* Centering the container */
-      box-shadow: 0; /* Removed the box shadow on mobile */
+    max-width: 90%;
   }
 }
-#errorWindow {
-position: fixed;
-bottom: 10px;
-right: 10px;
-width: 200px;
-min-height: 30px;
-background-color: lightcoral;
-display: none;
-padding: 10px;
-border-radius: 5px;
-}
-#warningWindow {
-position: fixed;
-bottom: 10px;
-right: 10px;
-width: 200px;
-min-height: 30px;
-background-color: lightblue;
-display: none;
-padding: 10px;
-border-radius: 5px;
-}
-  .container input[type="text"],
-  .container input[type="number"],
-.container input[type="password"] {
-  width: 100%;
-  box-sizing: border-box;
+
+/* Error and warning windows */
+#errorWindow,
+#warningWindow,
+#loginWindow {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 200px;
+  min-height: 30px;
+  display: none;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
 }
 
-.container input[type="submit"] {
-  width: 100%;
+#user-button {
+  width: 90%;
+  padding: 12px;
+  background-color: #f0f0f0; /* Light gray background */
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#user-button:hover {
+  background-color: #d0d0d0; /* Slightly darker gray on hover */
+}
+
+/* Add this CSS to your existing styles */
+.container label {
+  font-size: 18px;
+}
+
+.container input[type="text"],
+.container input[type="number"],
+.container select,
+.container textarea,
+.container input[type="file"] {
+  width: 90%;
+  padding: 12px;
+  font: inherit;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  transition: border-color 0.2s;
+}
+
+.container input[type="text"]:focus,
+.container input[type="number"]:focus,
+.container select:focus,
+.container textarea:focus,
+.container input[type="file"]:focus {
+  border-color: #007bff;
+}
+
+/* Style the file input for a better look */
+.container input[type="file"] {
   padding: 10px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: #333;
+}
+
+/* Style the submit button */
+.container input[type="submit"] {
   background-color: #007bff;
   color: #fff;
+  font-size: 16px;
+  padding: 12px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .container input[type="submit"]:hover {
-  background-color: #007bff;
+  background-color: #0056b3;
 }
-  
-  a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  /* Responsive Styles */
-
-  #loginWindow {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: 200px;
-    min-height: 30px;
-    background-color: lightgreen;
-    display: none;
-    padding: 10px;
-    border-radius: 5px;
-}
-#user-button {
-  width: 100%;
-  padding: 10px;
-  background-color: lightgray;
-  color: black;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-  
