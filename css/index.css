@@ -77,3 +77,15 @@ body {
 .menu-content {
   top: 70px;
 }
+.game-image {
+  width: 50%; /* Maintain aspect ratio */
+}
+
+/* Make game images larger on mobile */
+@media (max-width: 768px) {
+  .game-image {
+      width: 80%; /* Adjust the percentage as needed for mobile devices */
+      max-width: 100%; /* Ensure images don't exceed their container width */
+      height: auto; /* Maintain aspect ratio */
+  }
+}
