@@ -8,6 +8,7 @@ $priimek = $_POST['priimek'];
 $username = $_POST['username'];
 $mail = $_POST['email'];
 $geslo1 = $_POST['geslo'];
+$google_id = isset($_SESSION['google_id']) ? $_SESSION['google_id'] : null; // Check if google_id is set
 $geslo = password_hash($geslo1, PASSWORD_DEFAULT);
 
 // Prepare the SELECT statement
@@ -24,11 +25,10 @@ if (count($result) == 0) {
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (count($result) == 0) {
-        // Prepare the INSERT statement
-        $sql = "INSERT INTO uporabniki (ime, priimek, mail, geslo, username)
-        VALUES (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO uporabniki (ime, priimek, mail, geslo, username, google_id)
+        VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        if ($stmt->execute([$ime, $priimek, $mail, $geslo, $username])) { // Pass parameters as an array
+        if ($stmt->execute([$ime, $priimek, $mail, $geslo, $username, $google_id])) { // Pass parameters as an array
             setcookie('prijava', "Registracija uspešna. Prijavite se z vnešenimi podatki.");
             setcookie('good', 1);
             header('Location: login.php');
