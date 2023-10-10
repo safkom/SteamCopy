@@ -44,6 +44,7 @@ if (isset($_GET["code"])) {
             $_SESSION['ime'] = $ime;
             $_SESSION['priimek'] = $priimek;
             $_SESSION['email'] = $mail;
+            $_SESSION['google_id'] = $id;
             header("Location: google_register.php");
         } 
         else {
