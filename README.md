@@ -22,20 +22,15 @@
 ## 📝 Kazalo vsebine
 - [O projektu](#o-projektu)
 - [Začetek](#začetek)
-- [Namestitev](#namestitev)
-- [Zagon testov](#zagon-testov)
 - [Uporaba](#uporaba)
-- [Implementacija](#implementacija)
-- [Naloge za izboljšavo](../TODO.md)
-- [Sodelovanje](../CONTRIBUTING.md)
+- [Orodja](#orodja)
 - [Avtorji](#avtorji)
-- [Zahvale](#zahvale)
 
 ## 🧐 O projektu <a name = "o-projektu"></a>
 Projekt, izdelan za šolsko nalogo. Večina kode je napisana v jeziku PHP.
 
 ## 🏁 Začetek <a name = "začetek"></a>
-Navodila vam bodo pomagala, da dobite kopijo projekta, ki bo delovala na vašem lokalnem računalniku za razvoj in testiranje. Za informacije o namestitvi na živem sistemu glejte [namestitev](#namestitev).
+Navodila vam bodo pomagala, da dobite kopijo projekta, ki bo delovala na vašem lokalnem računalniku za razvoj in testiranje. Namestitev je ista na Live Serverju.
 
 ### Predpogoji
 Zahtevane komponente:
@@ -77,16 +72,16 @@ profile.css - za postavitev in izgled profilov na strani.
 
 Vse datoteke tudi vsebujejo prilagoditve za mobilne naprave.
 
-## 🎈 Usage <a name="usage"></a>
+## 🎈 Uporaba <a name="uporaba"></a>
 Se lahko uporabi kot spletna trgovina za igre in komuniciranje z prijatelji in podajanje mnenj za igre na strani.
 
 
-## ⛏️ Built Using <a name = "built_using"></a>
+## ⛏️ Narejen z orodji <a name = "orodja"></a>
 - [MySQL](https://www.mysql.com) - Database
 - [PHP](https://www.php.net) - Web Framework
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - Filtering tool
 
-## ✍️ Authors <a name = "authors"></a>
+## ✍️ Avtorji <a name = "avtorji"></a>
 - [@safkom](https://github.com/safkom) - Delo in ideja projekta
 - [@sm1ncH](https://github.com/sm1ncH) - Testiranje strani
 - [@aljazorlicnik](https://github.com/aljazorlicnik) - Predlogi za css in testiranje
