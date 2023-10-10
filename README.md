@@ -82,7 +82,7 @@ Se lahko uporabi kot spletna trgovina za igre in komuniciranje z prijatelji in p
 
 
 ## ⛏️ Built Using <a name = "built_using"></a>
-- [MySQL](https://www.mysql.com)) - Database
+- [MySQL](https://www.mysql.com) - Database
 - [PHP](https://www.php.net) - Web Framework
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - Filtering tool
 
